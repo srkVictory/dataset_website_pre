@@ -10,6 +10,12 @@ const collaborators = [
     location: 'Beijing, China',
     url: 'https://irip.buaa.edu.cn/',
   },
+  {
+    name: 'Shandong Center for Data and Application of High Resolution Earth Observation System',
+    nameZh: '高分辨率对地观测系统山东数据与应用中心',
+    location: 'Shandong, China',
+    url: '#',
+  },
 ];
 
 // 团队组件
@@ -63,7 +69,7 @@ export default function Team() {
 
         {/* 合作机构卡片 */}
         <div
-          className={`flex justify-center transition-all duration-700 delay-200 ${
+          className={`grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto transition-all duration-700 delay-200 ${
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}
         >
@@ -73,7 +79,7 @@ export default function Team() {
               href={institution.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="group relative p-8 rounded-2xl bg-[#161b22]/80 border border-[#2a2d47]/50 hover:border-[#4d6bfa]/50 transition-all duration-500 hover:-translate-y-2 overflow-hidden w-full max-w-md text-center cursor-pointer block"
+              className="group relative p-8 rounded-2xl bg-[#161b22]/80 border border-[#2a2d47]/50 hover:border-[#4d6bfa]/50 transition-all duration-500 hover:-translate-y-2 overflow-hidden w-full text-center cursor-pointer block"
               style={{
                 transitionDelay: `${index * 100}ms`,
               }}
