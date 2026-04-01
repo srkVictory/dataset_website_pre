@@ -206,11 +206,13 @@ export default function LandUse() {
         >
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#4d6bfa]/10 border border-[#4d6bfa]/30 mb-6">
             <ArrowRight className="w-4 h-4 text-[#4d6bfa]" />
-            <span className="text-sm font-medium text-[#4d6bfa]">Change Type Analysis</span>
+            <span className="text-sm font-medium text-[#4d6bfa]">Land Use Taxonomy</span>
           </div>
           <h2 className="section-title">Land Use Change Distribution</h2>
           <p className="section-subtitle max-w-3xl mx-auto">
-            Statistical distribution of land use change types in the dataset, showing transitions between different land cover categories
+            Based on GB/T 21010-2017 national land-use classification standard, 
+            covering 14 major land-use categories with 1:4 positive-negative sample ratio 
+            for robust change detection evaluation
           </p>
         </div>
 
@@ -254,7 +256,7 @@ export default function LandUse() {
               }`}
             >
               <div className="p-6 rounded-2xl bg-[#161b22]/50 border border-[#2a2d47]/50">
-                <h3 className="text-lg font-semibold text-white mb-6">Change Type Instances</h3>
+                <h3 className="text-lg font-semibold text-white mb-6">Inter-Class Transition Statistics</h3>
                 <div className="h-[500px]">
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart
@@ -413,14 +415,14 @@ export default function LandUse() {
                 isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'
               }`}
             >
-              <h3 className="text-xl font-semibold text-white mb-8">Dataset Overview</h3>
+              <h3 className="text-xl font-semibold text-white mb-8">Taxonomy Distribution</h3>
               
               <div className="grid grid-cols-2 gap-6 mb-8">
                 <div className="text-center p-6 rounded-xl bg-[#161b22]/50">
                   <div className="text-4xl font-bold text-[#4d6bfa] font-['Poppins'] mb-2">
                     7,430
                   </div>
-                  <div className="text-sm text-[#b4bcd0]">Total Change Instances</div>
+                  <div className="text-sm text-[#b4bcd0]">Valid Change Instances</div>
                 </div>
                 <div className="text-center p-6 rounded-xl bg-[#161b22]/50">
                   <div className="text-4xl font-bold text-[#22c55e] font-['Poppins'] mb-2">
@@ -432,16 +434,16 @@ export default function LandUse() {
 
               <div className="space-y-4">
                 <div className="flex justify-between items-center p-4 rounded-xl bg-[#161b22]/50">
-                  <span className="text-[#b4bcd0]">Most Common Change</span>
-                  <span className="text-white font-medium">水浇地 → 人为扰动用地</span>
+                  <span className="text-[#b4bcd0]">Primary Transition</span>
+                  <span className="text-white font-medium">Irrigated Land → Human Disturbance</span>
                 </div>
                 <div className="flex justify-between items-center p-4 rounded-xl bg-[#161b22]/50">
                   <span className="text-[#b4bcd0]">Dominant Category</span>
-                  <span className="text-white font-medium">城市化变化 (74.6%)</span>
+                  <span className="text-white font-medium">Urbanization (74.6%)</span>
                 </div>
                 <div className="flex justify-between items-center p-4 rounded-xl bg-[#161b22]/50">
-                  <span className="text-[#b4bcd0]">Average per Image Pair</span>
-                  <span className="text-white font-medium">~7.4 changes</span>
+                  <span className="text-[#b4bcd0]">Intra-Class Filtered</span>
+                  <span className="text-white font-medium">~80% negative samples</span>
                 </div>
               </div>
             </div>

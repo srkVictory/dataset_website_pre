@@ -68,9 +68,9 @@ export default function CodeModels() {
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}
         >
-          <h2 className="section-title">Code & Models</h2>
+          <h2 className="section-title">Implementation Resources</h2>
           <p className="section-subtitle">
-            Quick start guides and pre-trained model checkpoints
+            Reusable codebase and baseline model implementations for reproducible research
           </p>
         </div>
 
@@ -86,8 +86,8 @@ export default function CodeModels() {
                 <Terminal className="w-6 h-6 text-[#4d6bfa]" />
               </div>
               <div>
-                <h3 className="text-xl font-semibold text-white">Environment Setup</h3>
-                <p className="text-sm text-[#b4bcd0]">Python 3.8+ and PyTorch 1.10+</p>
+                <h3 className="text-xl font-semibold text-white">Experimental Setup</h3>
+                <p className="text-sm text-[#b4bcd0]">Reproducible environment configuration</p>
               </div>
             </div>
 
@@ -124,10 +124,11 @@ export default function CodeModels() {
             <div className="p-6 rounded-xl bg-[#161b22]/80 border border-[#2a2d47]/50">
               <div className="flex items-center gap-3 mb-4">
                 <BookOpen className="w-5 h-5 text-[#4d6bfa]" />
-                <h4 className="font-semibold text-white">OpenCD Integration</h4>
+                <h4 className="font-semibold text-white">Framework Integration</h4>
               </div>
               <p className="text-sm text-[#b4bcd0] mb-4">
-                Our dataset is officially integrated with the OpenCD framework for seamless benchmarking.
+                Compatible with OpenCD and MMChange detection frameworks. 
+                Standardized data loaders and evaluation protocols provided.
               </p>
               <a
                 href="https://github.com"
@@ -135,7 +136,7 @@ export default function CodeModels() {
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 text-sm text-[#4d6bfa] hover:underline"
               >
-                View Integration Guide
+                Documentation
                 <Github className="w-4 h-4" />
               </a>
             </div>
@@ -152,8 +153,8 @@ export default function CodeModels() {
                 <Cpu className="w-6 h-6 text-[#4d6bfa]" />
               </div>
               <div>
-                <h3 className="text-xl font-semibold text-white">Pre-trained Models</h3>
-                <p className="text-sm text-[#b4bcd0]">Baseline model checkpoints</p>
+                <h3 className="text-xl font-semibold text-white">Baseline Checkpoints</h3>
+                <p className="text-sm text-[#b4bcd0]">Reference model weights for comparison</p>
               </div>
             </div>
 
@@ -175,7 +176,9 @@ export default function CodeModels() {
                       </div>
                     </div>
                     <a
-                      href="#"
+                      href={`https://github.com/your-org/geo-bc/releases/download/v1.0/${model.checkpoint}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#4d6bfa]/10 text-[#4d6bfa] hover:bg-[#4d6bfa]/20 transition-colors text-sm"
                     >
                       <Download className="w-4 h-4" />
@@ -188,13 +191,13 @@ export default function CodeModels() {
 
             {/* Requirements */}
             <div className="p-6 rounded-xl bg-[#161b22]/80 border border-[#2a2d47]/50">
-              <h4 className="font-semibold text-white mb-4">System Requirements</h4>
+              <h4 className="font-semibold text-white mb-4">Software Dependencies</h4>
               <div className="grid grid-cols-2 gap-4">
                 {[
                   { label: 'Python', value: '≥ 3.8' },
                   { label: 'PyTorch', value: '≥ 1.10' },
                   { label: 'CUDA', value: '≥ 11.0' },
-                  { label: 'RAM', value: '≥ 16GB' },
+                  { label: 'Memory', value: '≥ 16GB' },
                 ].map((req) => (
                   <div key={req.label} className="flex justify-between text-sm">
                     <span className="text-[#b4bcd0]">{req.label}:</span>

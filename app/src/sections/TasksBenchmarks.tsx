@@ -115,14 +115,15 @@ export default function TasksBenchmarks() {
         >
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#4d6bfa]/10 border border-[#4d6bfa]/30 mb-6">
             <Cpu className="w-4 h-4 text-[#4d6bfa]" />
-            <span className="text-sm font-medium text-[#4d6bfa]">Training Applications</span>
+            <span className="text-sm font-medium text-[#4d6bfa]">Training Methodologies</span>
           </div>
           <h2 className="section-title">
             Versatile <span className="gradient-text">Training Paradigms</span>
           </h2>
           <p className="section-subtitle max-w-3xl mx-auto">
-            Our structured 6-step format enables diverse training methods from basic supervised learning 
-            to advanced <strong className="text-white">RLHF and process supervision</strong>
+            The structured annotation format supports comprehensive training methodologies 
+            from supervised fine-tuning to preference-based reinforcement learning 
+            with process-level reward modeling
           </p>
         </div>
 
@@ -227,18 +228,18 @@ export default function TasksBenchmarks() {
                 </div>
 
                 <p className="text-[#b4bcd0] leading-relaxed mb-6">
-                  Unlike traditional Outcome Reward Models (ORM) that only evaluate final answers, 
-                  our 6-step format enables <strong className="text-white">Process-level supervision</strong>. 
-                  Each thinking step can be independently scored, allowing precise identification of 
-                  where reasoning goes wrong.
+                  Conventional outcome reward models provide only binary feedback on final answers. 
+                  Our framework enables <strong className="text-white">fine-grained process supervision</strong> 
+                  with per-step scalar rewards, facilitating precise credit assignment and 
+                  intermediate error detection in multi-step reasoning chains.
                 </p>
 
                 <div className="space-y-3">
                   {[
-                    'Step-by-step credit assignment',
-                    'Detect hallucinations in intermediate reasoning',
-                    'Guide models with fine-grained feedback',
-                    'Train more reliable and interpretable AI',
+                    'Per-step credit assignment for long-horizon reasoning',
+                    'Hallucination detection at intermediate stages',
+                    'Fine-grained feedback for targeted model improvement',
+                    'Enhanced interpretability through step-wise evaluation',
                   ].map((item, i) => (
                     <div key={i} className="flex items-center gap-2 text-sm text-[#8b949e]">
                       <CheckCircle className="w-4 h-4 text-[#f59e0b] flex-shrink-0" />
@@ -302,7 +303,7 @@ export default function TasksBenchmarks() {
           }`}
         >
           <h3 className="text-xl font-semibold text-white text-center mb-8">
-            Enabled Model Capabilities
+            Supported Research Applications
           </h3>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {capabilities.map((cap, index) => (
@@ -334,7 +335,7 @@ export default function TasksBenchmarks() {
             className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-[#4d6bfa] text-white font-medium hover:bg-[#4353fa] transition-colors shadow-lg shadow-[#4d6bfa]/30"
           >
             <TrendingUp className="w-5 h-5" />
-            Explore Training Examples
+            Access Training Code
             <ArrowRight className="w-4 h-4" />
           </a>
         </div>

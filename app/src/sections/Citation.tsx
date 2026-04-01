@@ -1,23 +1,23 @@
 import { useState, useEffect, useRef } from 'react';
 import { BookOpen, FileText, Copy, Check, Scale } from 'lucide-react';
 
-const bibtexCitation = `@article{levirmf2024,
-  title={Geo-BeyondCaptioning: A Multi-modal Change Interpretation Dataset for Remote Sensing},
-  author={Shang, Lei and Wang, Wei and Chen, Hao and Li, Xiaoming and Liu, Ying},
-  journal={IEEE Transactions on Geoscience and Remote Sensing},
-  volume={62},
-  pages={1--15},
-  year={2026},
-  publisher={IEEE},
-  doi={10.1109/TGRS.2026.1234567}
+const bibtexCitation = `@inproceedings{geobc2025,
+  title={Beyond Captioning: A Preference-Aligned Benchmark for 
+         Fine-Grained Reasoning and Spatiotemporal Geo-World Understanding},
+  author={Authors},
+  booktitle={Proceedings of the ACM Conference},
+  year={2025},
+  publisher={ACM}
 }`;
 
-const gbCitation = `尚如柯, 张佳音, 孔佳琪, 牛逸群 等. Geo-BeyondCaptioning: 遥感多模态变化解释数据集[J]. IEEE地球科学与遥感汇刊, 2026, 62: 1-15.`;
+const apaCitation = `Authors. (2025). Beyond Captioning: A Preference-Aligned Benchmark 
+for Fine-Grained Reasoning and Spatiotemporal Geo-World Understanding. 
+In Proceedings of the ACM Conference. ACM.`;
 
 export default function Citation() {
   const [isVisible, setIsVisible] = useState(false);
   const [copiedBibtex, setCopiedBibtex] = useState(false);
-  const [copiedGB, setCopiedGB] = useState(false);
+  const [copiedAPA, setCopiedAPA] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -38,14 +38,14 @@ export default function Citation() {
     return () => observer.disconnect();
   }, []);
 
-  const copyToClipboard = (text: string, type: 'bibtex' | 'gb') => {
+  const copyToClipboard = (text: string, type: 'bibtex' | 'apa') => {
     navigator.clipboard.writeText(text);
     if (type === 'bibtex') {
       setCopiedBibtex(true);
       setTimeout(() => setCopiedBibtex(false), 2000);
     } else {
-      setCopiedGB(true);
-      setTimeout(() => setCopiedGB(false), 2000);
+      setCopiedAPA(true);
+      setTimeout(() => setCopiedAPA(false), 2000);
     }
   };
 
@@ -98,7 +98,7 @@ export default function Citation() {
             </div>
           </div>
 
-          {/* GB/T 7714 Citation */}
+          {/* APA Citation */}
           <div
             className={`transition-all duration-700 delay-200 ${
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
@@ -109,20 +109,20 @@ export default function Citation() {
                 <FileText className="w-5 h-5 text-[#4d6bfa]" />
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-white">GB/T 7714</h3>
-                <p className="text-xs text-[#b4bcd0]">For Chinese journals</p>
+                <h3 className="text-lg font-semibold text-white">APA</h3>
+                <p className="text-xs text-[#b4bcd0]">For academic papers</p>
               </div>
             </div>
 
             <div className="relative">
               <pre className="p-5 rounded-xl bg-[#161b22] border border-[#2a2d47]/50 text-sm text-[#b4bcd0] font-mono overflow-x-auto">
-                {gbCitation}
+                {apaCitation}
               </pre>
               <button
-                onClick={() => copyToClipboard(gbCitation, 'gb')}
+                onClick={() => copyToClipboard(apaCitation, 'apa')}
                 className="absolute top-3 right-3 p-2 rounded-lg bg-[#2a2d47]/50 hover:bg-[#4d6bfa]/20 transition-colors"
               >
-                {copiedGB ? (
+                {copiedAPA ? (
                   <Check className="w-4 h-4 text-green-400" />
                 ) : (
                   <Copy className="w-4 h-4 text-[#b4bcd0]" />
@@ -165,13 +165,7 @@ export default function Citation() {
                 ))}
               </div>
               <p className="mt-4 text-sm text-[#b4bcd0]">
-                For commercial use inquiries, please contact us at{' '}
-                <a
-                  href="mailto:contact@levir-mf.org"
-                  className="text-[#4d6bfa] hover:underline"
-                >
-                  contact@levir-mf.org
-                </a>
+                For commercial use inquiries, please contact the corresponding author.
               </p>
             </div>
           </div>

@@ -179,12 +179,9 @@ export default function Footer() {
               Website by{' '}
               <span className="text-white font-medium">Shang Ruke</span>
               {' '}·{' '}
-              <a
-                href="mailto:srkVictory@163.com"
-                className="text-[#4d6bfa] hover:underline"
-              >
+              <span className="text-[#4d6bfa]">
                 srkVictory@163.com
-              </a>
+              </span>
             </p>
           </div>
           <div className="flex items-center gap-6">

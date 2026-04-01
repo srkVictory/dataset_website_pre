@@ -174,16 +174,15 @@ export default function Leaderboard() {
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}
         >
-          <a
-            href="https://github.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#4d6bfa] text-white font-medium hover:bg-[#4353fa] transition-colors"
+          <button
+            onClick={() => alert('该功能正在建设中，敬请期待！')}
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#4d6bfa]/50 text-white font-medium cursor-not-allowed opacity-60"
           >
             <TrendingUp className="w-5 h-5" />
             Submit Your Results
             <ExternalLink className="w-4 h-4" />
-          </a>
+          </button>
+          <p className="mt-2 text-sm text-[#6e7681]">Online submission system under development</p>
         </div>
       </div>
     </section>

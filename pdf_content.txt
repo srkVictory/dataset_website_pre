@@ -1,0 +1,427 @@
+Beyond Captioning: A Preference-Aligned Benchmark for
+1 59
+2 60
+Fine-Grained Reasoning and Spatiotemporal Geo-World
+3 61
+4 Understanding 62
+5 63
+6 64
+BenTrovato∗ LarsThørväld ValerieBéranger
+7 65
+8 G.K.M.Tobin∗ TheThørväldGroup InriaParis-Rocquencourt 66
+9 trovato@corporation.com Hekla,Iceland Rocquencourt,France 67
+10 webmaster@marysville-ohio.com larst@affiliation.org 68
+11 69
+InstituteforClarityinDocumentation
+12 70
+Dublin,Ohio,USA
+13 71
+14 72
+AparnaPatel HuifenChan
+15 73
+RajivGandhiUniversity TsinghuaUniversity
+16 74
+Doimukh,ArunachalPradesh,India HaidianQu,BeijingShi,China
+17 75
+18 76
+Abstract modelingandfine-grainederrordiagnosisinnext-generationgeo-
+19 77
+20 Changeanalysisinspatiotemporalcontextsisoneofthecoretasks graphicworldmodels.Thedataset,generationcodeandbaseline 78
+21 inEarthobservation.However,existingchangecaptioningmod- modelsarepubliclyavailableat:https://github.com/kaynqi/Beyond- 79
+22 elsmainlyfocusondescribingshallowvisualdifferencesofthe Captioning. 80
+23 landsurface,lackingadeepunderstandingofsuchissuesasthe 81
+CCSConcepts
+24 drivingforcesbehindchangesandwhetherchangesaresemanti- 82
+25 callyvalidinreal-worldland-usescenarios.Thispaperproposes •Computingmethodologies→Sceneunderstanding;Com- 83
+26 ataskshiftfromchangeannotationtochangeinterpretationand putervisiontasks;•Informationsystems→Datasets;•Applied 84
+27 understanding,andintroducesanewlarge-scale,highlyinforma- computing→Earthandatmosphericsciences. 85
+28 tivebenchmarkdatasetdesignedtoachievefine-grainedreasoning 86
+29 andspatiotemporalworldunderstandinginamultimodalsetting. Keywords 87
+30 Ourdatasetgoesbeyondsimpledescriptionandobjectdetection, multimodalreasoning,VLMs,spatiotemporalreasoning,seman- 88
+31 andfurtherstrengthensthedeeplylogicalcouplingbetweenvi- ticchangeinterpretation,benchmarkdataset,preference-aligned 89
+32 sualattributesandreal-worldland-useconditions:itmodelsspa- learning,processsupervision,Earthobservation 90
+33 tial,interactive,functionalandfoundationalrelations,andfinely ACMReferenceFormat: 91
+34 alignshigh-levelgeographicsemantics,real-worldapplicationsce- BenTrovato,G.K.M.Tobin,LarsThørväld,ValerieBéranger,AparnaPatel, 92
+35 nariosandcomplexvisualfeatures.Toimprovereasoningrelia- andHuifenChan..BeyondCaptioning:APreference-AlignedBenchmark 93
+36 bility, we construct a process supervision mechanism based on forFine-GrainedReasoningandSpatiotemporalGeo-WorldUnderstanding. 94
+37 positive–negativedual-trackreasoninglogic,whicheffectivelymit- In.ACM,NewYork,NY,USA,6pages. 95
+38 igatesthehallucinationproblemofmultimodalmodelsincomplex 96
+39 geographicscenes.Inaddition,webuildalarge-scalenegativesam- 1 Introduction 97
+40 plesettoreducefalsepositivesinintra-classvariationscenarios Earthobservationandspatiotemporalchangeanalysisformthe 98
+41 wherenoactualrecognitionisrequired.Toaddresstheinherent foundationforunderstandingthedynamicevolutionoftheEarth, 99
+42 resolutionlimitationsandclassificationambiguitiesofsatelliteob- drivingkeyapplicationssuchasurbanplanning,disasterresponse 100
+43 servation, we introduce an uncertainty-aware confidence score andecologicalmonitoring.Inrecentyears,withtherapidadvance- 101
+44 alignedwithfine-grainedhumanexpertpreferences,ensuringhigh mentofmultimodallargelanguagemodels(MLLMs),remarkable 102
+45 consistencybetweenmodeloutputsandexpertknowledge.Fur- progresshasbeenmadeinremotesensingchangecaptioning(RSCC). 103
+46 thermore,weperformspatiotemporalfutureinferencebasedon Byconvertingvisualdifferencesbetweenbi-temporalimagesinto 104
+47 theabovedeepunderstandingandgeographicexpertknowledge, naturallanguage,existingmodelshavesuccessfullybridgedthe 105
+48 providingpredictivesupportforgeographicdecision-makingas- gapbetweenpixel-levelchangesandsemanticdescriptions. 106
+49 sistance.Extensivebenchmarkexperimentsshowthatourdataset Nevertheless,thefundamentalbottleneckofthecurrentchange 107
+50 notonlyprovidesastrongfoundationforsupervisedfine-tuning captioningparadigmliesinitssuperficiality.Existingdatasetsand 108
+51 (SFT),butalsoofferscriticalinfrastructureforreasoningreward modelsprimarilyconcentrateonshallowvisualdiscrepancies(e.g., 109
+52 “severalbuildingswereconstructed”or“vegetationdisappeared”), 110
+53 ∗Bothauthorscontributedequallytothisresearch. lacking the deep logical capacity required to interpret the driv- 111
+54 ingforces,functionaltransitionsandsemanticvalidityofchanges 112
+55 in real land-use scenarios. They are inherently unable to meet 113
+Conference’17,July2017,Washington,DC,USA
+56 real-worldgeographicdemands.Forinstance,manycomplextasks 114
+.ACMISBN978-x-xxxx-xxxx-x/YY/MM
+57 requirenotonlyfilteringoutpseudo-changescausedbyseasonal 115
+58 1 116
+Conference’17,July2017,Washington,DC,USA TrovatoandTobin,etal.
+117 variations, illumination differences or sensor discrepancies, but butalsotheintermediatereasoningtrajectory,whichim- 175
+118 alsocomplyingwithpracticalapplicationrequirements—suchas provesexplainabilityandenablespreference-alignedtrain- 176
+119 whetherthechangedareassatisfyconstraintsunderprofessional inganddiagnosis. 177
+120 standardsandwhethertheyfallwithinthescopeofoperational (4) Apracticalbenchmarkforhigh-stakesmultimedia 178
+121 interest.Currentmodelssufferfromhighfalsepositiveratesfor applications:Bymodelingsemanticallyvalidversusin- 179
+122 non-targetchanges.Inthecontextofsatelliteobservation,dueto validchanges,incorporatinghardnegatives,andintroduc- 180
+123 inherentresolutionconstraintsandclassificationambiguity,purely inguncertainty-awareconfidencescoring,thebenchmark 181
+124 descriptivemodelscannotdeliverreliable,expert-levelsupportfor isdesignedforreal-worldmultimediaapplicationsinEarth 182
+125 geographicdecision-making.Furthermore,inherentlimitationsof observation. 183
+126 satelliteimagery,suchasresolutionrestrictionsandambiguoussea- 184
+127 sonalintra-classvariations,frequentlyleadtofalsealarmsandhigh 2 Methodology 185
+128 misjudgmentrates,whicharedifficulttoresolvewithinexisting 186
+Tomoveremotesensingchangeanalysisbeyondsurface-levelcap-
+129 imagecaptioning-basedframeworks. 187
+tioning,weconstructadatasetgenerationandalignmentpipeline
+130 Tobridgethegapbetweenshallowvisualdescriptionandhigh- 188
+thattreatsbi-temporalinterpretationasastructured,judge-supervised
+131 levelgeographicsemanticunderstanding,weadvocateatransition 189
+reasoningprocessratherthanasinglefree-formoutput.Thecore
+132 fromsimplisticchangecaptioningtofiner-grainedchangeinter- 190
+ideaistoexplicitlydecomposegeographicunderstandingintointer-
+133 pretationandunderstanding.ThispaperpresentsGeo-BC,anovel 191
+pretableintermediatesteps,evaluatethosestepswithspecialized
+134 large-scaleandhighlyinformativebenchmarkdataset.Focusing 192
+judges,andconverttheresultingsupervisionintoapreference-
+135 onmultimodalland-usemonitoringscenarioswithbroadscalable 193
+aligneddatasetthatsupportsbothbenchmarkevaluationanddown-
+136 applicationdemands,thisdatasetisconstructedtoevaluateanden- 194
+streamtraining.
+137 hancepreference-awarereasoningandspatiotemporalgeographic 195
+Tokeepthemainpaperconcise,wesummarizeonlythekey
+138 worldunderstandinginMLLMsformulti-levelland-usemodeling. 196
+designchoicesandhigh-levelstatisticshere.Thesupplementary
+139 Ourbenchmarkgoesbeyondbasicobjectdetectionandcaption 197
+materialprovidesthecompletetaskspecification,annotationand
+140 generation,deeplyintegratingcomplexvisualattributeswithreal- 198
+judgingprotocols,manuallyverifiedquality-controlevidence,ex-
+141 worldland-usesemantics.Itexplicitlymodelsspatial,interactive, 199
+tendeddatasetcharacterization,andadditionalexamplesnecessary
+142 functionalandfoundationalrelations,andelegantlycombineshigh- 200
+forfulltransparencyandreproducibility.
+143 levelgeographicsemanticswithintricatevisualfeatures. 201
+144 Toensurelogicalrigorandreducemisjudgment,wepioneera 202
+2.1 StructuredMultimodalChainofReasoning
+145 processsupervisionmechanismbasedondual-track(positiveand 203
+146 negative)reasoninglogic.Additionally,weconstructalargenega- Amajorlimitation ofconventionalchangecaptioning isthatit 204
+147 tivesamplesetspecificallytargetingpseudo-changesandintra-class mapsabi-temporalimagepairdirectlytoafinaltextualdescription, 205
+148 variations,therebysubstantiallyloweringfalsepositivesinnon- leavingtheintermediatereasoningprocessimplicit.Thismakesit 206
+149 essentialscenarios.Consideringtheinherentambiguityofremote difficulttodeterminewhetheramodelhasgroundeditsinterpreta- 207
+150 sensingimagery,weintroduceanuncertainty-awareconfidence tioninvisualevidence,reasonedconsistentlyoverspatialstructure, 208
+151 scoringsystemalignedwithfine-grainedhumanexpertpreferences, distinguishedmeaningfulchangefromnuisancevariation,orcal- 209
+152 ensuringthatmodeloutputsconformtoprofessionalgeographic ibrateditsconfidenceunderambiguousobservations.Toaddress 210
+153 knowledge.Buildingonthisdeepunderstanding,ourdatasetis thislimitation,werepresentchangeunderstandingasaStructured 211
+154 furtherextendedtospatiotemporalfutureextrapolation,providing MultimodalChainofReasoning. 212
+155 predictiveinsightsfordownstreamgeographicdecision-making. Formally,eachsampleisrepresentedbyaninputtuple 213
+156 Insummary,ourmaincontributionsareasfollows:Theprimary 214
+157 contributionsofthisworkare: (𝑃,𝑆,𝑄,𝐼), (1) 215
+158 216
+159 (1) Adatasetformultimodalreasoning:WeintroduceGeo-
+where𝑃 denotesthesystemprompt,𝑆thetaskinstruction,𝑄the
+217
+160 BCthatreformulatesbi-temporalremote-sensingchange query,and𝐼 thebi-temporalimagepair.Insteadofpredictinga 218
+161 analysisasamultimediareasoningtaskratherthanacap- finalanswer𝐴inasinglestep,thepolicymodel𝜋 𝜃 isrequiredto 219
+162 tioningtask.Insteadofrewardingsurface-leveldescriptions, generateasix-stagereasoningtrajectory 220
+163 Geo-BCevaluateswhetheramodelcanperformgrounded 𝑅={𝑟 ,𝑟 ,𝑟 ,𝑟 ,𝑟 ,𝑟 }, (2) 221
+1 2 3 4 5 6
+164 spatial,temporal,andcausalreasoningoverimagepairs 222
+165 andnatural-languagequeries. followedbythefinaloutput.Thisdesignmakestheinferencepro- 223
+166 (2) Alanguage-groundedannotationframeworkforstruc- cessexplicitandcreatesthefoundationforprocess-levelevaluation, 224
+167 turedchangeinterpretation:Weintroduceastructured rewardmodeling,andfine-grainederrordiagnosis. 225
+168 six-step reasoning annotation framework that supports Step1:Globalperception(𝑟 1 ).Thefirststagesummarizesthe 226
+169 language-groundedspatial,temporal,andsemanticinter- overallsceneandestablishesacoarsesemanticunderstandingofthe 227
+170 pretationofgeographicchange. bi-temporalinput.Thisstageservesasaglobalcontextualanchor 228
+171 (3) Anexplainableandpreference-awaresupervisionpipeline: beforethemodelcommitstolocalizedorobject-levelinterpretation. 229
+172 Weproposeadecoupledmulti-judgeframeworkandstep- Step2:Instance-levelvisualgrounding(𝑟 2 ).Thesecondstage 230
+173 levelprocessscoringtosupervisenotonlythefinalanswer identifiessaliententities,regions,andattributes,andlinksthem 231
+174 2 232
+BeyondCaptioning:APreference-AlignedBenchmarkforFine-GrainedReasoningandSpatiotemporalGeo-WorldUnderstandinCgonference’17,July2017,Washington,DC,USA
+233 291
+234 Inputs & Core: Fine-grained Geo-semantic Reasoning Construction Expert-in-the-loop 292
+235 Preprocessing 293
+A.Fundamental B. Dense C. Reasoning and Reference Short
+236 T1 Geo-Grounded Understanding Relational Completion Business Constraints Answers 294
+237 Global Perception Standard-drivenSemantic Filtering AI Experts： 295
+238 Positive CoT： Fine-Grained 296
+239 Instance: Link visual and semantic W Ps h e e u r d e o c - h c a h n a g ng e？ e falsification？ CoT Feedback 297
+Visual Attributes Land Use
+240 T2 Incorrect Reasoning 298
+241 texture Maps Supported change existence (Negative Sample) 299
+242 color to class Negative CoT: Due t B o a vi s su ic a l U er s ro e r 300
+243 shape Self & Surrounding & Overall Intre-class change？ Step error 301
+244 T1, T2 Images Relation Types Other change？ L g i e n n k e e ri r c r _ o e r mpty_statement 302
+245 Instance: Spatial Positional Relations ⚫ Functional ⚫ Interactive 303
+Absolute positions Relative Positions ⚫ Spatial ⚫ Basic Use Filter out task-irrelevant changes Correct Reasoning
+246 ( 3 * 3 –grid ) ( A to B ) (Positive Sample) 304
+247 305
+(1) (2)
+248 Where, how, why Future State Inference 306
+249 Generate two captions and what’s next? Infer short-range H Va u l m id a a n ti o E n xp : ert 307
+250 Segmentation Maps grounded on target locations developments Refined SFT data 308
+251 309
+252 310
+Uncertainty & Confidence Scoring Task Applications
+253 JSON 311
+Query PPO，DPO，KTO ……
+254 312
+(position, Uncertainty-Aware
+255 semantic) VS Confidence Calibration ORM (Fine-grained P R E M rror Diagnosis) 313
+256 314
+‘Orchard’ ‘Forested Land’ Class confusion due to resolution SFT
+257 JSON Metadata 315
+258 316
+259 317
+Figure1:Overviewoftheproposedmethodology.Theillustrationshowshowbi-temporalremote-sensinginputsandauxiliary
+260 318
+segmentationmetadataaretransformedintoastructuredreasoningprocesscomprisingglobalperception,instancegrounding,
+261 319
+denserelationalcompletion,standards-drivensemanticfiltering,future-stateinference,anduncertainty-awareconfidence
+262 320
+scoring,withexpert-in-the-loopvalidationtosupportdownstreamtrainingandbenchmarking.
+263 321
+264 322
+265 toconcretevisualevidenceintheimagepair.Whenauxiliarygeo- 2.2 Positive-NegativeDual-TrackReasoning 323
+266 metricpriorsareavailable,groundingisfurtherconstrainedby A central challenge in remote-sensing change interpretation is 324
+267 explicitregion-levelcues,whichreducesunsupportedreferences thatvisibledifferenceisnotequivalenttooperationallyvalidland- 325
+268 andimprovesspatialfaithfulness. usechange.Inrealmonitoringscenarios,thegoalisnotonlyto 326
+269 Step3:Spatialrelationmodeling(𝑟 3 ).Thethirdstagecaptures determinewhethertwoimagesdiffer,butalsotodecidewhether 327
+270 therelativepositions,interactions,andtopologicalorganization theobserveddifferenceshouldbecountedasatargeteventunder 328
+271 ofgroundedentities.Thisstageconvertslocalobservationsintoa apredefinedland-usetaxonomyandapplicationprotocol. 329
+272 structuredrepresentationofscenelayoutandtemporalevolution, Wethereforeintroduceapositive-negativedual-trackreasoning 330
+273 whichisessentialfordownstreamgeo-semanticreasoning. frameworkthatseparatesevidence-supportedchangeexistence 331
+274 Step 4: Causal and semantic reasoning (𝑟 4 ). The fourth stage fromstandards-constrainedchangevalidity.Thepositivetrackes- 332
+275 integratesvisualevidence,groundedobjects,andspatialstructure tablisheswhetheracandidatechangehypothesisisgroundedin 333
+276 to determine whether the observed differences correspond to a visual,spatial,andtemporalevidence.Thenegativetracktheneval- 334
+277 semanticallymeaningfulchange.Thisisthecorereasoningstage uateswhethertheobserveddifferenceremainswithinthesame 335
+278 inwhichthemodelmovesfromperceptiontointerpretation. task-relevantland-useclassorsubclassandshouldthereforebe 336
+279 Step5:Futureinference(𝑟 5 ).Thefifthstageextendstheanalysis filteredoutunderthecurrentmonitoringobjective.Importantly, 337
+280 fromretrospectiveinterpretationtoforward-lookingreasoningby intra-classvariationisnotassumedtobeunimportantinageneral 338
+281 predictingplausibleshort-termsceneevolutionconditionedonthe geographicsense;rather,suchvariationistreatedasoutsidethe 339
+282 currentspatiotemporalstate. positivetargetdefinitionofthisbenchmarkwhenitdoesnotcross 340
+283 Step6:Confidencecorrection(𝑟 6 ).Thefinalstagecalibratesthe thesemanticboundaryspecifiedbytheoperationaltaxonomy.In 341
+284 outputbyexplicitlyaccountingforuncertaintyarisingfromlimited ourimplementation,thistaxonomyfollowsthenationalland-use 342
+285 resolution,classambiguity,incompleteevidence,orothersources classificationstandardGB/T21010-2017.Thisdesignbetterreflects 343
+286 ofepistemicuncertaintycommonlyencounteredinremotesensing high-stakesmonitoringsettingsinwhichthekeychallengeisnot 344
+287 imagery. merelytonoticeanyvisualchange,buttodeterminewhetherthe 345
+288 346
+289 347
+290 3 348
+Conference’17,July2017,Washington,DC,USA TrovatoandTobin,etal.
+349 changeconstitutesasemanticallyvalidanddecision-relevantland- whethertheselectedtrajectorieswerebettergrounded,moreseman- 407
+350 usetransition.Consequently,thebenchmarkexplicitlydiscourages ticallyconsistent,andmorecompliantwithland-usestandardsthan 408
+351 modelsfrommappingphenologicalvariation,illuminationeffects, therejectedalternatives.Weobserved92.0%agreementbetween 409
+352 localtextureshifts,orotherwithin-classfluctuationstofalsefunc- thehumanpreferencejudgmentsandthewinnersselectedbythe 410
+353 tionaltransitions. decoupledjudgingpipeline.Thisresultsuggeststhattheproposed 411
+354 multi-model annotation and multi-judge evaluation framework 412
+355 2.3 DecoupledMulti-AgentCriterionSystem providesstablepreferencelabelsatscalewhileremaininglargely 413
+356 Toconstructadiverseyetstablecandidatepoolforeachquery, consistentwithexperthumanassessment. 414
+357 weusemultiplemultimodalfoundationmodels(Gemini2.5Pro, 415
+2.4 ProcessRewardModelingand
+358 ChatGPT4.1,LLaVA7B,QVQ,andQwen2.5VL7B),including 416
+359 high-qualityproprietarysystemsandrepresentativeopen-weight Preference-AlignedDataConstruction 417
+360 baselines,togeneratecandidatereasoningtrajectoriesandfinal BasedonthedecoupledMoJsystem,wemodeltherewardofthe 418
+361 answers.Allgeneratormodelsarerunwithtemperaturesetto0 StructuredMultimodalChainofReasoningatthesteplevel and 419
+362 inordertomaximizedeterminism,reduceunnecessaryannotation useittoconstructapreference-aligneddataset.Foreachquestion 420
+363 variance,andimprovereproducibilityatdatasetscale.Thisstrategy andforeachofthefivegeneratormodels,thethreejudgesproduce 421
+364 allowsustocombinecomplementaryreasoningstylesanderror structuredevaluationsovertherelevantsteps.Theseevaluations 422
+365 modeswhileavoidingover-relianceonasinglegeneratorfamily. arethenconvertedintoscalarstepscoresandmergedintoaunified 423
+366 Thegoalofmulti-modelgenerationisnottoreplacehumanex- candidaterecord. 424
+367 pertise,buttoprovideascalablefirst-passcandidatepoolthatcan Let𝑠 and𝑠 denotethescoresassignedbyJudge1,let𝑠 ,𝑠logic, 425
+1 2 3 4
+368 subsequentlybefiltered,ranked,andvalidatedthroughstructured and𝑠 denotethescoresassignedbyJudge2,andlet𝑠rule and𝑠 426
+369 judging. 5 4 6 427
+denotethescoresassignedbyJudge3.Wedefinetheprocessscore
+370 WethenevaluatethesecandidatesusingadecoupledMixture- 428
+as
+371 of-Judges(MoJ)ratherthanasingleunifiedevaluator.Longmulti- 𝑠 +𝑠 +𝑠 +𝑠logic+𝑠rule+𝑠 +𝑠 429
+372 modalreasoningtracesmustbejudgedalongseveraldimensions 𝑠 proc = 1 2 3 4 7 4 5 6. (4) 430
+373 simultaneously,including visualgrounding,spatialconsistency, 431
+This design reflects the fact that Step 4 sits at the intersection
+374 changevalidity,uncertaintycalibration,andstandardscompliance. 432
+ofopen-endedreasoningandformalstandardscompliance,and
+375 Wethereforedistributeevaluationacrossthreespecializedagents, 433
+thereforerequiresbothlogicalandontology-awareevaluation.
+376 eachresponsibleforawell-definedsubsetofthereasoningchain. 434
+Inadditiontotheprocessscore,eachcandidatereceivesahard
+377 Thestep-to-judgemappingisdefinedas 435
+answerscore
+3 3 7 7 8 9 step 1 ←VLM, 𝑠 ans ∈{0,10}, (5) 4 4 3 3 6 7
+380 step 2 ←VLM, where10denotesacorrectfinalanswerand0denotesanincor- 438
+381 step 3 ←LLM, rectone.Candidatesarethenrankedinatwo-stagemanner:first 439
+382 step ←LLM+Rule , (3) byanswerscore,andsecondbyprocessscore.Formally,forthe 440
+383 step
+4
+←LLM,
+ontology candidatesetC𝑞 associatedwithquestion𝑞,wedefine
+441
+3 3 8 8 4 5 step 5 6 ←Rule confidence . 𝑐 𝑞 ★=arg 𝑐 m ∈ a C x 𝑞 (cid:0)𝑠 ans (𝑐),𝑠 proc (𝑐)(cid:1), (6) 4 4 4 4 2 3
+386 Judge1:Visual-LanguageExpert.Judge1evaluatesStep1and wherethepairiscomparedindescendinglexicographicorder.This 444
+387 Step2,namelyglobalperceptionandinstance-levelvisualground- rankingstrategyensuresthatfinal-answervalidityremainsessen- 445
+388 ing.Itsroleistoverifythatcandidatetrajectoriesaresupportedby tial,whilestillrewardingtrajectoriesthatexhibitstrongerpercep- 446
+389 theimagepairandthatreferencedentities,regions,andattributes tualgrounding,betterreasoningquality,andbettercompliance 447
+390 aregroundedconsistentlyinvisualevidence. behavior. 448
+391 Judge2:SpatiotemporalLogicExpert.Judge2evaluatesStep Thetop-rankedcandidateistreatedasthesupervisedfine-tuning 449
+392 3,Step4,andStep5,correspondingtospatialrelationmodeling, referencewhenitsatisfiesaminimumqualitythreshold.Specifically, 450
+393 causalreasoning,andfutureinference.Itfocusesontheinternal wedefinethevalidityindicator 451
+3 3 9 9 4 5 c fe o r n re si d st c e a n u c s y al o c f h t a h i e n, s a p n a d tia th l e re c p o r h e e s r e e n n ta ce tio o n f , fu th tu e r p e- la o u ri s e i n b t il e i d ty re o a f s t o h n e in in g - . I valid (𝑐 𝑞 ★)=I(cid:2)𝑠 ans (𝑐 𝑞 ★)=10 ∧ 𝑠 proc (𝑐 𝑞 ★) >𝜏(cid:3), (7) 4 4 5 5 2 3
+396 Judge 3: Standards-Compliance Judge. Judge 3 evaluates the where𝜏istheprocess-qualitythreshold.Inourimplementation,we 454
+397 rule-sensitivepartsofthetrajectory,includingontology-sensitive set𝜏 =6.0.IfI valid (𝑐 𝑞 ★)=1,thetop-rankedcandidateisretainedas 455
+398 reasoninginStep4,uncertainty-awarecalibrationinStep6,and thechosentrajectory;otherwise,thequestionismarkedaslacking 456
+399 thefinalanswer.Itsroleistoverifythatthecandidateoutputre- areliablechosensample.Allremainingcandidatesareretainedas 457
+400 mainsconsistentwithgeographictaxonomy,semanticconstraints, rejectedtrajectories.Theresultingdatasetpreservesnotonlyasin- 458
+401 andtherequiredconfidencebehavior. glebestanswer,butalsothefullrankingstructureoveralternative 459
+402 Toassessannotationreliability,werandomlysampled10%ofthe trajectories,includingdetailedstepscoresandjudgefeedback. 460
+403 datasetandcomparedtheAI-selectedwinningcandidateswithpref- Thisdataformatsupportsabroadrangeofdownstreamtraining 461
+404 erencejudgmentsprovidedbysixhumanevaluatorswithremote- objectives.Thetop-rankedchosentrajectorycanbeusedforsuper- 462
+405 sensingresearchbackgrounds.Thehumanevaluationfocusedon visedfine-tuning(SFT);chosen/rejectedpairssupportpreference 463
+406 4 464
+BeyondCaptioning:APreference-AlignedBenchmarkforFine-GrainedReasoningandSpatiotemporalGeo-WorldUnderstandinCgonference’17,July2017,Washington,DC,USA
+465 optimizationmethodssuchasDPO,PPO,GRPO,andKTO;and weadditionallyconstructamanuallycuratedProsubsetof39,646 523
+466 thestep-leveldensescoresprovidetrainingsignalsforprocessre- particularlychallengingsamples.Thissubsetisdesignedforstress- 524
+467 wardmodelingandfine-grainedreasoningdiagnosis.Morebroadly, testingfine-grainedreasoningandsemanticfiltering,andtherefore 525
+468 becauseeachsamplecontainsmultimodalcontext,astructured adoptsamorebalanced1:1positive-to-negativeratio. 526
+469 reasoningtrajectory,stage-specificcritiques,andafinalpreference Thefulldatasetisdividedintotraining,validation,andtestsets 527
+470 ranking,thedatasetcanserveasinfrastructurenotonlyforbench- ina7:1:2ratio.Toavoidspatialleakageandinflatedgeneraliza- 528
+471 marking,butalsoforresearchonprocesssupervision,alignment tionperformance,weenforcenon-overlapingeographiclocations 529
+472 underformalconstraints,andinterpretablemultimodalreasoning acrossthethreesplits. 530
+473 inEarthobservation. Thedatasetisconstructedfrommulti-sourceGaofensatellite 531
+474 imagery,includingGF-1,GF-2,GF-6,andGF-7.Thesesensorspro- 532
+475 2.5 DatasetCharacteristicsandStatistical videcomplementaryspatialresolutionsandcoveragescales:GF-1 533
+476 Analysis offers2m/8m/16mimagerywith60km×60kmcoverage; 534
+477 Thecurrentbenchmarkcontains109,224spatiotemporalimagesam- GF-2provides0.8m/3.2mimagerywith45km×45kmcoverage; 535
+478 plesderivedfromGF-1,GF-2,GF-6,andGF-7observations,forming GF-6provides2m/8mimagerywith90km×90kmcoverage; 536
+479 alarge-scaletestbedfortaxonomy-awarechangeinterpretation.To andGF-7provides0.65m/2.6mimagerywith20km×20km 537
+480 supportprocess-levelsupervision,eachsampleisassociatedwith coverage.Allsensorsincludepanchromaticandmultispectralob- 538
+481 structuredreasoningartifacts,yielding327,672inferencetrajecto- servations,enablingfine-grainedland-usechangeinterpretation 539
+482 rieswithalignedscoringsignalsand382,284secondaryevaluation acrossheterogeneousspatialscales. 540
+483 statementsgeneratedbythedecoupledjudgingframework.The 541
+2.6 Experiments
+484 overalldatasetisdeliberatelyskewedtowarddifficultnon-target 542
+485 cases,withapositive-to-negativeratioofapproximately1:4,inor- Acknowledgments 543
+486 dertoreflecttherealisticdominanceofambiguousoroperationally Acknowledgementsgohere.Deleteenclosingbegin/endmarkersif 544
+487 irrelevantchangesinpracticalmonitoringscenarios.Thepresent therearenoacknowledgements. 545
+488 releasecovers14frequentlyusedland-usecategoriesunderthe 546
+489 nationalstandard,withaplannedexpansiontothecomplete25- References 547
+490 categorytaxonomy.Tofurthersupporthigh-endbenchmarking, 548
+491 549
+492 550
+493 551
+494 552
+495 553
+496 554
+497 555
+498 556
+499 557
+500 558
+501 559
+502 560
+503 561
+504 562
+505 563
+506 564
+507 565
+508 566
+509 567
+510 568
+511 569
+512 570
+513 571
+514 572
+515 573
+516 574
+517 575
+518 576
+519 577
+520 578
+521 579
+522 5 580
+Conference’17,July2017,Washington,DC,USA TrovatoandTobin,etal.
+581 START: NO RANKING B-1. Visual-Judge C. Process Reward Modeling 639
+582 "judge_1_eval": {{ "model_name": model, 640
+"step_1_score": [Score 0-10], "answer_score": answer_score,
+583 "step_1_reasoning": "[explaining the score]", "process_score": round(process_score, 2), 641
+584 "step_2_score": [Score 0-10], "is_positive_sample": is_positive_sample, 642
+"step_2_reasoning": "[explaining the score]", "detailed_scores": {
+585 "hallucination_flag": [true/false] "step_1": step1_score, 643
+586 }} "step_2": step2_score, 644
+"step_3": step3_score,
+587 B-2. Logical-Judge "step_4_logic": step4_logic_score, 645
+588 A. Structured Multimodal Chain "j " u s d t g e e p _ _ 2 3 _ _ e s v c a o l r " e : " : { { [Score 0-10], " " s s t t e e p p _ _ 4 5 _ " r : u l s e t " e : p5 s _s te co p4 r _ e, rule_score, 646
+589 of Reasoning "step_3_reasoning": "[evaluating spatial and "step_6": step6_score 647
+"thought_process": {{ relational logic]", },
+590 "step_1_global_perception": "step_4_logic_score": [Score 0-10], "reasoning_feedback": { 648
+591 "", "step_4_reasoning": "[evaluating CoT quality, "vlm_feedback": s1_data, 649
+"step_2_instance_visual": "", especially focusing on how well it executed the "lmm_feedback": s2_data,
+592 "step_3_relational_model": "", positive chain (true vs pseudo changes) and the "rule_feedback": s3_data 650
+593 "step_4_reasoning": "", negative chain (inter-class vs intra-class } 651
+"step_5_future_inference": "", changes)]",
+594 "step_6_confidence": {{ "step_5_score": [Score 0-10], 652
+595 " " s j c u o s r t e i " f : i c 0 a , tion": "", of f " u s t t u e r p e _ 5 i _ n r f e e a r s e o n n c i e n ] g " ": "[evaluating plausibility D " . t P a r s e k f _ e i r d e " n : c e t - as A k li _ g i n d, ed Data Construction 653
+596 "limitations": "", }} "has_valid_chosen": has_valid_chosen, 654
+597 [] "alternative_l2_candidates": B-3. Rule-Judge has_ " v c a h l o i s d e _c n” h : o se b n es e t l _c se an N di on d e a , te if 655
+598 }} "judge_3_eval": {{ "rejected": rejected_candidates, 656
+}}, "step_4_rule_score": [Score 0-10], "ranked_candidates": [
+599 "answer": "" "step_4_rule_reasoning": "[checking strict gemini 3.0 pro, 657
+600 adherence to Level 1/Level 2 taxonomy rules]", Chatgpt 4.1, 658
+"step_6_score": [Score 0-10], ……]
+601 "step_6_reasoning": "[evaluating scientific 659
+rigor, ambiguity handling, and valid limitations]",
+602 660
+"answer_match_score": [0 or 10],
+603 "answer_reasoning": "[ 0 for incorrect, 10 for 661
+strict semantic match with GT]",
+604 "is_positive_sample": [true or false] 662
+605 B. Decoupled Multi-Agent Criterion }} END: RANKED 663
+606 664
+607 665
+Figure2:Theillustrationdetailsthestructuredmultimodalchainofreasoning,thedecoupledthree-judgeevaluationmodules
+608 666
+forvisual,logical,andrule-basedassessment,theaggregationofstepwisescoresintoprocessrewards,andthefinalconversion
+609 667
+ofcandidateoutputsintorankedchosen/rejectedsamplesforpreference-aligneddatasetconstruction.
+610 668
+611 Table1:UnifiedcomparisonofsixbenchmarkedMLLMsacrossthethree-stageevaluationsuite.ExperimentImeasures 669
+612 zero-shotbasicchangediscrimination;ExperimentIIevaluatescontrolledzero-shotreasoning;ExperimentIIIevaluates 670
+613 template-guidedautonomousdeepinterpretation.HigherisbetterforallmetricsexceptLHR. 671
+614 672
+615 673
+ExperimentI ExperimentII ExperimentIII
+616 Model 674
+617 CDA↑ CC-L1↑ CC-L2↑ VE↑ LE↑ CE↑ LHR↓ VP↑ SL↑ RA↑ DD↑ CC↑ Overall↑ 675
+618 676
+LLaVA-OneVision – – – – – – – – – – – – –
+619 677
+620 InternVL3-8B – – – – – – – – – – – – – 678
+621 Qwen2.5-VL-7B-Instruct – – – – – – – – – – – – – 679
+622 MiMo-V2-Flash – – – – – – – – – – – – – 680
+623 681
+QVQ-Max – – – – – – – – – – – – –
+624 682
+SkySense – – – – – – – – – – – – –
+625 683
+626 ExperimentI:CDA=ChangeDetectionAccuracy;CC-L1/CC-L2=ClassificationConsistencyatLevel-1/Level-2categories. 684
+ExperimentII:VE=VisualEvidence;LE=LogicalEvidence;CE=ConclusionEvidence;LHR=LogicalHypothesisReliability.
+627 685
+ExperimentIII:VP=VisualPerception;SL=SpatiotemporalLogic;RA=RuleApplication;DD=DomainDepth;CC=CoTCoherence.
+628 686
+629 687
+630 688
+631 689
+632 690
+633 691
+634 692
+635 693
+636 694
+637 695
+638 6 696

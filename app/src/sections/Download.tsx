@@ -8,9 +8,10 @@ const downloadOptions = [
     format: 'TIFF + JSON',
     icon: FileArchive,
     description: 'Complete dataset with all image pairs and annotations',
-    includes: ['1002+ image pairs', 'Change masks', 'Text descriptions', 'Metadata'],
+    includes: ['109,224 image pairs', 'Change masks', 'Text descriptions', 'Metadata'],
     links: [
-      { name: 'Google Drive', url: '#' },
+      { name: 'Direct Download', url: '#' },
+      { name: 'HuggingFace', url: '#' },
       { name: 'Baidu Pan', url: '#' },
     ],
   },
@@ -20,9 +21,11 @@ const downloadOptions = [
     format: 'TIFF + JSON',
     icon: FileImage,
     description: 'Small sample for quick testing and exploration',
-    includes: ['50 image pairs', 'Sample masks', 'Sample descriptions'],
+    includes: ['Sample image pairs', 'Sample masks', 'Sample descriptions'],
     links: [
       { name: 'Direct Download', url: '#' },
+      { name: 'HuggingFace', url: '#' },
+      { name: 'Baidu Pan', url: '#' },
     ],
   },
   {
@@ -34,6 +37,8 @@ const downloadOptions = [
     includes: ['Change masks', 'Text descriptions', 'Metadata'],
     links: [
       { name: 'Direct Download', url: '#' },
+      { name: 'HuggingFace', url: '#' },
+      { name: 'Baidu Pan', url: '#' },
     ],
   },
 ];
@@ -76,9 +81,28 @@ export default function DownloadSection() {
           </p>
         </div>
 
+        {/* Coming Soon Notice */}
+        <div
+          className={`max-w-3xl mx-auto mb-12 p-6 rounded-xl bg-blue-500/10 border border-blue-500/30 transition-all duration-700 delay-100 ${
+            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+          }`}
+        >
+          <div className="flex items-start gap-4">
+            <AlertCircle className="w-6 h-6 text-blue-400 flex-shrink-0 mt-0.5" />
+            <div>
+              <h3 className="text-lg font-semibold text-white mb-2">Coming Soon</h3>
+              <p className="text-sm text-blue-200/80 leading-relaxed">
+                The dataset is currently undergoing final preparation and quality assurance. 
+                We expect to release it publicly in the near future. Please check back soon 
+                or follow our GitHub repository for updates.
+              </p>
+            </div>
+          </div>
+        </div>
+
         {/* Agreement */}
         <div
-          className={`max-w-2xl mx-auto mb-12 p-6 rounded-xl bg-[#161b22]/80 border border-[#2a2d47]/50 transition-all duration-700 delay-100 ${
+          className={`max-w-2xl mx-auto mb-12 p-6 rounded-xl bg-[#161b22]/80 border border-[#2a2d47]/50 transition-all duration-700 delay-200 ${
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}
         >
@@ -110,7 +134,7 @@ export default function DownloadSection() {
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
               } ${agreed ? 'hover:border-[#4d6bfa]/50' : 'opacity-60'}`}
               style={{
-                transitionDelay: `${200 + index * 100}ms`,
+                transitionDelay: `${300 + index * 100}ms`,
                 transitionTimingFunction: 'var(--ease-out-expo)',
               }}
             >
@@ -142,17 +166,15 @@ export default function DownloadSection() {
               {/* Download Links */}
               <div className="space-y-2">
                 {option.links.map((link) => (
-                  <a
+                  <button
                     key={link.name}
-                    href={agreed ? link.url : '#'}
-                    onClick={(e) => {
-                      if (!agreed) {
-                        e.preventDefault();
+                    onClick={() => {
+                      if (agreed) {
+                        alert('The dataset is coming soon. Please check back later.');
+                      } else {
                         alert('Please agree to the terms before downloading.');
                       }
                     }}
-                    target="_blank"
-                    rel="noopener noreferrer"
                     className={`flex items-center justify-center gap-2 w-full py-3 rounded-xl font-medium transition-all ${
                       agreed
                         ? 'bg-[#4d6bfa] text-white hover:bg-[#4353fa]'
@@ -162,7 +184,7 @@ export default function DownloadSection() {
                     <Download className="w-4 h-4" />
                     {link.name}
                     <ExternalLink className="w-4 h-4" />
-                  </a>
+                  </button>
                 ))}
               </div>
             </div>
