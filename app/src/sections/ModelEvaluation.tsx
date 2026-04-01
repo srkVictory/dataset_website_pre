@@ -5,13 +5,14 @@ import {
   Award,
   BarChart3,
   CheckCircle,
-  AlertTriangle,
-  Sparkles,
   Brain,
   GitCompare,
   ShieldCheck,
   TrendingUp,
-  Zap
+  Zap,
+  Target,
+  Eye,
+  Scale
 } from 'lucide-react';
 
 const models = [
@@ -46,32 +47,59 @@ const judges = [
   },
 ];
 
-const evaluationMetrics = [
-  {
-    step: 'Step 1',
-    name: 'Global Perception',
-    criteria: 'Scene understanding accuracy, context awareness',
+// Benchmark Results Data
+const benchmarkResults = {
+  experiment1: {
+    title: 'Change Detection Accuracy',
+    subtitle: 'CDA, CC-L1, CC-L2 Metrics',
+    icon: Target,
+    color: '#4d6bfa',
+    headers: ['Model', 'CDA', 'CC-L1', 'CC-L2'],
+    data: [
+      { model: 'LLaVA-OneVision', cda: 50.235, ccl1: 0.68, ccl2: 0.23 },
+      { model: 'InternVL3-8B', cda: 51.65, ccl1: 10.03, ccl2: 0.28 },
+      { model: 'Qwen2.5-VL-7B', cda: 49.965, ccl1: 0.42, ccl2: 0.25 },
+      { model: 'MiMo-V2-Flash', cda: 49.095, ccl1: 5.06, ccl2: 0.96 },
+      { model: 'QVQ-Max', cda: 50.425, ccl1: 11.09, ccl2: 0.76 },
+      { model: 'SkySense', cda: 78.735, ccl1: 2.80, ccl2: 0.10, highlight: true },
+    ],
   },
-  {
-    step: 'Step 2',
-    name: 'Instance Visual',
-    criteria: 'Change localization precision, visual evidence',
+  experiment2: {
+    title: 'Entailment & Hallucination Analysis',
+    subtitle: 'Visual, Logic, Conclusion Entailment & Hallucination Rate',
+    icon: Scale,
+    color: '#22c55e',
+    headers: ['Model', 'Visual', 'Logic', 'Conclusion', 'Hallu. Rate'],
+    data: [
+      { model: 'Qwen', visual: 45.80, logic: 73.05, conclusion: 47.47, hallu: 0.31 },
+      { model: 'LLaVA', visual: 41.56, logic: 67.92, conclusion: 40.02, hallu: 0.74 },
+      { model: 'MiMo', visual: 38.06, logic: 65.22, conclusion: 37.80, hallu: 0.16, highlight: true },
+      { model: 'QVQ', visual: 43.48, logic: 72.27, conclusion: 40.68, hallu: 0.31 },
+      { model: 'SkySense', visual: 29.87, logic: 59.72, conclusion: 29.40, hallu: 1.05 },
+      { model: 'InterVL', visual: 37.51, logic: 61.24, conclusion: 11.05, hallu: 16.98 },
+    ],
   },
-  {
-    step: 'Step 3-5',
-    name: 'Reasoning Chain',
-    criteria: 'Logical coherence, causal inference quality',
+  experiment3: {
+    title: 'Multi-dimensional Quality Scoring',
+    subtitle: 'Visual Perception, Logic, Application, Depth, Coherence',
+    icon: Eye,
+    color: '#f59e0b',
+    headers: ['Model', 'Perception', 'Logic', 'Rule', 'Depth', 'CoT', 'Overall'],
+    data: [
+      { model: 'LLaVA-OneVision', perception: 2.04, logic: 1.92, rule: 1.49, depth: 1.98, cot: 2.00, overall: 9.42 },
+      { model: 'InternVL3-8B', perception: 1.72, logic: 1.76, rule: 1.56, depth: 1.72, cot: 1.87, overall: 8.64 },
+      { model: 'Qwen2.5-VL', perception: 1.80, logic: 1.70, rule: 1.52, depth: 1.72, cot: 1.60, overall: 8.33 },
+      { model: 'MiMo-V2-Flash', perception: 2.13, logic: 2.00, rule: 1.90, depth: 2.20, cot: 2.25, overall: 10.47 },
+      { model: 'QVQ-Max', perception: 2.35, logic: 2.26, rule: 1.95, depth: 2.38, cot: 2.52, overall: 11.45, highlight: true },
+      { model: 'SkySense', perception: 1.56, logic: 1.50, rule: 1.15, depth: 1.53, cot: 1.52, overall: 7.25 },
+    ],
   },
-  {
-    step: 'Step 6',
-    name: 'Confidence & Reflection',
-    criteria: 'Self-awareness, limitation acknowledgment',
-  },
-];
+};
 
 export default function ModelEvaluation() {
   const [isVisible, setIsVisible] = useState(false);
-  const [activeTab, setActiveTab] = useState<'models' | 'judges' | 'metrics'>('models');
+  const [activeTab, setActiveTab] = useState<'models' | 'judges' | 'metrics'>('metrics');
+  const [activeExperiment, setActiveExperiment] = useState<1 | 2 | 3>(1);
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -91,6 +119,8 @@ export default function ModelEvaluation() {
 
     return () => observer.disconnect();
   }, []);
+
+  const currentExperiment = benchmarkResults[`experiment${activeExperiment}` as keyof typeof benchmarkResults];
 
   return (
     <section id="evaluation" ref={sectionRef} className="py-24 relative overflow-hidden">
@@ -155,7 +185,7 @@ export default function ModelEvaluation() {
           {[
             { id: 'models', label: 'Annotator Models', icon: Users },
             { id: 'judges', label: 'Judge Systems', icon: Gavel },
-            { id: 'metrics', label: 'Evaluation Metrics', icon: BarChart3 },
+            { id: 'metrics', label: 'Benchmark Results', icon: BarChart3 },
           ].map((tab) => (
             <button
               key={tab.id}
@@ -208,7 +238,7 @@ export default function ModelEvaluation() {
                 </div>
               ))}
               <div className="p-5 rounded-xl bg-gradient-to-br from-[#4d6bfa]/20 to-[#161b22] border border-[#4d6bfa]/30 flex flex-col justify-center items-center text-center">
-                <Sparkles className="w-8 h-8 text-[#4d6bfa] mb-2" />
+                <span className="text-4xl mb-2">🎯</span>
                 <p className="text-sm text-[#b4bcd0]">
                   Multi-model diversity enables <strong className="text-white">ensemble learning</strong> and{' '}
                   <strong className="text-white">robustness training</strong>
@@ -247,35 +277,168 @@ export default function ModelEvaluation() {
             </div>
           )}
 
-          {/* Metrics Tab */}
+          {/* Benchmark Results Tab */}
           {activeTab === 'metrics' && (
-            <div className="space-y-4">
-              <div className="grid md:grid-cols-2 gap-4">
-                {evaluationMetrics.map((metric, index) => (
-                  <div
-                    key={metric.step}
-                    className="p-5 rounded-xl bg-[#161b22]/80 border border-[#2a2d47]/50"
-                  >
-                    <div className="flex items-center gap-3 mb-3">
-                      <span className="w-8 h-8 rounded-lg bg-[#4d6bfa]/20 flex items-center justify-center text-sm font-bold text-[#4d6bfa]">
-                        {metric.step}
-                      </span>
-                      <h4 className="font-semibold text-white">{metric.name}</h4>
-                    </div>
-                    <p className="text-sm text-[#8b949e] ml-11">{metric.criteria}</p>
-                  </div>
-                ))}
+            <div className="space-y-6">
+              {/* Experiment Selector */}
+              <div className="flex flex-wrap justify-center gap-3">
+                {[1, 2, 3].map((exp) => {
+                  const expData = benchmarkResults[`experiment${exp}` as keyof typeof benchmarkResults];
+                  return (
+                    <button
+                      key={exp}
+                      onClick={() => setActiveExperiment(exp as 1 | 2 | 3)}
+                      className={`flex items-center gap-2 px-4 py-3 rounded-xl text-left transition-all ${
+                        activeExperiment === exp
+                          ? 'bg-[#4d6bfa]/20 border border-[#4d6bfa] text-white'
+                          : 'bg-[#161b22]/60 border border-[#2a2d47]/50 text-[#b4bcd0] hover:border-[#4d6bfa]/30'
+                      }`}
+                    >
+                      <expData.icon 
+                        className="w-5 h-5" 
+                        style={{ color: activeExperiment === exp ? expData.color : '#6e7681' }} 
+                      />
+                      <div>
+                        <div className="text-sm font-medium">{expData.title}</div>
+                        <div className="text-xs opacity-70">{expData.subtitle}</div>
+                      </div>
+                    </button>
+                  );
+                })}
               </div>
-              <div className="p-5 rounded-xl bg-gradient-to-r from-[#f59e0b]/10 to-transparent border border-[#f59e0b]/30">
-                <div className="flex items-center gap-3 mb-3">
-                  <AlertTriangle className="w-6 h-6 text-[#f59e0b]" />
-                  <h4 className="font-semibold text-white">Hallucination Detection</h4>
+
+              {/* Results Table */}
+              <div className="rounded-xl bg-[#161b22]/80 border border-[#2a2d47]/50 overflow-hidden">
+                {/* Table Header */}
+                <div className="flex items-center gap-3 p-4 border-b border-[#2a2d47]/50 bg-gradient-to-r from-[#4d6bfa]/10 to-transparent">
+                  <currentExperiment.icon className="w-6 h-6" style={{ color: currentExperiment.color }} />
+                  <div>
+                    <h4 className="font-semibold text-white">{currentExperiment.title}</h4>
+                    <p className="text-xs text-[#6e7681]">{currentExperiment.subtitle}</p>
+                  </div>
                 </div>
-                <p className="text-sm text-[#b4bcd0]">
-                  Each judge evaluates responses for <strong className="text-white">hallucination_flag</strong>, 
-                  identifying claims not grounded in the visual evidence. This enables training models 
-                  with better factuality and self-awareness.
-                </p>
+
+                {/* Table */}
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead>
+                      <tr className="border-b border-[#2a2d47]/30">
+                        {currentExperiment.headers.map((header, idx) => (
+                          <th 
+                            key={header} 
+                            className={`py-3 px-4 text-left text-xs font-medium text-[#6e7681] uppercase tracking-wider ${
+                              idx === 0 ? 'w-[180px]' : ''
+                            }`}
+                          >
+                            {header}
+                          </th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {currentExperiment.data.map((row, idx) => (
+                        <tr 
+                          key={idx} 
+                          className={`border-b border-[#2a2d47]/20 last:border-b-0 transition-colors hover:bg-[#4d6bfa]/5 ${
+                            (row as any).highlight ? 'bg-[#4d6bfa]/10' : ''
+                          }`}
+                        >
+                          {/* Model Name */}
+                          <td className="py-3 px-4">
+                            <div className="flex items-center gap-2">
+                              <span className="font-medium text-white text-sm">{(row as any).model}</span>
+                              {(row as any).highlight && (
+                                <span className="px-1.5 py-0.5 text-[10px] rounded bg-[#4d6bfa] text-white font-medium">
+                                  Best
+                                </span>
+                              )}
+                            </div>
+                          </td>
+                          {/* Data Cells */}
+                          {activeExperiment === 1 && (
+                            <>
+                              <td className="py-3 px-4 text-sm text-[#b4bcd0] font-mono">{(row as any).cda?.toFixed(3)}</td>
+                              <td className="py-3 px-4 text-sm text-[#b4bcd0] font-mono">{(row as any).ccl1?.toFixed(2)}</td>
+                              <td className="py-3 px-4 text-sm text-[#b4bcd0] font-mono">{(row as any).ccl2?.toFixed(2)}</td>
+                            </>
+                          )}
+                          {activeExperiment === 2 && (
+                            <>
+                              <td className="py-3 px-4 text-sm text-[#b4bcd0] font-mono">{(row as any).visual?.toFixed(2)}</td>
+                              <td className="py-3 px-4 text-sm text-[#b4bcd0] font-mono">{(row as any).logic?.toFixed(2)}</td>
+                              <td className="py-3 px-4 text-sm text-[#b4bcd0] font-mono">{(row as any).conclusion?.toFixed(2)}</td>
+                              <td className={`py-3 px-4 text-sm font-mono ${(row as any).hallu > 1 ? 'text-red-400' : 'text-[#b4bcd0]'}`}>
+                                {(row as any).hallu?.toFixed(2)}
+                              </td>
+                            </>
+                          )}
+                          {activeExperiment === 3 && (
+                            <>
+                              <td className="py-3 px-4 text-sm text-[#b4bcd0] font-mono">{(row as any).perception?.toFixed(2)}</td>
+                              <td className="py-3 px-4 text-sm text-[#b4bcd0] font-mono">{(row as any).logic?.toFixed(2)}</td>
+                              <td className="py-3 px-4 text-sm text-[#b4bcd0] font-mono">{(row as any).rule?.toFixed(2)}</td>
+                              <td className="py-3 px-4 text-sm text-[#b4bcd0] font-mono">{(row as any).depth?.toFixed(2)}</td>
+                              <td className="py-3 px-4 text-sm text-[#b4bcd0] font-mono">{(row as any).cot?.toFixed(2)}</td>
+                              <td className="py-3 px-4 text-sm text-white font-mono font-medium">{(row as any).overall?.toFixed(2)}</td>
+                            </>
+                          )}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              {/* Metrics Description */}
+              <div className="grid md:grid-cols-3 gap-4">
+                {activeExperiment === 1 && (
+                  <>
+                    <div className="p-4 rounded-lg bg-[#161b22]/60 border border-[#2a2d47]/30">
+                      <div className="text-sm font-medium text-white mb-1">CDA</div>
+                      <div className="text-xs text-[#6e7681]">Change Detection Accuracy - Overall accuracy of detecting bi-temporal changes</div>
+                    </div>
+                    <div className="p-4 rounded-lg bg-[#161b22]/60 border border-[#2a2d47]/30">
+                      <div className="text-sm font-medium text-white mb-1">CC-L1</div>
+                      <div className="text-xs text-[#6e7681]">Change Caption L1 - Pixel-level change localization error</div>
+                    </div>
+                    <div className="p-4 rounded-lg bg-[#161b22]/60 border border-[#2a2d47]/30">
+                      <div className="text-sm font-medium text-white mb-1">CC-L2</div>
+                      <div className="text-xs text-[#6e7681]">Change Caption L2 - Higher-order change description accuracy</div>
+                    </div>
+                  </>
+                )}
+                {activeExperiment === 2 && (
+                  <>
+                    <div className="p-4 rounded-lg bg-[#161b22]/60 border border-[#2a2d47]/30">
+                      <div className="text-sm font-medium text-white mb-1">Visual Entailment</div>
+                      <div className="text-xs text-[#6e7681]">Measures visual grounding of claims in satellite imagery</div>
+                    </div>
+                    <div className="p-4 rounded-lg bg-[#161b22]/60 border border-[#2a2d47]/30">
+                      <div className="text-sm font-medium text-white mb-1">Logic Entailment</div>
+                      <div className="text-xs text-[#6e7681]">Evaluates causal reasoning and logical coherence</div>
+                    </div>
+                    <div className="p-4 rounded-lg bg-[#161b22]/60 border border-[#2a2d47]/30">
+                      <div className="text-sm font-medium text-white mb-1">Hallucination Rate</div>
+                      <div className="text-xs text-[#6e7681]">Percentage of ungrounded claims (lower is better)</div>
+                    </div>
+                  </>
+                )}
+                {activeExperiment === 3 && (
+                  <>
+                    <div className="p-4 rounded-lg bg-[#161b22]/60 border border-[#2a2d47]/30">
+                      <div className="text-sm font-medium text-white mb-1">Visual & Logic</div>
+                      <div className="text-xs text-[#6e7681]">Visual Perception and Spatiotemporal Logic reasoning scores</div>
+                    </div>
+                    <div className="p-4 rounded-lg bg-[#161b22]/60 border border-[#2a2d47]/30">
+                      <div className="text-sm font-medium text-white mb-1">Rule & Depth</div>
+                      <div className="text-xs text-[#6e7681]">Rule Application and Domain Depth expertise metrics</div>
+                    </div>
+                    <div className="p-4 rounded-lg bg-[#161b22]/60 border border-[#2a2d47]/30">
+                      <div className="text-sm font-medium text-white mb-1">CoT & Overall</div>
+                      <div className="text-xs text-[#6e7681]">Chain-of-Thought coherence and aggregate quality score</div>
+                    </div>
+                  </>
+                )}
               </div>
             </div>
           )}

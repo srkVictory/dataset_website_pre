@@ -175,14 +175,16 @@ export default function Leaderboard() {
           }`}
         >
           <button
-            onClick={() => alert('该功能正在建设中，敬请期待！')}
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#4d6bfa]/50 text-white font-medium cursor-not-allowed opacity-60"
+            onClick={() => alert('Online submission system under development. Stay tuned!')}
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#4d6bfa] text-white font-medium hover:bg-[#4353fa] transition-colors cursor-pointer"
           >
             <TrendingUp className="w-5 h-5" />
             Submit Your Results
             <ExternalLink className="w-4 h-4" />
           </button>
-          <p className="mt-2 text-sm text-[#6e7681]">Online submission system under development</p>
+          <p className="text-sm text-[#b4bcd0] mt-4">
+            Online submission system under development
+          </p>
         </div>
       </div>
     </section>

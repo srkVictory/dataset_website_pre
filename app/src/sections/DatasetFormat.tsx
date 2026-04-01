@@ -341,8 +341,8 @@ export default function DatasetFormat() {
               desc: 'Supports SFT, PPO, DPO, GRPO, KTO and other RLHF training paradigms',
             },
             {
-              title: 'Self-Reflection Built-in',
-              desc: 'Confidence scoring and limitation awareness train models to know when they are uncertain',
+              title: 'Self-Reflection Through Calibration',
+              desc: 'We implement a preference-aligned confidence scoring mechanism that mitigates hallucination by making the model aware of and corrective about its limitations.',
             },
           ].map((item, index) => (
             <div

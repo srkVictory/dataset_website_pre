@@ -1,44 +1,44 @@
 import { useState, useEffect, useRef } from 'react';
-import { Download, FileArchive, FileJson, FileImage, ExternalLink, CheckCircle, AlertCircle } from 'lucide-react';
+import { Download, ExternalLink, CheckCircle, AlertCircle } from 'lucide-react';
 
 const downloadOptions = [
   {
     name: 'Full Dataset',
-    size: '12.5 GB',
-    format: 'TIFF + JSON',
-    icon: FileArchive,
-    description: 'Complete dataset with all image pairs and annotations',
-    includes: ['109,224 image pairs', 'Change masks', 'Text descriptions', 'Metadata'],
+    size: '~60 GB',
+    format: 'PNG + JSON',
+
+    description: 'Complete benchmark with 109,224 image pairs and 327,672 reasoning trajectories',
+    includes: ['109,224 bi-temporal image pairs', 'Six-step chain-of-thought annotations', 'Step-level judge evaluations', '327K+ reasoning trajectories'],
     links: [
       { name: 'Direct Download', url: '#' },
-      { name: 'HuggingFace', url: '#' },
-      { name: 'Baidu Pan', url: '#' },
+      { name: 'HuggingFace', url: 'https://huggingface.co/datasets/your-org/geo-bc' },
+      { name: 'Baidu Pan', url: 'https://pan.baidu.com/s/xxxx' },
     ],
   },
   {
     name: 'Sample Set',
-    size: '500 MB',
-    format: 'TIFF + JSON',
-    icon: FileImage,
-    description: 'Small sample for quick testing and exploration',
-    includes: ['Sample image pairs', 'Sample masks', 'Sample descriptions'],
+    size: '~20 GB',
+    format: 'PNG',
+
+    description: 'Representative subset for exploratory analysis and development',
+    includes: ['1,000 image pairs', 'Complete 6-step annotations', 'Judge evaluation samples', 'Metadata and taxonomy mappings'],
     links: [
       { name: 'Direct Download', url: '#' },
-      { name: 'HuggingFace', url: '#' },
-      { name: 'Baidu Pan', url: '#' },
+      { name: 'HuggingFace', url: 'https://huggingface.co/datasets/your-org/geo-bc' },
+      { name: 'Baidu Pan', url: 'https://pan.baidu.com/s/xxxx' },
     ],
   },
   {
     name: 'Annotations Only',
-    size: '25 MB',
-    format: 'JSON',
-    icon: FileJson,
-    description: 'Just the annotations without images',
-    includes: ['Change masks', 'Text descriptions', 'Metadata'],
+    size: '~100 MB',
+    format: 'JSON (Partial)',
+
+    description: 'Structured reasoning annotations and evaluation data (partial release for reference)',
+    includes: ['Six-step reasoning chains', 'Judge evaluation scores', 'Preference rankings', '382K+ evaluation statements'],
     links: [
       { name: 'Direct Download', url: '#' },
-      { name: 'HuggingFace', url: '#' },
-      { name: 'Baidu Pan', url: '#' },
+      { name: 'HuggingFace', url: 'https://huggingface.co/datasets/your-org/geo-bc' },
+      { name: 'Baidu Pan', url: 'https://pan.baidu.com/s/xxxx' },
     ],
   },
 ];
@@ -81,28 +81,9 @@ export default function DownloadSection() {
           </p>
         </div>
 
-        {/* Coming Soon Notice */}
-        <div
-          className={`max-w-3xl mx-auto mb-12 p-6 rounded-xl bg-blue-500/10 border border-blue-500/30 transition-all duration-700 delay-100 ${
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-          }`}
-        >
-          <div className="flex items-start gap-4">
-            <AlertCircle className="w-6 h-6 text-blue-400 flex-shrink-0 mt-0.5" />
-            <div>
-              <h3 className="text-lg font-semibold text-white mb-2">Coming Soon</h3>
-              <p className="text-sm text-blue-200/80 leading-relaxed">
-                The dataset is currently undergoing final preparation and quality assurance. 
-                We expect to release it publicly in the near future. Please check back soon 
-                or follow our GitHub repository for updates.
-              </p>
-            </div>
-          </div>
-        </div>
-
         {/* Agreement */}
         <div
-          className={`max-w-2xl mx-auto mb-12 p-6 rounded-xl bg-[#161b22]/80 border border-[#2a2d47]/50 transition-all duration-700 delay-200 ${
+          className={`max-w-2xl mx-auto mb-12 p-6 rounded-xl bg-[#161b22]/80 border border-[#2a2d47]/50 transition-all duration-700 delay-100 ${
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}
         >
@@ -134,24 +115,27 @@ export default function DownloadSection() {
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
               } ${agreed ? 'hover:border-[#4d6bfa]/50' : 'opacity-60'}`}
               style={{
-                transitionDelay: `${300 + index * 100}ms`,
+                transitionDelay: `${200 + index * 100}ms`,
                 transitionTimingFunction: 'var(--ease-out-expo)',
               }}
             >
               {/* Header */}
-              <div className="flex items-start justify-between mb-4">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#4d6bfa]/20 to-[#4353fa]/10 flex items-center justify-center">
-                  <option.icon className="w-6 h-6 text-[#4d6bfa]" />
+              <div className="flex items-start justify-between gap-4 mb-4">
+                <div className="flex-1">
+                  <h3 className="text-xl font-semibold text-white mb-1">{option.name}</h3>
+                  <div className="flex items-center gap-2">
+                    <span className="px-2 py-0.5 text-xs rounded-full bg-[#4d6bfa]/10 text-[#4d6bfa] border border-[#4d6bfa]/30">
+                      {option.format}
+                    </span>
+                  </div>
                 </div>
                 <div className="text-right">
-                  <div className="text-lg font-bold text-white">{option.size}</div>
-                  <div className="text-xs text-[#b4bcd0]">{option.format}</div>
+                  <div className="text-2xl font-bold text-white">{option.size}</div>
                 </div>
               </div>
 
-              {/* Content */}
-              <h3 className="text-xl font-semibold text-white mb-2">{option.name}</h3>
-              <p className="text-sm text-[#b4bcd0] mb-4">{option.description}</p>
+              {/* Description */}
+              <p className="text-sm text-[#b4bcd0] mb-4 leading-relaxed">{option.description}</p>
 
               {/* Includes */}
               <div className="space-y-2 mb-6">
@@ -166,15 +150,20 @@ export default function DownloadSection() {
               {/* Download Links */}
               <div className="space-y-2">
                 {option.links.map((link) => (
-                  <button
+                  <a
                     key={link.name}
-                    onClick={() => {
-                      if (agreed) {
-                        alert('The dataset is coming soon. Please check back later.');
-                      } else {
+                    href={agreed ? link.url : '#'}
+                    onClick={(e) => {
+                      if (!agreed) {
+                        e.preventDefault();
                         alert('Please agree to the terms before downloading.');
+                        return;
                       }
+                      e.preventDefault();
+                      alert('The dataset is coming soon. Please check back later.');
                     }}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className={`flex items-center justify-center gap-2 w-full py-3 rounded-xl font-medium transition-all ${
                       agreed
                         ? 'bg-[#4d6bfa] text-white hover:bg-[#4353fa]'
@@ -184,7 +173,7 @@ export default function DownloadSection() {
                     <Download className="w-4 h-4" />
                     {link.name}
                     <ExternalLink className="w-4 h-4" />
-                  </button>
+                  </a>
                 ))}
               </div>
             </div>
@@ -198,9 +187,14 @@ export default function DownloadSection() {
           }`}
         >
           <AlertCircle className="w-5 h-5 text-yellow-400 flex-shrink-0 mt-0.5" />
-          <p className="text-sm text-yellow-200/80">
-            The full dataset requires approximately 60GB of free disk space.
-          </p>
+          <div>
+            <p className="text-sm text-yellow-200/80 font-medium mb-1">
+              The dataset is coming soon. Please check back later.
+            </p>
+            <p className="text-xs text-yellow-200/60">
+              The dataset is constructed from multi-source Gaofen satellite imagery (GF-1/2/6/7). Please ensure adequate disk space and cite the paper when using this benchmark.
+            </p>
+          </div>
         </div>
       </div>
     </section>

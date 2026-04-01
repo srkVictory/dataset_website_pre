@@ -1,19 +1,25 @@
+// 导入React hooks和图标组件
 import { useState, useRef, useEffect } from 'react';
-import { ArrowRight, FileText, Database, ChevronDown, BookOpen } from 'lucide-react';
+import { ArrowRight, FileText, Database, ChevronDown } from 'lucide-react';
 
+// Hero组件 - 页面首屏展示
 export default function Hero() {
+  // 状态：滑块位置、拖拽状态、可见性
   const [sliderPosition, setSliderPosition] = useState(50);
   const [isDragging, setIsDragging] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
 
+  // 组件挂载时触发入场动画
   useEffect(() => {
     setIsVisible(true);
   }, []);
 
+  // 鼠标按下和释放事件
   const handleMouseDown = () => setIsDragging(true);
   const handleMouseUp = () => setIsDragging(false);
 
+  // 鼠标移动更新滑块位置
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!isDragging || !containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
@@ -22,6 +28,7 @@ export default function Hero() {
     setSliderPosition(percentage);
   };
 
+  // 触摸移动事件
   const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
     if (!containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
@@ -30,6 +37,7 @@ export default function Hero() {
     setSliderPosition(percentage);
   };
 
+  // 平滑滚动到指定区域
   const scrollToSection = (href: string) => {
     const element = document.querySelector(href);
     if (element) {
@@ -42,7 +50,7 @@ export default function Hero() {
       id="home"
       className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20"
     >
-      {/* Background Grid Pattern */}
+      {/* 背景网格图案 */}
       <div className="absolute inset-0 opacity-20">
         <div
           className="absolute inset-0"
@@ -56,7 +64,7 @@ export default function Hero() {
         />
       </div>
 
-      {/* Animated Gradient Glow */}
+      {/* 动画渐变光晕背景 */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#4d6bfa]/20 rounded-full blur-[150px] animate-pulse" />
         <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-[#4353fa]/15 rounded-full blur-[120px] animate-pulse" style={{ animationDelay: '1s' }} />
@@ -64,52 +72,46 @@ export default function Hero() {
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-          {/* Left Content Area */}
+          {/* 左侧内容区域 */}
           <div
             className={`space-y-8 transition-all duration-1000 ${
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
             }`}
             style={{ transitionTimingFunction: 'var(--ease-out-expo)' }}
           >
-            {/* Publication Badge */}
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#4d6bfa]/10 border border-[#4d6bfa]/30">
-              <BookOpen className="w-4 h-4 text-[#4d6bfa]" />
-              <span className="text-sm font-medium text-[#4d6bfa]">ACM Conference 2025</span>
-            </div>
-
-            {/* Title Area */}
+            {/* 标题区域 */}
             <div className="space-y-3">
-              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight">
-                Beyond Captioning: A Preference-Aligned Benchmark
-              </h1>
-              <h2 className="text-xl md:text-2xl text-[#b4bcd0] font-light">
+              <div className="space-y-1">
+                <h1 className="text-3xl md:text-4xl font-bold text-white font-['Poppins'] leading-tight">
+                  Beyond Captioning:
+                </h1>
+                <h1 className="text-3xl md:text-4xl font-bold gradient-text font-['Poppins'] leading-tight">
+                  A Preference-Aligned Benchmark
+                </h1>
+              </div>
+              <p className="text-lg md:text-xl text-[#b4bcd0] font-light">
                 for Fine-Grained Reasoning and Spatiotemporal Geo-World Understanding
-              </h2>
-            </div>
-
-            {/* Abstract-style Description */}
-            <div className="border-l-2 border-[#4d6bfa]/30 pl-4">
-              <p className="text-base text-[#b4bcd0] leading-relaxed">
-                A large-scale dataset featuring <span className="text-white font-semibold">109,224</span> annotated image pairs 
-                with <span className="text-[#4d6bfa] font-semibold">six-stage chain-of-thought</span> reasoning. 
-                Supports diverse training paradigms including SFT, PPO, DPO, GRPO, and fine-grained 
-                Process Reward Modeling (PRM).
               </p>
             </div>
 
-            {/* Key Stats */}
+            {/* 项目描述 */}
+            <p className="text-lg text-[#b4bcd0] leading-relaxed max-w-xl">
+              A preference-aligned benchmark featuring <span className="text-white font-semibold">50,000+</span> annotated image pairs (100,000+ images) with <span className="text-[#4d6bfa] font-semibold">six-stage chain-of-thought</span> reasoning. Supports diverse training paradigms including SFT, PPO, DPO, GRPO, and fine-grained Process Reward Modeling (PRM).
+            </p>
+
+            {/* 数据统计展示 */}
             <div className="flex flex-wrap gap-6">
               {[
-                { value: '109K', label: 'Image Pairs' },
+                { value: '50K+', label: 'Image Pairs' },
+                { value: '6-Step', label: 'CoT Reasoning' },
                 { value: '328K', label: 'Reasoning Trajectories' },
-                { value: '6-Step', label: 'Thinking Process' },
               ].map((stat, index) => (
                 <div
                   key={stat.label}
                   className="text-center"
                   style={{ animationDelay: `${0.5 + index * 0.1}s` }}
                 >
-                  <div className="text-2xl md:text-3xl font-bold text-white">
+                  <div className="text-2xl md:text-3xl font-bold text-white font-['Poppins']">
                     {stat.value}
                   </div>
                   <div className="text-sm text-[#b4bcd0]">{stat.label}</div>
@@ -117,7 +119,7 @@ export default function Hero() {
               ))}
             </div>
 
-            {/* Primary Action Buttons */}
+            {/* 主要操作按钮 */}
             <div className="flex flex-wrap gap-4">
               <button
                 onClick={() => scrollToSection('#dataset')}
@@ -137,13 +139,13 @@ export default function Hero() {
               </a>
             </div>
 
-            {/* Quick Links */}
-            <div className="flex flex-wrap items-center gap-4 pt-4 text-sm">
+            {/* 快速链接区域 */}
+            <div className="flex flex-wrap items-center gap-4 pt-4">
               <a
                 href="https://github.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 text-[#b4bcd0] hover:text-white transition-colors"
+                className="flex items-center gap-2 text-sm text-[#b4bcd0] hover:text-white transition-colors"
               >
                 <Database className="w-4 h-4" />
                 GitHub Repository
@@ -151,14 +153,14 @@ export default function Hero() {
               <span className="text-[#2a2d47]">|</span>
               <button
                 onClick={() => scrollToSection('#download')}
-                className="text-[#b4bcd0] hover:text-white transition-colors"
+                className="flex items-center gap-2 text-sm text-[#b4bcd0] hover:text-white transition-colors"
               >
                 Download Dataset
               </button>
             </div>
           </div>
 
-          {/* Right Interactive Image Comparison */}
+          {/* 右侧交互式图片对比组件 */}
           <div
             className={`relative transition-all duration-1000 delay-300 ${
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
@@ -166,6 +168,7 @@ export default function Hero() {
             style={{ transitionTimingFunction: 'var(--ease-out-expo)' }}
           >
             <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-[#2a2d47]/50">
+              {/* 图片容器，支持拖拽交互 */}
               <div
                 ref={containerRef}
                 className="relative aspect-square cursor-ew-resize select-none"
@@ -177,11 +180,14 @@ export default function Hero() {
                 onTouchStart={handleMouseDown}
                 onTouchEnd={handleMouseUp}
               >
+                {/* T2背景图片 */}
                 <img
                   src="/00500_2025_RGB.png"
                   alt="T2 Satellite Image"
                   className="absolute inset-0 w-full h-full object-cover"
                 />
+
+                {/* T1前景图片 */}
                 <div
                   className="absolute inset-0 overflow-hidden"
                   style={{ clipPath: `inset(0 ${100 - sliderPosition}% 0 0)` }}
@@ -192,10 +198,13 @@ export default function Hero() {
                     className="absolute inset-0 w-full h-full object-cover"
                   />
                 </div>
+
+                {/* 滑块分割线 */}
                 <div
                   className="absolute top-0 bottom-0 w-1 bg-white shadow-lg"
                   style={{ left: `${sliderPosition}%`, transform: 'translateX(-50%)' }}
                 >
+                  {/* 滑块手柄 */}
                   <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white shadow-xl flex items-center justify-center">
                     <div className="flex gap-1">
                       <ChevronDown className="w-4 h-4 text-[#04070a] rotate-90" />
@@ -203,6 +212,8 @@ export default function Hero() {
                     </div>
                   </div>
                 </div>
+
+                {/* 图片标签 */}
                 <div className="absolute top-4 left-4 px-3 py-1.5 rounded-lg bg-[#04070a]/80 backdrop-blur-sm text-sm font-medium text-white">
                   T1
                 </div>
@@ -211,17 +222,19 @@ export default function Hero() {
                 </div>
               </div>
             </div>
+
+            {/* 图片说明文字 */}
             <p className="mt-4 text-center text-sm text-[#b4bcd0]">
-              Drag slider to compare bi-temporal images
+              Drag the slider to compare bi-temporal images
             </p>
+
+            {/* 装饰性光晕元素 */}
+            <div className="absolute -top-4 -right-4 w-24 h-24 bg-[#4d6bfa]/20 rounded-full blur-2xl" />
+            <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-[#4353fa]/15 rounded-full blur-3xl" />
           </div>
         </div>
       </div>
 
-      {/* Bottom Scroll Indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
-        <ChevronDown className="w-6 h-6 text-[#b4bcd0]" />
-      </div>
     </section>
   );
 }

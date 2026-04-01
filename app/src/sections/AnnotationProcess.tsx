@@ -16,13 +16,97 @@ import {
   AlertTriangle,
   FileText,
   Sparkles,
-  MessageSquare
+  MessageSquare,
+  ChevronLeft,
+  ChevronRight
 } from 'lucide-react';
+
+// Image Comparison Component
+function ImageCompare({ t1Image, t2Image, sampleId }: { t1Image: string; t2Image: string; sampleId: string }) {
+  const [sliderPosition, setSliderPosition] = useState(50);
+  const [isDragging, setIsDragging] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const handleMouseDown = () => setIsDragging(true);
+  const handleMouseUp = () => setIsDragging(false);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!isDragging || !containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const percentage = Math.max(0, Math.min(100, (x / rect.width) * 100));
+    setSliderPosition(percentage);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (!containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    const x = e.touches[0].clientX - rect.left;
+    const percentage = Math.max(0, Math.min(100, (x / rect.width) * 100));
+    setSliderPosition(percentage);
+  };
+
+  return (
+    <div className="relative bg-[#161b22]">
+      <div
+        ref={containerRef}
+        className="relative aspect-[4/3] cursor-ew-resize select-none"
+        onMouseDown={handleMouseDown}
+        onMouseUp={handleMouseUp}
+        onMouseLeave={handleMouseUp}
+        onMouseMove={handleMouseMove}
+        onTouchMove={handleTouchMove}
+        onTouchStart={handleMouseDown}
+        onTouchEnd={handleMouseUp}
+      >
+        {/* T2 Image (Bottom layer) */}
+        <img
+          src={t2Image}
+          alt={`Sample ${sampleId} T2`}
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        {/* T1 Image (Top layer with clip) */}
+        <div
+          className="absolute inset-0 overflow-hidden"
+          style={{ clipPath: `inset(0 ${100 - sliderPosition}% 0 0)` }}
+        >
+          <img
+            src={t1Image}
+            alt={`Sample ${sampleId} T1`}
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+        </div>
+        {/* Slider Line */}
+        <div
+          className="absolute top-0 bottom-0 w-1 bg-white shadow-lg"
+          style={{ left: `${sliderPosition}%`, transform: 'translateX(-50%)' }}
+        >
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white shadow-xl flex items-center justify-center">
+            <div className="flex gap-0.5">
+              <ChevronLeft className="w-4 h-4 text-[#04070a]" />
+              <ChevronRight className="w-4 h-4 text-[#04070a]" />
+            </div>
+          </div>
+        </div>
+        {/* Labels */}
+        <div className="absolute top-3 left-3 px-2 py-1 rounded bg-[#04070a]/80 backdrop-blur-sm text-xs font-medium text-white">
+          T1 (Before)
+        </div>
+        <div className="absolute top-3 right-3 px-2 py-1 rounded bg-[#04070a]/80 backdrop-blur-sm text-xs font-medium text-white">
+          T2 (After)
+        </div>
+      </div>
+      <p className="py-2 text-center text-xs text-[#b4bcd0]">
+        Drag slider to compare · Sample {sampleId}
+      </p>
+    </div>
+  );
+}
 
 // Complete sample data with full reasoning feedback
 const sampleData = [
   {
-    task_id: "000299",
+    task_id: "00299",
     has_valid_chosen: true,
     chosen: {
       model_name: "gpt41_answer_change",
@@ -233,7 +317,7 @@ const sampleData = [
     ]
   },
   {
-    task_id: "000300",
+    task_id: "00300",
     has_valid_chosen: true,
     chosen: {
       model_name: "gemini_answer_change",
@@ -361,7 +445,7 @@ const sampleData = [
     ]
   },
   {
-    task_id: "000301",
+    task_id: "00301",
     has_valid_chosen: true,
     chosen: {
       model_name: "gpt41_answer_change",
@@ -735,41 +819,63 @@ export default function AnnotationProcess() {
           </p>
         </div>
 
-        {/* Sample Selector */}
-        <div
-          className={`flex justify-center gap-3 mb-8 transition-all duration-700 delay-100 ${
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-          }`}
-        >
-          {sampleData.map((sample, index) => (
-            <button
-              key={sample.task_id}
-              onClick={() => {
-                setActiveSample(index);
-                setActiveStep(0);
-                setExpandedModels([]);
-              }}
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                activeSample === index
-                  ? 'bg-[#4d6bfa] text-white'
-                  : 'bg-[#161b22] text-[#b4bcd0] border border-[#2a2d47]/50 hover:border-[#4d6bfa]/50'
-              }`}
-            >
-              Sample {sample.task_id}
-            </button>
-          ))}
-        </div>
-
         {/* Main Content Grid */}
         <div className="grid lg:grid-cols-12 gap-6">
-          {/* Left: Step Navigation */}
+          {/* Left: Image + Step Navigation + Judge Info */}
           <div
-            className={`lg:col-span-3 transition-all duration-700 delay-200 ${
+            className={`lg:col-span-4 space-y-4 transition-all duration-700 delay-100 ${
               isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'
             }`}
           >
+            {/* Sample Selector Tabs */}
+            <div className="flex gap-2">
+              {sampleData.map((sample, index) => (
+                <button
+                  key={sample.task_id}
+                  onClick={() => {
+                    setActiveSample(index);
+                    setActiveStep(0);
+                    setExpandedModels([]);
+                  }}
+                  className={`flex-1 px-3 py-2 rounded-lg text-sm font-medium transition-all ${
+                    activeSample === index
+                      ? 'bg-[#4d6bfa] text-white'
+                      : 'bg-[#161b22] text-[#b4bcd0] border border-[#2a2d47]/50 hover:border-[#4d6bfa]/50'
+                  }`}
+                >
+                  Sample {sample.task_id}
+                </button>
+              ))}
+            </div>
+
+            {/* Image Comparison - Integrated into left column */}
+            <div className="rounded-2xl overflow-hidden border border-[#2a2d47]/50">
+              {activeSample === 0 && (
+                <ImageCompare
+                  t1Image="/00299_2024_RGB.png"
+                  t2Image="/00299_2025_RGB.png"
+                  sampleId="00299"
+                />
+              )}
+              {activeSample === 1 && (
+                <ImageCompare
+                  t1Image="/00300_2024_RGB.png"
+                  t2Image="/00300_2025_RGB.png"
+                  sampleId="00300"
+                />
+              )}
+              {activeSample === 2 && (
+                <ImageCompare
+                  t1Image="/00301_2024_RGB.png"
+                  t2Image="/00301_2025_RGB.png"
+                  sampleId="00301"
+                />
+              )}
+            </div>
+
+            {/* Thinking Steps */}
             <div className="bg-[#161b22]/80 rounded-2xl border border-[#2a2d47]/50 p-4">
-              <h3 className="text-sm font-semibold text-white mb-4 px-2">Thinking Steps</h3>
+              <h3 className="text-sm font-semibold text-white mb-3 px-1">Thinking Steps</h3>
               <div className="space-y-2">
                 {steps.map((step, index) => (
                   <button
@@ -800,7 +906,7 @@ export default function AnnotationProcess() {
             </div>
 
             {/* Judge Legend */}
-            <div className="mt-4 bg-[#161b22]/80 rounded-2xl border border-[#2a2d47]/50 p-4">
+            <div className="bg-[#161b22]/80 rounded-2xl border border-[#2a2d47]/50 p-4">
               <h3 className="text-sm font-semibold text-white mb-3">Judge Systems</h3>
               <div className="space-y-3">
                 {judges.map(judge => (
@@ -821,7 +927,7 @@ export default function AnnotationProcess() {
 
           {/* Center: Score Comparison */}
           <div
-            className={`lg:col-span-6 transition-all duration-700 delay-300 ${
+            className={`lg:col-span-5 transition-all duration-700 delay-200 ${
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             }`}
           >
@@ -977,7 +1083,7 @@ export default function AnnotationProcess() {
 
           {/* Right: Score Summary */}
           <div
-            className={`lg:col-span-3 transition-all duration-700 delay-400 ${
+            className={`lg:col-span-3 transition-all duration-700 delay-300 ${
               isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'
             }`}
           >

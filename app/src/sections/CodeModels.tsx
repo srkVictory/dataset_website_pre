@@ -1,35 +1,40 @@
 import { useState, useEffect, useRef } from 'react';
-import { Terminal, Download, Github, BookOpen, Cpu, Copy, Check } from 'lucide-react';
+import { Terminal, Download, Github, BookOpen, Cpu, Copy, Check, AlertCircle } from 'lucide-react';
 
 const setupSteps = [
   {
     title: 'Clone Repository',
     command: 'git clone https://github.com/levir-mf/dataset.git',
+    note: '# Coming soon - Repository under preparation',
   },
   {
     title: 'Install Dependencies',
     command: 'pip install -r requirements.txt',
+    note: '# Coming soon - Requirements pending release',
   },
   {
     title: 'Download Dataset',
     command: 'python scripts/download_data.py',
+    note: '# Coming soon - Dataset release in progress',
   },
   {
     title: 'Run Evaluation',
     command: 'python eval.py --config configs/baseline.yaml',
+    note: '# Coming soon - Evaluation scripts pending',
   },
 ];
 
 const models = [
-  { name: 'ChangeFormer', params: '45M', checkpoint: 'changeformer_best.pth', size: '180MB' },
-  { name: 'BIT', params: '32M', checkpoint: 'bit_best.pth', size: '128MB' },
-  { name: 'STAN', params: '28M', checkpoint: 'stan_best.pth', size: '112MB' },
-  { name: 'IFN', params: '38M', checkpoint: 'ifn_best.pth', size: '152MB' },
+  { name: 'ChangeFormer', checkpoint: 'changeformer_best.pth', size: '180MB' },
+  { name: 'BIT', checkpoint: 'bit_best.pth', size: '128MB' },
+  { name: 'STAN', checkpoint: 'stan_best.pth', size: '112MB' },
+  { name: 'IFN', checkpoint: 'ifn_best.pth', size: '152MB' },
 ];
 
 export default function CodeModels() {
   const [isVisible, setIsVisible] = useState(false);
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
+  const [showAlert, setShowAlert] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -50,16 +55,41 @@ export default function CodeModels() {
     return () => observer.disconnect();
   }, []);
 
+  useEffect(() => {
+    if (showAlert) {
+      const timer = setTimeout(() => setShowAlert(false), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [showAlert]);
+
   const copyCommand = (command: string, index: number) => {
     navigator.clipboard.writeText(command);
     setCopiedIndex(index);
     setTimeout(() => setCopiedIndex(null), 2000);
   };
 
+  const handleDownloadClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setShowAlert(true);
+  };
+
   return (
     <section id="code" ref={sectionRef} className="py-24 relative">
       {/* Background Decoration */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#4d6bfa]/5 to-transparent pointer-events-none" />
+
+      {/* Alert Notification */}
+      {showAlert && (
+        <div className="fixed top-24 left-1/2 -translate-x-1/2 z-50 animate-in fade-in slide-in-from-top-4 duration-300">
+          <div className="flex items-center gap-3 px-6 py-4 rounded-xl bg-[#161b22] border border-[#f59e0b]/50 shadow-2xl shadow-black/50">
+            <AlertCircle className="w-5 h-5 text-[#f59e0b] flex-shrink-0" />
+            <div>
+              <p className="text-sm font-medium text-white">Model Checkpoints Coming Soon</p>
+              <p className="text-xs text-[#b4bcd0]">Pre-trained weights will be available upon paper acceptance</p>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
@@ -68,9 +98,9 @@ export default function CodeModels() {
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}
         >
-          <h2 className="section-title">Implementation Resources</h2>
+          <h2 className="section-title">Code & Models</h2>
           <p className="section-subtitle">
-            Reusable codebase and baseline model implementations for reproducible research
+            Quick start guides and pre-trained model checkpoints
           </p>
         </div>
 
@@ -86,12 +116,23 @@ export default function CodeModels() {
                 <Terminal className="w-6 h-6 text-[#4d6bfa]" />
               </div>
               <div>
-                <h3 className="text-xl font-semibold text-white">Experimental Setup</h3>
-                <p className="text-sm text-[#b4bcd0]">Reproducible environment configuration</p>
+                <h3 className="text-xl font-semibold text-white">Environment Setup</h3>
+                <p className="text-sm text-[#b4bcd0]">Python 3.8+ and PyTorch 1.10+</p>
               </div>
             </div>
 
-            <div className="space-y-4">
+            {/* Coming Soon Notice */}
+            <div className="p-4 rounded-xl bg-[#f59e0b]/10 border border-[#f59e0b]/30">
+              <div className="flex items-center gap-2 text-[#f59e0b]">
+                <AlertCircle className="w-4 h-4" />
+                <span className="text-sm font-medium">Coming Soon</span>
+              </div>
+              <p className="text-xs text-[#b4bcd0] mt-1">
+                Code repository and scripts will be released upon paper acceptance
+              </p>
+            </div>
+
+            <div className="space-y-4 opacity-60">
               {setupSteps.map((step, index) => (
                 <div
                   key={step.title}
@@ -113,9 +154,14 @@ export default function CodeModels() {
                       )}
                     </button>
                   </div>
-                  <code className="block p-3 rounded-lg bg-[#04070a] text-sm text-[#4d6bfa] font-mono overflow-x-auto">
-                    {step.command}
-                  </code>
+                  <div className="space-y-1">
+                    <code className="block p-3 rounded-lg bg-[#04070a] text-sm text-[#4d6bfa] font-mono overflow-x-auto">
+                      {step.command}
+                    </code>
+                    <code className="block text-xs text-[#f59e0b] font-mono">
+                      {step.note}
+                    </code>
+                  </div>
                 </div>
               ))}
             </div>
@@ -124,11 +170,10 @@ export default function CodeModels() {
             <div className="p-6 rounded-xl bg-[#161b22]/80 border border-[#2a2d47]/50">
               <div className="flex items-center gap-3 mb-4">
                 <BookOpen className="w-5 h-5 text-[#4d6bfa]" />
-                <h4 className="font-semibold text-white">Framework Integration</h4>
+                <h4 className="font-semibold text-white">OpenCD Integration</h4>
               </div>
               <p className="text-sm text-[#b4bcd0] mb-4">
-                Compatible with OpenCD and MMChange detection frameworks. 
-                Standardized data loaders and evaluation protocols provided.
+                Five multimodal foundation models (including proprietary and open-weight systems) generate candidate reasoning trajectories with temperature=0 for determinism and reproducibility.
               </p>
               <a
                 href="https://github.com"
@@ -136,7 +181,7 @@ export default function CodeModels() {
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 text-sm text-[#4d6bfa] hover:underline"
               >
-                Documentation
+                View Integration Guide
                 <Github className="w-4 h-4" />
               </a>
             </div>
@@ -154,7 +199,7 @@ export default function CodeModels() {
               </div>
               <div>
                 <h3 className="text-xl font-semibold text-white">Baseline Checkpoints</h3>
-                <p className="text-sm text-[#b4bcd0]">Reference model weights for comparison</p>
+                <p className="text-sm text-[#b4bcd0]">Pre-trained model weights for benchmarking</p>
               </div>
             </div>
 
@@ -171,19 +216,16 @@ export default function CodeModels() {
                     <div>
                       <h4 className="font-semibold text-white">{model.name}</h4>
                       <div className="flex items-center gap-4 mt-1 text-xs text-[#b4bcd0]">
-                        <span>{model.params} parameters</span>
                         <span>{model.size}</span>
                       </div>
                     </div>
-                    <a
-                      href={`https://github.com/your-org/geo-bc/releases/download/v1.0/${model.checkpoint}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                    <button
+                      onClick={handleDownloadClick}
                       className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#4d6bfa]/10 text-[#4d6bfa] hover:bg-[#4d6bfa]/20 transition-colors text-sm"
                     >
                       <Download className="w-4 h-4" />
                       Download
-                    </a>
+                    </button>
                   </div>
                 </div>
               ))}
@@ -191,13 +233,13 @@ export default function CodeModels() {
 
             {/* Requirements */}
             <div className="p-6 rounded-xl bg-[#161b22]/80 border border-[#2a2d47]/50">
-              <h4 className="font-semibold text-white mb-4">Software Dependencies</h4>
+              <h4 className="font-semibold text-white mb-4">System Requirements</h4>
               <div className="grid grid-cols-2 gap-4">
                 {[
                   { label: 'Python', value: '≥ 3.8' },
                   { label: 'PyTorch', value: '≥ 1.10' },
                   { label: 'CUDA', value: '≥ 11.0' },
-                  { label: 'Memory', value: '≥ 16GB' },
+                  { label: 'RAM', value: '≥ 16GB' },
                 ].map((req) => (
                   <div key={req.label} className="flex justify-between text-sm">
                     <span className="text-[#b4bcd0]">{req.label}:</span>

@@ -1,81 +1,138 @@
 import { useState, useEffect, useRef } from 'react';
 import { 
   Target, 
-  MessageSquare, 
   BarChart3, 
   TrendingUp, 
   CheckCircle, 
   Brain,
-  Eye,
-  FileText,
-  Layers,
   Sparkles,
   ArrowRight,
   Cpu,
   GitBranch,
   Zap,
   Award,
-  Search,
-  RefreshCw,
   Scale,
-  Trophy
+  Layers,
+  Clock,
+  Database,
+  Split,
+  FileStack
 } from 'lucide-react';
 
-// Training Tasks & Applications
-const trainingTasks = [
+// Training Applications Categories
+const trainingCategories = [
   {
     category: 'Supervised Fine-Tuning',
     icon: Target,
     color: '#4d6bfa',
+    desc: 'Train models on high-quality chosen trajectories with step-by-step reasoning annotations',
     tasks: [
-      { name: 'SFT', fullName: 'Supervised Fine-Tuning', desc: 'Standard instruction tuning on step-by-step annotations' },
-      { name: 'TTS', fullName: 'Test-Time Scaling', desc: 'Generate multiple reasoning paths at inference' },
+      { 
+        name: 'SFT', 
+        fullName: 'Supervised Fine-Tuning', 
+        desc: 'Standard instruction tuning on top-ranked chosen trajectories with six-step reasoning annotations',
+        detail: 'Using 7:1:2 train/val/test split with non-overlapping geographic locations'
+      },
+      { 
+        name: 'Pro Subset', 
+        fullName: 'Challenging Samples', 
+        desc: '39,646 particularly difficult samples with balanced 1:1 positive-negative ratio for stress-testing',
+        highlight: true
+      },
     ],
   },
   {
     category: 'Preference Optimization',
     icon: Scale,
     color: '#22c55e',
+    desc: 'Leverage chosen/rejected pairs for alignment without explicit reward models',
     tasks: [
-      { name: 'PPO', fullName: 'Proximal Policy Optimization', desc: 'RL-based optimization with outcome rewards' },
-      { name: 'DPO', fullName: 'Direct Preference Optimization', desc: 'Direct preference learning without explicit reward model' },
-      { name: 'GRPO', fullName: 'Group Relative Policy Optimization', desc: 'Group-based relative policy optimization' },
-      { name: 'KTO', fullName: 'Kahneman-Tversky Optimization', desc: 'Human-aware loss function for alignment' },
+      { 
+        name: 'DPO', 
+        fullName: 'Direct Preference Optimization', 
+        desc: 'Direct preference learning using binary classification on chosen vs rejected pairs',
+        detail: 'Trains on 327,672 inference trajectories with preference labels'
+      },
+      { 
+        name: 'PPO', 
+        fullName: 'Proximal Policy Optimization', 
+        desc: 'RL-based optimization with KL divergence constraints for stable policy updates',
+        detail: 'Uses ORM binary rewards (0/10) as outcome signals'
+      },
+      { 
+        name: 'GRPO', 
+        fullName: 'Group Relative Policy Optimization', 
+        desc: 'Group-based relative optimization for efficient multi-model comparison',
+        detail: 'Compares outputs from 5 different VLM generators'
+      },
+      { 
+        name: 'KTO', 
+        fullName: 'Kahneman-Tversky Optimization', 
+        desc: 'Human-aware loss function that directly optimizes for human preference likelihood',
+        detail: 'Accounts for the 1:4 positive-to-negative ratio in the dataset'
+      },
     ],
   },
   {
     category: 'Reward Modeling',
     icon: Award,
     color: '#f59e0b',
+    desc: 'Step-level dense rewards enable fine-grained process supervision',
     tasks: [
-      { name: 'ORM', fullName: 'Outcome Reward Model', desc: 'Binary/graded rewards for final answer correctness' },
-      { name: 'PRM', fullName: 'Process Reward Model', desc: 'Fine-grained step-by-step error diagnosis', highlight: true },
+      { 
+        name: 'ORM', 
+        fullName: 'Outcome Reward Model', 
+        desc: 'Binary answer score s_ans ∈ {0, 10} indicating final answer correctness',
+        detail: 'Simple but effective for training with outcome-based RL'
+      },
+      { 
+        name: 'PRM', 
+        fullName: 'Process Reward Model', 
+        desc: 'Step-by-step scoring using 382,284 evaluation statements from decoupled judges',
+        highlight: true,
+        detail: 'Process score s_proc = (s₁+s₂+s₃+s₄^logic+s₄^rule+s₅+s₆)/7'
+      },
+    ],
+  },
+  {
+    category: 'Test-Time Scaling',
+    icon: Clock,
+    color: '#ec4899',
+    desc: 'Generate and evaluate multiple reasoning paths at inference time',
+    tasks: [
+      { 
+        name: 'Self-Consistency', 
+        fullName: 'Multi-Path Voting', 
+        desc: 'Sample multiple reasoning trajectories and aggregate via majority voting',
+        detail: 'Leverages diverse reasoning patterns across 5 generator models'
+      },
+      { 
+        name: 'Step-Level Beam Search', 
+        fullName: 'Guided Decoding', 
+        desc: 'Use PRM scores to guide generation, pruning low-quality intermediate steps',
+        highlight: true,
+        detail: 'Step-by-step credit assignment enables early error detection'
+      },
     ],
   },
 ];
 
-// Model capabilities showcase
-const capabilities = [
-  {
-    icon: Brain,
-    title: 'Step-by-Step Reasoning',
-    desc: 'Models learn to decompose complex remote sensing analysis into 6 logical thinking stages',
-  },
-  {
-    icon: Search,
-    title: 'Fine-grained Error Diagnosis',
-    desc: 'PRM training enables identifying which specific thinking step contains errors',
-  },
-  {
-    icon: RefreshCw,
-    title: 'Self-Reflection',
-    desc: 'Confidence scoring trains models to recognize their own limitations and uncertainties',
-  },
-  {
-    icon: Zap,
-    title: 'Multi-Task Generalization',
-    desc: 'Single dataset supports diverse training paradigms from SFT to advanced RLHF',
-  },
+// Dataset Statistics
+const datasetStats = [
+  { label: 'Training Set', value: '70%', desc: '76,457 samples', color: '#4d6bfa' },
+  { label: 'Validation Set', value: '10%', desc: '10,922 samples', color: '#22c55e' },
+  { label: 'Test Set', value: '20%', desc: '21,845 samples', color: '#f59e0b' },
+  { label: 'Pro Subset', value: '39K', desc: 'Challenging samples', color: '#ec4899' },
+];
+
+// Six-step reasoning process
+const reasoningSteps = [
+  { step: 'r₁', name: 'Global Perception', desc: 'Summarize overall scene and establish coarse semantic understanding' },
+  { step: 'r₂', name: 'Visual Grounding', desc: 'Identify salient entities, regions, and attributes' },
+  { step: 'r₃', name: 'Relation Modeling', desc: 'Capture relative positions, interactions, topological organization' },
+  { step: 'r₄', name: 'Causal Reasoning', desc: 'Core reasoning integrating visual evidence with taxonomy rules' },
+  { step: 'r₅', name: 'Future Inference', desc: 'Forward-looking reasoning extending analysis to predictions' },
+  { step: 'r₆', name: 'Confidence Calibration', desc: 'Self-assessment accounting for uncertainty and limitations' },
 ];
 
 export default function TasksBenchmarks() {
@@ -101,6 +158,8 @@ export default function TasksBenchmarks() {
     return () => observer.disconnect();
   }, []);
 
+  const currentCategory = trainingCategories[activeCategory];
+
   return (
     <section id="tasks" ref={sectionRef} className="py-24 relative">
       {/* Background */}
@@ -115,25 +174,58 @@ export default function TasksBenchmarks() {
         >
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#4d6bfa]/10 border border-[#4d6bfa]/30 mb-6">
             <Cpu className="w-4 h-4 text-[#4d6bfa]" />
-            <span className="text-sm font-medium text-[#4d6bfa]">Training Methodologies</span>
+            <span className="text-sm font-medium text-[#4d6bfa]">Training Applications</span>
           </div>
           <h2 className="section-title">
-            Versatile <span className="gradient-text">Training Paradigms</span>
+            Versatile <span className="gradient-text">Training Methods</span>
           </h2>
           <p className="section-subtitle max-w-3xl mx-auto">
-            The structured annotation format supports comprehensive training methodologies 
-            from supervised fine-tuning to preference-based reinforcement learning 
-            with process-level reward modeling
+            Our preference-aligned dataset enables diverse training objectives from supervised fine-tuning 
+            to advanced <strong className="text-white">RLHF and process supervision</strong>, supporting both benchmark 
+            evaluation and downstream applications in Earth observation
           </p>
         </div>
 
-        {/* Task Categories Tabs */}
+        {/* Dataset Split Stats */}
         <div
-          className={`flex flex-wrap justify-center gap-3 mb-10 transition-all duration-700 delay-100 ${
+          className={`mb-12 transition-all duration-700 delay-100 ${
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}
         >
-          {trainingTasks.map((cat, index) => (
+          <div className="p-6 rounded-2xl bg-[#161b22]/50 border border-[#2a2d47]/50">
+            <div className="flex items-center gap-3 mb-6">
+              <Database className="w-5 h-5 text-[#4d6bfa]" />
+              <h3 className="text-lg font-semibold text-white">Dataset Split</h3>
+              <span className="text-xs text-[#6e7681]">Non-overlapping geographic locations</span>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {datasetStats.map((stat, index) => (
+                <div
+                  key={stat.label}
+                  className="p-4 rounded-xl bg-[#0d1117] border border-[#2a2d47]/30 text-center"
+                  style={{ transitionDelay: `${index * 50}ms` }}
+                >
+                  <div 
+                    className="text-2xl font-bold mb-1"
+                    style={{ color: stat.color }}
+                  >
+                    {stat.value}
+                  </div>
+                  <div className="text-sm text-white font-medium">{stat.label}</div>
+                  <div className="text-xs text-[#6e7681]">{stat.desc}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Category Tabs */}
+        <div
+          className={`flex flex-wrap justify-center gap-3 mb-10 transition-all duration-700 delay-200 ${
+            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+          }`}
+        >
+          {trainingCategories.map((cat, index) => (
             <button
               key={cat.category}
               onClick={() => setActiveCategory(index)}
@@ -149,14 +241,25 @@ export default function TasksBenchmarks() {
           ))}
         </div>
 
-        {/* Active Tasks Display */}
+        {/* Category Description */}
         <div
-          className={`mb-16 transition-all duration-700 delay-200 ${
+          className={`text-center mb-8 transition-all duration-700 delay-300 ${
+            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+          }`}
+        >
+          <p className="text-[#b4bcd0] max-w-2xl mx-auto">
+            {currentCategory.desc}
+          </p>
+        </div>
+
+        {/* Tasks Display */}
+        <div
+          className={`mb-16 transition-all duration-700 delay-300 ${
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}
         >
           <div className="grid md:grid-cols-2 gap-4">
-            {trainingTasks[activeCategory].tasks.map((task, index) => (
+            {currentCategory.tasks.map((task, index) => (
               <div
                 key={task.name}
                 className={`group relative p-6 rounded-2xl border transition-all duration-500 hover:-translate-y-1 ${
@@ -166,53 +269,79 @@ export default function TasksBenchmarks() {
                 }`}
                 style={{ transitionDelay: `${index * 50}ms` }}
               >
-                {/* Highlight Badge */}
-                {task.highlight && (
-                  <div className="absolute top-4 right-4 flex items-center gap-1 px-2 py-1 rounded-full bg-[#f59e0b]/20 text-[#f59e0b] text-xs font-medium">
-                    <Trophy className="w-3 h-3" />
-                    Key Feature
-                  </div>
-                )}
-
                 <div className="flex items-start gap-4">
                   {/* Task Icon */}
                   <div
                     className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
-                    style={{ backgroundColor: `${trainingTasks[activeCategory].color}20` }}
+                    style={{ backgroundColor: `${currentCategory.color}20` }}
                   >
                     <span
                       className="text-lg font-bold"
-                      style={{ color: trainingTasks[activeCategory].color }}
+                      style={{ color: currentCategory.color }}
                     >
-                      {task.name}
+                      {task.name.substring(0, 3)}
                     </span>
                   </div>
 
                   {/* Task Info */}
                   <div className="flex-1">
                     <h4 className="text-lg font-semibold text-white mb-1">{task.fullName}</h4>
-                    <p className="text-sm text-[#8b949e]">{task.desc}</p>
+                    <p className="text-sm text-[#8b949e] mb-2">{task.desc}</p>
+                    {task.detail && (
+                      <p className="text-xs text-[#6e7681] border-t border-[#2a2d47]/30 pt-2 mt-2">
+                        {task.detail}
+                      </p>
+                    )}
                   </div>
                 </div>
 
                 {/* Decorative corner */}
                 <div
                   className="absolute bottom-0 right-0 w-24 h-24 rounded-tl-full opacity-10 group-hover:opacity-20 transition-opacity"
-                  style={{ backgroundColor: trainingTasks[activeCategory].color }}
+                  style={{ backgroundColor: currentCategory.color }}
                 />
               </div>
             ))}
           </div>
         </div>
 
+        {/* Six-Step Reasoning Process */}
+        <div
+          className={`mb-16 transition-all duration-700 delay-400 ${
+            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+          }`}
+        >
+          <div className="p-6 rounded-2xl bg-[#161b22]/50 border border-[#2a2d47]/50">
+            <div className="flex items-center gap-3 mb-6">
+              <Layers className="w-5 h-5 text-[#4d6bfa]" />
+              <h3 className="text-lg font-semibold text-white">Structured Multimodal Chain of Reasoning</h3>
+            </div>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {reasoningSteps.map((step, index) => (
+                <div
+                  key={step.step}
+                  className="flex items-start gap-3 p-4 rounded-xl bg-[#0d1117] border border-[#2a2d47]/30"
+                >
+                  <div className="w-8 h-8 rounded-lg bg-[#4d6bfa]/20 flex items-center justify-center flex-shrink-0">
+                    <span className="text-sm font-bold text-[#4d6bfa]">{step.step}</span>
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-medium text-white mb-1">{step.name}</h4>
+                    <p className="text-xs text-[#6e7681]">{step.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
         {/* PRM Highlight Section */}
         <div
-          className={`mb-16 transition-all duration-700 delay-300 ${
+          className={`mb-16 transition-all duration-700 delay-500 ${
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}
         >
           <div className="p-8 rounded-2xl bg-gradient-to-br from-[#f59e0b]/10 via-[#161b22] to-[#161b22] border border-[#f59e0b]/30 relative overflow-hidden">
-            {/* Background decoration */}
             <div className="absolute top-0 right-0 w-64 h-64 bg-[#f59e0b]/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
 
             <div className="relative grid lg:grid-cols-2 gap-8 items-center">
@@ -227,19 +356,25 @@ export default function TasksBenchmarks() {
                   </div>
                 </div>
 
-                <p className="text-[#b4bcd0] leading-relaxed mb-6">
-                  Conventional outcome reward models provide only binary feedback on final answers. 
-                  Our framework enables <strong className="text-white">fine-grained process supervision</strong> 
-                  with per-step scalar rewards, facilitating precise credit assignment and 
-                  intermediate error detection in multi-step reasoning chains.
+                <p className="text-[#b4bcd0] leading-relaxed mb-4">
+                  Unlike traditional Outcome Reward Models (ORM) that only evaluate final answers with 
+                  binary scores s<sub>ans</sub> ∈ {'{0, 10}'}, our six-stage chain-of-thought enables 
+                  <strong className="text-white"> process-level supervision</strong> with scalar step scores.
                 </p>
 
-                <div className="space-y-3">
+                <div className="p-4 rounded-lg bg-[#0d1117] border border-[#2a2d47]/50 mb-4">
+                  <p className="text-xs text-[#6e7681] mb-2">Process Score Formula</p>
+                  <p className="text-sm text-[#b4bcd0] font-mono">
+                    s<sub>proc</sub> = (s₁ + s₂ + s₃ + s₄<sup>logic</sup> + s₄<sup>rule</sup> + s₅ + s₆) / 7
+                  </p>
+                </div>
+
+                <div className="space-y-2">
                   {[
-                    'Per-step credit assignment for long-horizon reasoning',
-                    'Hallucination detection at intermediate stages',
-                    'Fine-grained feedback for targeted model improvement',
-                    'Enhanced interpretability through step-wise evaluation',
+                    '382,284 step-level evaluation statements from 3 judges',
+                    'Step 4 evaluated by both Logic Expert and Rule Judge',
+                    'Precise identification of where reasoning goes wrong',
+                    'Enables test-time scaling with step-level beam search',
                   ].map((item, i) => (
                     <div key={i} className="flex items-center gap-2 text-sm text-[#8b949e]">
                       <CheckCircle className="w-4 h-4 text-[#f59e0b] flex-shrink-0" />
@@ -249,7 +384,7 @@ export default function TasksBenchmarks() {
                 </div>
               </div>
 
-              {/* Visual Diagram */}
+              {/* Visual Comparison */}
               <div className="bg-[#0d1117] rounded-xl p-6 border border-[#2a2d47]/50">
                 <div className="flex items-center justify-between mb-4">
                   <span className="text-xs text-[#6e7681]">ORM vs PRM Comparison</span>
@@ -260,6 +395,7 @@ export default function TasksBenchmarks() {
                   <div className="flex items-center gap-2 mb-3">
                     <div className="w-2 h-2 rounded-full bg-[#6e7681]" />
                     <span className="text-sm font-medium text-[#b4bcd0]">ORM (Outcome)</span>
+                    <span className="ml-auto text-xs text-[#6e7681]">s<sub>ans</sub> ∈ {'{0, 10}'}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="flex-1 h-8 rounded bg-[#2a2d47]/50 flex items-center justify-center text-xs text-[#6e7681]">Process</div>
@@ -276,15 +412,16 @@ export default function TasksBenchmarks() {
                   <div className="flex items-center gap-2 mb-3">
                     <div className="w-2 h-2 rounded-full bg-[#f59e0b]" />
                     <span className="text-sm font-medium text-white">PRM (Process)</span>
+                    <span className="ml-auto text-xs text-[#f59e0b]">s<sub>proc</sub> ∈ [0, 10]</span>
                   </div>
                   <div className="space-y-2">
-                    {['Step 1', 'Step 2', 'Step 3', '...', 'Answer'].map((step, i) => (
+                    {['r₁: Global Perception', 'r₂: Visual Grounding', 'r₃: Relation Modeling', 'r₄: Causal Reasoning', '...'].map((step, i) => (
                       <div key={i} className="flex items-center gap-2">
                         <div className="flex-1 h-6 rounded bg-[#2a2d47]/50 flex items-center px-2 text-xs text-[#b4bcd0]">{step}</div>
-                        <div className={`w-12 h-6 rounded flex items-center justify-center text-xs font-medium ${
-                          i === 2 ? 'bg-[#ef4444]/20 text-[#ef4444]' : 'bg-[#22c55e]/20 text-[#22c55e]'
+                        <div className={`w-10 h-6 rounded flex items-center justify-center text-xs font-medium ${
+                          i === 3 ? 'bg-[#ef4444]/20 text-[#ef4444]' : 'bg-[#22c55e]/20 text-[#22c55e]'
                         }`}>
-                          {i === 2 ? '✗' : '✓'}
+                          {i === 3 ? '5.2' : '8.5'}
                         </div>
                       </div>
                     ))}
@@ -296,21 +433,42 @@ export default function TasksBenchmarks() {
           </div>
         </div>
 
-        {/* Capabilities Grid */}
+        {/* Key Capabilities */}
         <div
-          className={`transition-all duration-700 delay-400 ${
+          className={`transition-all duration-700 delay-600 ${
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}
         >
           <h3 className="text-xl font-semibold text-white text-center mb-8">
-            Supported Research Applications
+            Enabled Research Directions
           </h3>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {capabilities.map((cap, index) => (
+            {[
+              {
+                icon: Brain,
+                title: 'Process Supervision',
+                desc: 'Step-level evaluation signals for training interpretable reasoning models',
+              },
+              {
+                icon: Split,
+                title: 'Dual-Track Reasoning',
+                desc: 'Positive-negative framework distinguishes valid changes from pseudo-changes',
+              },
+              {
+                icon: Sparkles,
+                title: 'Test-Time Scaling',
+                desc: 'Generate multiple reasoning paths and select best via PRM scoring',
+              },
+              {
+                icon: Zap,
+                title: 'Hallucination Mitigation',
+                desc: 'Decoupled Mixture-of-Judges detects ungrounded claims at each step',
+              },
+            ].map((cap, index) => (
               <div
                 key={cap.title}
                 className="group p-6 rounded-xl bg-[#161b22]/50 border border-[#2a2d47]/50 hover:border-[#4d6bfa]/50 transition-all duration-300 hover:-translate-y-1"
-                style={{ transitionDelay: `${400 + index * 50}ms` }}
+                style={{ transitionDelay: `${600 + index * 50}ms` }}
               >
                 <div className="w-12 h-12 rounded-lg bg-[#4d6bfa]/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                   <cap.icon className="w-6 h-6 text-[#4d6bfa]" />
@@ -324,7 +482,7 @@ export default function TasksBenchmarks() {
 
         {/* CTA */}
         <div
-          className={`mt-12 text-center transition-all duration-700 delay-500 ${
+          className={`mt-12 text-center transition-all duration-700 delay-700 ${
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}
         >
@@ -334,8 +492,8 @@ export default function TasksBenchmarks() {
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-[#4d6bfa] text-white font-medium hover:bg-[#4353fa] transition-colors shadow-lg shadow-[#4d6bfa]/30"
           >
-            <TrendingUp className="w-5 h-5" />
-            Access Training Code
+            <FileStack className="w-5 h-5" />
+            Explore Training Scripts
             <ArrowRight className="w-4 h-4" />
           </a>
         </div>

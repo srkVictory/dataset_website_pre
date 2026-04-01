@@ -2,34 +2,21 @@
 import { useState, useEffect } from 'react';
 import { Menu, X, ChevronDown } from 'lucide-react';
 
-// BC Logo组件
+// BC Logo Component
 const BCLogo = ({ className = "w-5 h-5" }: { className?: string }) => (
-  <svg 
-    viewBox="0 0 100 100" 
-    className={className}
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
+  <svg className={className} viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
     <defs>
       <linearGradient id="navBgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stopColor="#161b22" />
-        <stop offset="100%" stopColor="#0d1117" />
+        <stop offset="0%" stopColor="#161b22"/>
+        <stop offset="100%" stopColor="#0d1117"/>
       </linearGradient>
       <linearGradient id="navTextGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stopColor="#4d6bfa" />
-        <stop offset="100%" stopColor="#4353fa" />
+        <stop offset="0%" stopColor="#4d6bfa"/>
+        <stop offset="100%" stopColor="#4353fa"/>
       </linearGradient>
     </defs>
-    <rect x="5" y="5" width="90" height="90" rx="20" fill="url(#navBgGrad)" stroke="#2a2d47" strokeWidth="2"/>
-    <text 
-      x="50" 
-      y="68" 
-      fontFamily="Poppins, Inter, sans-serif" 
-      fontSize="48" 
-      fontWeight="700" 
-      textAnchor="middle" 
-      fill="url(#navTextGrad)"
-    >BC</text>
+    <rect x="2" y="2" width="28" height="28" rx="4" fill="url(#navBgGrad)" stroke="#2a2d47" strokeWidth="1"/>
+    <text x="16" y="16" fontSize="14" fontWeight="700" fill="url(#navTextGrad)" textAnchor="middle" dominantBaseline="central" dy="1">BC</text>
   </svg>
 );
 
@@ -104,8 +91,8 @@ export default function Navbar() {
             onClick={() => scrollToSection('#home')}
             className="flex items-center gap-3 group"
           >
-            <div className="w-10 h-10 rounded-xl overflow-hidden transition-transform duration-300 group-hover:scale-105">
-              <BCLogo className="w-full h-full" />
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#4d6bfa] to-[#4353fa] flex items-center justify-center transition-transform duration-300 group-hover:rotate-[5deg]">
+              <BCLogo className="w-6 h-6" />
             </div>
             <span className="text-lg font-semibold text-white font-['Poppins'] hidden sm:block">
               Geo-BeyondCaptioning

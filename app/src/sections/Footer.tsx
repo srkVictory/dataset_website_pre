@@ -1,5 +1,23 @@
 // 图标组件
-import { Satellite, Github, FileText, Database, Mail } from 'lucide-react';
+import { Github, FileText, Database, Mail } from 'lucide-react';
+
+// BC Logo Component
+const BCLogo = ({ className = "w-5 h-5" }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="footerBgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stopColor="#161b22"/>
+        <stop offset="100%" stopColor="#0d1117"/>
+      </linearGradient>
+      <linearGradient id="footerTextGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stopColor="#4d6bfa"/>
+        <stop offset="100%" stopColor="#4353fa"/>
+      </linearGradient>
+    </defs>
+    <rect x="2" y="2" width="28" height="28" rx="4" fill="url(#footerBgGrad)" stroke="#2a2d47" strokeWidth="1"/>
+    <text x="16" y="16" fontSize="14" fontWeight="700" fill="url(#footerTextGrad)" textAnchor="middle" dominantBaseline="central" dy="1">BC</text>
+  </svg>
+);
 
 // 页脚链接接口
 interface FooterLink {
@@ -54,14 +72,14 @@ export default function Footer() {
           <div className="lg:col-span-2">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#4d6bfa] to-[#4353fa] flex items-center justify-center">
-                <Satellite className="w-5 h-5 text-white" />
+                <BCLogo className="w-6 h-6" />
               </div>
               <span className="text-xl font-semibold text-white font-['Poppins']">
                 Geo-BeyondCaptioning
               </span>
             </div>
             <p className="text-[#b4bcd0] text-sm leading-relaxed mb-6 max-w-sm">
-              A comprehensive multi-modal change detection dataset for remote sensing, advancing AI research in satellite imagery analysis.
+              A preference-aligned benchmark for fine-grained reasoning and spatiotemporal geo-world understanding in Earth observation.
             </p>
             {/* 社交媒体图标链接 */}
             <div className="flex items-center gap-4">
@@ -179,9 +197,7 @@ export default function Footer() {
               Website by{' '}
               <span className="text-white font-medium">Shang Ruke</span>
               {' '}·{' '}
-              <span className="text-[#4d6bfa]">
-                srkVictory@163.com
-              </span>
+              <span className="text-[#4d6bfa]">srkVictory@163.com</span>
             </p>
           </div>
           <div className="flex items-center gap-6">

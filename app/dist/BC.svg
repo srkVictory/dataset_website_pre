@@ -1,34 +1,26 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <!-- Background with gradient -->
   <defs>
     <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#161b22;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#0d1117;stop-opacity:1" />
+      <stop offset="0%" style="stop-color:#161b22"/>
+      <stop offset="100%" style="stop-color:#0d1117"/>
     </linearGradient>
     <linearGradient id="textGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#4d6bfa;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#4353fa;stop-opacity:1" />
+      <stop offset="0%" style="stop-color:#4d6bfa"/>
+      <stop offset="100%" style="stop-color:#4353fa"/>
     </linearGradient>
-    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
-      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
-      <feMerge>
-        <feMergeNode in="coloredBlur"/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
-    </filter>
   </defs>
   
-  <!-- Background -->
-  <rect x="5" y="5" width="90" height="90" rx="20" ry="20" 
-        fill="url(#bgGradient)" 
-        stroke="#2a2d47" 
-        stroke-width="2"/>
+  <!-- Rounded square background -->
+  <rect x="5" y="5" width="90" height="90" rx="12" ry="12" fill="url(#bgGradient)" stroke="#2a2d47" stroke-width="2"/>
   
   <!-- BC Text -->
-  <text x="50" y="65" 
-        font-family="Poppins, Inter, sans-serif" 
-        font-size="45" 
+  <text x="50" y="50" 
+        font-family="Poppins, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" 
+        font-size="42" 
         font-weight="700" 
+        fill="url(#textGradient)" 
         text-anchor="middle" 
-        fill="url(#textGradient)"
-        filter="url(#glow)">BC</text>
+        dominant-baseline="central"
+        dy="2">BC</text>
 </svg>

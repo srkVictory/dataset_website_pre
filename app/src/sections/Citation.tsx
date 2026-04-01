@@ -1,23 +1,26 @@
 import { useState, useEffect, useRef } from 'react';
-import { BookOpen, FileText, Copy, Check, Scale } from 'lucide-react';
+import { BookOpen, FileText, Copy, Check, Scale, AlertCircle } from 'lucide-react';
 
-const bibtexCitation = `@inproceedings{geobc2025,
+const bibtexPlaceholder = `@inproceedings{geobc2025,
   title={Beyond Captioning: A Preference-Aligned Benchmark for 
-         Fine-Grained Reasoning and Spatiotemporal Geo-World Understanding},
-  author={Authors},
-  booktitle={Proceedings of the ACM Conference},
+         Fine-Grained Reasoning and Spatiotemporal Geo-World 
+         Understanding},
+  author={Shang, Ruke and Zhang, Jiayin and Kong, Jiaqi and 
+          Niu, Yiqun and others},
+  booktitle={TBD},
   year={2025},
-  publisher={ACM}
+  publisher={TBD},
+  note={Dataset available at TBD}
 }`;
 
-const apaCitation = `Authors. (2025). Beyond Captioning: A Preference-Aligned Benchmark 
-for Fine-Grained Reasoning and Spatiotemporal Geo-World Understanding. 
-In Proceedings of the ACM Conference. ACM.`;
+const gbPlaceholder = `尚如柯, 张佳音, 孔佳琪, 牛逸群 等. Beyond Captioning: 
+面向细粒度推理和时空地理世界理解的偏好对齐基准数据集[C]. 
+TBD, 2025.`;
 
 export default function Citation() {
   const [isVisible, setIsVisible] = useState(false);
   const [copiedBibtex, setCopiedBibtex] = useState(false);
-  const [copiedAPA, setCopiedAPA] = useState(false);
+  const [copiedGB, setCopiedGB] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -38,14 +41,14 @@ export default function Citation() {
     return () => observer.disconnect();
   }, []);
 
-  const copyToClipboard = (text: string, type: 'bibtex' | 'apa') => {
+  const copyToClipboard = (text: string, type: 'bibtex' | 'gb') => {
     navigator.clipboard.writeText(text);
     if (type === 'bibtex') {
       setCopiedBibtex(true);
       setTimeout(() => setCopiedBibtex(false), 2000);
     } else {
-      setCopiedAPA(true);
-      setTimeout(() => setCopiedAPA(false), 2000);
+      setCopiedGB(true);
+      setTimeout(() => setCopiedGB(false), 2000);
     }
   };
 
@@ -64,10 +67,28 @@ export default function Citation() {
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-8">
+        {/* Coming Soon Notice */}
+        <div
+          className={`mb-8 p-4 rounded-xl bg-[#f59e0b]/10 border border-[#f59e0b]/30 transition-all duration-700 delay-100 ${
+            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+          }`}
+        >
+          <div className="flex items-center gap-3">
+            <AlertCircle className="w-5 h-5 text-[#f59e0b] flex-shrink-0" />
+            <div>
+              <p className="text-sm font-medium text-[#f59e0b]">Citation Format Coming Soon</p>
+              <p className="text-xs text-[#b4bcd0]">
+                The final citation format will be available upon paper acceptance. 
+                The placeholders below show the expected format.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="grid lg:grid-cols-2 gap-8 opacity-60">
           {/* BibTeX Citation */}
           <div
-            className={`transition-all duration-700 delay-100 ${
+            className={`transition-all duration-700 delay-200 ${
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             }`}
           >
@@ -83,10 +104,10 @@ export default function Citation() {
 
             <div className="relative">
               <pre className="p-5 rounded-xl bg-[#161b22] border border-[#2a2d47]/50 text-sm text-[#b4bcd0] font-mono overflow-x-auto">
-                {bibtexCitation}
+                {bibtexPlaceholder}
               </pre>
               <button
-                onClick={() => copyToClipboard(bibtexCitation, 'bibtex')}
+                onClick={() => copyToClipboard(bibtexPlaceholder, 'bibtex')}
                 className="absolute top-3 right-3 p-2 rounded-lg bg-[#2a2d47]/50 hover:bg-[#4d6bfa]/20 transition-colors"
               >
                 {copiedBibtex ? (
@@ -98,9 +119,9 @@ export default function Citation() {
             </div>
           </div>
 
-          {/* APA Citation */}
+          {/* GB/T 7714 Citation */}
           <div
-            className={`transition-all duration-700 delay-200 ${
+            className={`transition-all duration-700 delay-300 ${
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             }`}
           >
@@ -109,20 +130,20 @@ export default function Citation() {
                 <FileText className="w-5 h-5 text-[#4d6bfa]" />
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-white">APA</h3>
-                <p className="text-xs text-[#b4bcd0]">For academic papers</p>
+                <h3 className="text-lg font-semibold text-white">GB/T 7714</h3>
+                <p className="text-xs text-[#b4bcd0]">For Chinese journals</p>
               </div>
             </div>
 
             <div className="relative">
               <pre className="p-5 rounded-xl bg-[#161b22] border border-[#2a2d47]/50 text-sm text-[#b4bcd0] font-mono overflow-x-auto">
-                {apaCitation}
+                {gbPlaceholder}
               </pre>
               <button
-                onClick={() => copyToClipboard(apaCitation, 'apa')}
+                onClick={() => copyToClipboard(gbPlaceholder, 'gb')}
                 className="absolute top-3 right-3 p-2 rounded-lg bg-[#2a2d47]/50 hover:bg-[#4d6bfa]/20 transition-colors"
               >
-                {copiedAPA ? (
+                {copiedGB ? (
                   <Check className="w-4 h-4 text-green-400" />
                 ) : (
                   <Copy className="w-4 h-4 text-[#b4bcd0]" />
@@ -134,7 +155,7 @@ export default function Citation() {
 
         {/* License */}
         <div
-          className={`mt-12 p-8 rounded-2xl bg-[#161b22]/80 border border-[#2a2d47]/50 transition-all duration-700 delay-300 ${
+          className={`mt-12 p-8 rounded-2xl bg-[#161b22]/80 border border-[#2a2d47]/50 transition-all duration-700 delay-400 ${
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}
         >
@@ -165,7 +186,10 @@ export default function Citation() {
                 ))}
               </div>
               <p className="mt-4 text-sm text-[#b4bcd0]">
-                For commercial use inquiries, please contact the corresponding author.
+                For commercial use inquiries, please contact us at{' '}
+                <span className="text-[#6e7681]">
+                  contact@levir-mf.org
+                </span>
               </p>
             </div>
           </div>
