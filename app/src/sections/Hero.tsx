@@ -100,21 +100,22 @@ export default function Hero() {
             </p>
 
             {/* 数据统计展示 */}
-            <div className="flex flex-wrap gap-6">
+            <div className="grid grid-cols-4 gap-4 md:gap-6">
               {[
                 { value: '50K+', label: 'Image Pairs' },
                 { value: '6-Step', label: 'CoT Reasoning' },
                 { value: '328K', label: 'Reasoning Trajectories' },
+                { value: 'North China', label: 'Region' },
               ].map((stat, index) => (
                 <div
                   key={stat.label}
                   className="text-center"
                   style={{ animationDelay: `${0.5 + index * 0.1}s` }}
                 >
-                  <div className="text-2xl md:text-3xl font-bold text-white font-['Poppins']">
+                  <div className="text-xl md:text-2xl lg:text-3xl font-bold text-white font-['Poppins']">
                     {stat.value}
                   </div>
-                  <div className="text-sm text-[#b4bcd0]">{stat.label}</div>
+                  <div className="text-xs md:text-sm text-[#b4bcd0]">{stat.label}</div>
                 </div>
               ))}
             </div>

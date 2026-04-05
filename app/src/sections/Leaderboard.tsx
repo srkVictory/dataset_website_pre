@@ -1,5 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
-import { Trophy, TrendingUp, Calendar, ExternalLink } from 'lucide-react';
+import { Trophy, TrendingUp, Calendar, ExternalLink, Sparkles } from 'lucide-react';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
 
 const leaderboardData = [
   { rank: 1, model: 'ChangeFormer', f1: 0.8912, iou: 0.8234, accuracy: 0.9456, date: '2024-01-15', affiliation: 'NJU' },
@@ -28,6 +35,7 @@ const getRankStyle = (rank: number) => {
 export default function Leaderboard() {
   const [isVisible, setIsVisible] = useState(false);
   const [animatedScores, setAnimatedScores] = useState<number[][]>([]);
+  const [showDialog, setShowDialog] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -175,7 +183,7 @@ export default function Leaderboard() {
           }`}
         >
           <button
-            onClick={() => alert('Online submission system under development. Stay tuned!')}
+            onClick={() => setShowDialog(true)}
             className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#4d6bfa] text-white font-medium hover:bg-[#4353fa] transition-colors cursor-pointer"
           >
             <TrendingUp className="w-5 h-5" />
@@ -187,6 +195,31 @@ export default function Leaderboard() {
           </p>
         </div>
       </div>
+
+      {/* Custom Dialog */}
+      <Dialog open={showDialog} onOpenChange={setShowDialog}>
+        <DialogContent className="bg-[#161b22] border-[#2a2d47] text-white sm:max-w-md">
+          <DialogHeader className="text-center">
+            <div className="mx-auto w-12 h-12 rounded-full bg-[#4d6bfa]/20 flex items-center justify-center mb-4">
+              <Sparkles className="w-6 h-6 text-[#4d6bfa]" />
+            </div>
+            <DialogTitle className="text-xl font-semibold text-white">
+              Coming Soon
+            </DialogTitle>
+            <DialogDescription className="text-[#b4bcd0] text-sm mt-2">
+              Online submission system under development. Stay tuned!
+            </DialogDescription>
+          </DialogHeader>
+          <div className="mt-6">
+            <button
+              onClick={() => setShowDialog(false)}
+              className="w-full py-2.5 rounded-lg bg-[#4d6bfa] text-white font-medium hover:bg-[#4353fa] transition-colors"
+            >
+              Got it
+            </button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </section>
   );
 }
