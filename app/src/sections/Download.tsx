@@ -1,12 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Download, ExternalLink, CheckCircle, AlertCircle, Clock } from 'lucide-react';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from "@/components/ui/dialog";
+import { Download, ExternalLink, CheckCircle, AlertCircle } from 'lucide-react';
 
 const downloadOptions = [
   {
@@ -53,8 +46,6 @@ const downloadOptions = [
 export default function DownloadSection() {
   const [isVisible, setIsVisible] = useState(false);
   const [agreed, setAgreed] = useState(false);
-  const [showDialog, setShowDialog] = useState(false);
-  const [dialogMessage, setDialogMessage] = useState({ title: '', description: '' });
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -165,19 +156,11 @@ export default function DownloadSection() {
                     onClick={(e) => {
                       if (!agreed) {
                         e.preventDefault();
-                        setDialogMessage({
-                          title: 'Terms Required',
-                          description: 'Please agree to the terms before downloading.'
-                        });
-                        setShowDialog(true);
+                        alert('Please agree to the terms before downloading.');
                         return;
                       }
                       e.preventDefault();
-                      setDialogMessage({
-                        title: 'Coming Soon',
-                        description: 'The dataset is coming soon. Please check back later.'
-                      });
-                      setShowDialog(true);
+                      alert('The dataset is coming soon. Please check back later.');
                     }}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -214,31 +197,6 @@ export default function DownloadSection() {
           </div>
         </div>
       </div>
-
-      {/* Custom Dialog */}
-      <Dialog open={showDialog} onOpenChange={setShowDialog}>
-        <DialogContent className="bg-[#161b22] border-[#2a2d47] text-white sm:max-w-md">
-          <DialogHeader className="text-center">
-            <div className="mx-auto w-12 h-12 rounded-full bg-[#4d6bfa]/20 flex items-center justify-center mb-4">
-              <Clock className="w-6 h-6 text-[#4d6bfa]" />
-            </div>
-            <DialogTitle className="text-xl font-semibold text-white">
-              {dialogMessage.title}
-            </DialogTitle>
-            <DialogDescription className="text-[#b4bcd0] text-sm mt-2">
-              {dialogMessage.description}
-            </DialogDescription>
-          </DialogHeader>
-          <div className="mt-6">
-            <button
-              onClick={() => setShowDialog(false)}
-              className="w-full py-2.5 rounded-lg bg-[#4d6bfa] text-white font-medium hover:bg-[#4353fa] transition-colors"
-            >
-              Got it
-            </button>
-          </div>
-        </DialogContent>
-      </Dialog>
     </section>
   );
 }
