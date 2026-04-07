@@ -41,7 +41,7 @@ const navLinks = [
       { name: 'Training Methods', href: '#tasks' },
       { name: 'Model Evaluation', href: '#evaluation' },
       { name: 'Annotation Process', href: '#annotation-process' },
-      { name: 'Leaderboard', href: '#leaderboard' },
+      // { name: 'Leaderboard', href: '#leaderboard' }, // 暂时注释，等待数据集完全公布后恢复
     ]
   },
   { name: 'Code & Models', href: '#code' },

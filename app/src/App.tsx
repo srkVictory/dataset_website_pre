@@ -10,7 +10,7 @@ import LandUse from './sections/LandUse';
 
 import ChangeDetection from './sections/ChangeDetection';
 import TasksBenchmarks from './sections/TasksBenchmarks';
-import Leaderboard from './sections/Leaderboard';
+// import Leaderboard from './sections/Leaderboard'; // 暂时注释，等待数据集完全公布后恢复
 import CodeModels from './sections/CodeModels';
 import DownloadSection from './sections/Download';
 import Citation from './sections/Citation';
@@ -55,8 +55,8 @@ function App() {
         {/* 任务与基准测试区块 */}
         <TasksBenchmarks />
 
-        {/* 排行榜区块 */}
-        <Leaderboard />
+        {/* 排行榜区块 - 暂时注释，等待数据集完全公布后恢复 */}
+        {/* <Leaderboard /> */}
 
         {/* 代码与模型区块 */}
         <CodeModels />
