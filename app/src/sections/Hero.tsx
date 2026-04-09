@@ -238,101 +238,126 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* 数据集详情模块 */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-auto pb-12 pt-8">
-        <div className="space-y-8">
-          {/* Definitions - 上方 */}
-          <div
-            className={`transition-all duration-700 ${
-              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-            }`}
-            style={{ transitionDelay: '0.9s', transitionTimingFunction: 'var(--ease-out-expo)' }}
-          >
-            <h3 className="text-lg font-semibold text-white mb-4">Definitions</h3>
-            
-            <div className="grid md:grid-cols-3 gap-4">
-              {/* Sample */}
-              <div className="p-4 rounded-xl bg-[#161b22]/80 border border-[#2a2d47]/50 flex items-start gap-4">
-                <div className="w-10 h-10 rounded-lg bg-[#4d6bfa]/20 flex items-center justify-center flex-shrink-0">
-                  <svg className="w-5 h-5 text-[#4d6bfa]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4" />
-                  </svg>
+      {/* 数据集构建流程与统计 */}
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-auto pb-8 pt-6">
+        <div className="space-y-4">
+          
+          {/* 第一行：流程图 + Definitions */}
+          <div className="grid lg:grid-cols-3 gap-4">
+            {/* 左侧：构建流程图 */}
+            <div
+              className={`lg:col-span-2 transition-all duration-700 ${
+                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+              }`}
+              style={{ transitionDelay: '0.9s', transitionTimingFunction: 'var(--ease-out-expo)' }}
+            >
+              <h3 className="text-sm font-semibold text-white mb-2 flex items-center gap-2">
+                <svg className="w-4 h-4 text-[#4d6bfa]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+                </svg>
+                Dataset Construction Pipeline
+              </h3>
+              
+              {/* 流程图图片 */}
+              <div className="rounded-lg bg-[#161b22]/80 border border-[#2a2d47]/50 p-2 mb-3">
+                <img 
+                  src="/construction_flow.png" 
+                  alt="Dataset Construction Flow" 
+                  className="w-full h-auto rounded-md"
+                />
+              </div>
+              
+              {/* 流程说明 - 精简版 */}
+              <div className="flex gap-3 text-[11px] text-[#b4bcd0]">
+                <div className="flex items-center gap-1.5">
+                  <div className="w-4 h-4 rounded bg-[#4d6bfa]/20 flex items-center justify-center text-[9px] font-bold text-[#4d6bfa]">A</div>
+                  <span>Geo-Grounded Understanding</span>
                 </div>
-                <div>
-                  <h4 className="text-white font-medium mb-1">Sample</h4>
-                  <p className="text-sm text-[#b4bcd0]">A bi-temporal image pair with metadata, semantic query, and rule context.</p>
+                <div className="text-[#2a2d47]">→</div>
+                <div className="flex items-center gap-1.5">
+                  <div className="w-4 h-4 rounded bg-[#22c55e]/20 flex items-center justify-center text-[9px] font-bold text-[#22c55e]">B</div>
+                  <span>Dense Relational Completion</span>
+                </div>
+                <div className="text-[#2a2d47]">→</div>
+                <div className="flex items-center gap-1.5">
+                  <div className="w-4 h-4 rounded bg-[#f59e0b]/20 flex items-center justify-center text-[9px] font-bold text-[#f59e0b]">C</div>
+                  <span>Rule-Constrained Chain</span>
                 </div>
               </div>
+            </div>
 
-              {/* Reasoning Trajectory */}
-              <div className="p-4 rounded-xl bg-[#161b22]/80 border border-[#2a2d47]/50 flex items-start gap-4">
-                <div className="w-10 h-10 rounded-lg bg-[#22c55e]/20 flex items-center justify-center flex-shrink-0">
-                  <svg className="w-5 h-5 text-[#22c55e]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
-                  </svg>
+            {/* 右侧：Definitions */}
+            <div
+              className={`transition-all duration-700 ${
+                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+              }`}
+              style={{ transitionDelay: '1.0s', transitionTimingFunction: 'var(--ease-out-expo)' }}
+            >
+              <h3 className="text-xs font-semibold text-[#b4bcd0] uppercase tracking-wider mb-2">Definitions</h3>
+              <div className="space-y-2">
+                <div className="p-2.5 rounded-lg bg-[#161b22]/80 border border-[#2a2d47]/50">
+                  <div className="flex items-center gap-2 mb-1">
+                    <div className="w-6 h-6 rounded bg-[#4d6bfa]/20 flex items-center justify-center flex-shrink-0">
+                      <svg className="w-3 h-3 text-[#4d6bfa]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4" />
+                      </svg>
+                    </div>
+                    <span className="text-xs text-white font-medium">Sample</span>
+                  </div>
+                  <p className="text-[10px] text-[#b4bcd0] leading-relaxed">Bi-temporal image pair with metadata, semantic query, and rule context.</p>
                 </div>
-                <div>
-                  <h4 className="text-white font-medium mb-1">Reasoning Trajectory</h4>
-                  <p className="text-sm text-[#b4bcd0]">A complete six-step reasoning path from perception to conclusion.</p>
+                <div className="p-2.5 rounded-lg bg-[#161b22]/80 border border-[#2a2d47]/50">
+                  <div className="flex items-center gap-2 mb-1">
+                    <div className="w-6 h-6 rounded bg-[#22c55e]/20 flex items-center justify-center flex-shrink-0">
+                      <svg className="w-3 h-3 text-[#22c55e]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                      </svg>
+                    </div>
+                    <span className="text-xs text-white font-medium">Reasoning Trajectory</span>
+                  </div>
+                  <p className="text-[10px] text-[#b4bcd0] leading-relaxed">A complete six-step reasoning path from perception to conclusion.</p>
                 </div>
-              </div>
-
-              {/* Judge Comment */}
-              <div className="p-4 rounded-xl bg-[#161b22]/80 border border-[#2a2d47]/50 flex items-start gap-4">
-                <div className="w-10 h-10 rounded-lg bg-[#f59e0b]/20 flex items-center justify-center flex-shrink-0">
-                  <svg className="w-5 h-5 text-[#f59e0b]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
-                  </svg>
-                </div>
-                <div>
-                  <h4 className="text-white font-medium mb-1">Judge Comment</h4>
-                  <p className="text-sm text-[#b4bcd0]">Evaluation statements generated by the decoupled multi-judge system.</p>
+                <div className="p-2.5 rounded-lg bg-[#161b22]/80 border border-[#2a2d47]/50">
+                  <div className="flex items-center gap-2 mb-1">
+                    <div className="w-6 h-6 rounded bg-[#f59e0b]/20 flex items-center justify-center flex-shrink-0">
+                      <svg className="w-3 h-3 text-[#f59e0b]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                      </svg>
+                    </div>
+                    <span className="text-xs text-white font-medium">Judge Comment</span>
+                  </div>
+                  <p className="text-[10px] text-[#b4bcd0] leading-relaxed">Evaluation statements from decoupled multi-judge system.</p>
                 </div>
               </div>
             </div>
           </div>
-
-          {/* Release Accounting - 下方 */}
+          
+          {/* 第二行：Release Accounting */}
           <div
             className={`transition-all duration-700 ${
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             }`}
-            style={{ transitionDelay: '1.0s', transitionTimingFunction: 'var(--ease-out-expo)' }}
+            style={{ transitionDelay: '1.1s', transitionTimingFunction: 'var(--ease-out-expo)' }}
           >
-            <h3 className="text-lg font-semibold text-white mb-4">Release Accounting</h3>
-            
-            <div className="p-4 rounded-xl bg-[#161b22]/80 border border-[#2a2d47]/50">
-              {/* Table Header */}
-              <div className="flex justify-between text-xs text-[#b4bcd0] uppercase tracking-wider mb-3 pb-2 border-b border-[#2a2d47]/50">
-                <span>Record Type</span>
-                <span>Count</span>
+            <h3 className="text-xs font-semibold text-[#b4bcd0] uppercase tracking-wider mb-2">Release Accounting</h3>
+            <div className="grid grid-cols-4 gap-3">
+              <div className="p-3 rounded-lg bg-[#161b22]/80 border border-[#2a2d47]/50 text-center">
+                <div className="text-lg font-semibold text-[#4d6bfa] font-['Poppins']">109,224</div>
+                <div className="text-[10px] text-[#b4bcd0] mt-0.5">Final Samples</div>
               </div>
-              
-              {/* Table Rows */}
-              <div className="space-y-3">
-                <div className="flex justify-between items-center py-2">
-                  <span className="text-white text-sm">Final benchmark samples</span>
-                  <span className="text-[#4d6bfa] font-semibold font-['Poppins']">109,224</span>
-                </div>
-                <div className="flex justify-between items-center py-2 border-t border-[#2a2d47]/30">
-                  <span className="text-white text-sm">Reasoning trajectories</span>
-                  <span className="text-[#4d6bfa] font-semibold font-['Poppins']">327,672</span>
-                </div>
-                <div className="flex justify-between items-center py-2 border-t border-[#2a2d47]/30">
-                  <span className="text-white text-sm">Evaluation comments</span>
-                  <span className="text-[#4d6bfa] font-semibold font-['Poppins']">382,284</span>
-                </div>
-                <div className="flex justify-between items-center py-2 border-t border-[#2a2d47]/30">
-                  <span className="text-white text-sm">Pro subset</span>
-                  <span className="text-[#4d6bfa] font-semibold font-['Poppins']">39,646</span>
-                </div>
+              <div className="p-3 rounded-lg bg-[#161b22]/80 border border-[#2a2d47]/50 text-center">
+                <div className="text-lg font-semibold text-[#4d6bfa] font-['Poppins']">327,672</div>
+                <div className="text-[10px] text-[#b4bcd0] mt-0.5">Reasoning Trajectories</div>
+              </div>
+              <div className="p-3 rounded-lg bg-[#161b22]/80 border border-[#2a2d47]/50 text-center">
+                <div className="text-lg font-semibold text-[#4d6bfa] font-['Poppins']">382,284</div>
+                <div className="text-[10px] text-[#b4bcd0] mt-0.5">Evaluation Comments</div>
+              </div>
+              <div className="p-3 rounded-lg bg-[#161b22]/80 border border-[#2a2d47]/50 text-center">
+                <div className="text-lg font-semibold text-[#4d6bfa] font-['Poppins']">39,646</div>
+                <div className="text-[10px] text-[#b4bcd0] mt-0.5">Pro Subset</div>
               </div>
             </div>
-
-            {/* Note */}
-            <p className="text-xs text-[#b4bcd0] mt-4">
-              <span className="text-white font-medium">Note:</span> Numbers shown here reflect the current manuscript draft and should match the review release.
-            </p>
           </div>
         </div>
       </div>
