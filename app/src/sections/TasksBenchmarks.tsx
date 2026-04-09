@@ -13,7 +13,6 @@ import {
   Award,
   Scale,
   Layers,
-  Clock,
   Database,
   Split,
   FileStack
@@ -94,27 +93,6 @@ const trainingCategories = [
       },
     ],
   },
-  {
-    category: 'Test-Time Scaling',
-    icon: Clock,
-    color: '#ec4899',
-    desc: 'Generate and evaluate multiple reasoning paths at inference time',
-    tasks: [
-      { 
-        name: 'Self-Consistency', 
-        fullName: 'Multi-Path Voting', 
-        desc: 'Sample multiple reasoning trajectories and aggregate via majority voting',
-        detail: 'Leverages diverse reasoning patterns across 5 generator models'
-      },
-      { 
-        name: 'Step-Level Beam Search', 
-        fullName: 'Guided Decoding', 
-        desc: 'Use PRM scores to guide generation, pruning low-quality intermediate steps',
-        highlight: true,
-        detail: 'Step-by-step credit assignment enables early error detection'
-      },
-    ],
-  },
 ];
 
 // Dataset Statistics
@@ -159,6 +137,13 @@ export default function TasksBenchmarks() {
   }, []);
 
   const currentCategory = trainingCategories[activeCategory];
+  
+  // Ensure activeCategory is valid after removal
+  useEffect(() => {
+    if (activeCategory >= trainingCategories.length) {
+      setActiveCategory(0);
+    }
+  }, [activeCategory]);
 
   return (
     <section id="tasks" ref={sectionRef} className="py-24 relative">
