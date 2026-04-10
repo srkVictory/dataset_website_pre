@@ -802,17 +802,15 @@ export default function AnnotationProcess() {
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div
-          className={`text-center mb-12 transition-all duration-700 ${
+          className={`text-center mb-4 transition-all duration-700 ${
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#4d6bfa]/10 border border-[#4d6bfa]/30 mb-6">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#4d6bfa]/10 border border-[#4d6bfa]/30 mb-2">
             <Sparkles className="w-4 h-4 text-[#4d6bfa]" />
             <span className="text-sm font-medium text-[#4d6bfa]">Annotation Pipeline</span>
           </div>
-          <h2 className="section-title">
-            6-Step <span className="gradient-text">Evaluation Framework</span>
-          </h2>
+
           <p className="section-subtitle max-w-3xl mx-auto">
             Every annotation undergoes rigorous evaluation by <strong className="text-white">5 models × 3 judges</strong> across 6 thinking steps,
             ensuring high-quality training data with detailed quality metrics
