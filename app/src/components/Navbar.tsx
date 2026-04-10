@@ -151,7 +151,7 @@ export default function Navbar() {
               Download
             </button>
             <a
-              href="https://github.com"
+              href="https://github.com/kaynqi/Beyond-Captioning"
               target="_blank"
               rel="noopener noreferrer"
               className="btn-primary py-2.5 px-5 text-xs"
@@ -209,7 +209,7 @@ export default function Navbar() {
                 Download
               </button>
               <a
-                href="https://github.com"
+                href="https://github.com/kaynqi/Beyond-Captioning"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn-primary w-full text-center"

@@ -131,21 +131,19 @@ export default function Hero() {
                 Explore Dataset
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
               </button>
-              <a
-                href="https://arxiv.org"
-                target="_blank"
-                rel="noopener noreferrer"
+              <button
+                onClick={() => alert('Coming soon!')}
                 className="btn-secondary flex items-center gap-2"
               >
                 <FileText className="w-4 h-4" />
                 View Paper
-              </a>
+              </button>
             </div>
 
             {/* 快速链接区域 */}
             <div className="flex flex-wrap items-center gap-4 pt-4">
               <a
-                href="https://github.com"
+                href="https://github.com/kaynqi/Beyond-Captioning"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 text-sm text-[#b4bcd0] hover:text-white transition-colors"

@@ -20,7 +20,7 @@ const downloadOptions = [
       { label: '327K+ reasoning trajectories', icon: 'trajectories' },
     ],
     links: [
-      { name: 'HuggingFace', url: 'https://huggingface.co/datasets/your-org/geo-bc' },
+      { name: 'HuggingFace', url: 'https://huggingface.co/datasets/Kayn-kjq/Geo_BeyondCaptioning' },
     ],
   },
 ];
@@ -53,7 +53,7 @@ export default function DownloadSection() {
       {/* Background Decoration */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-[#4d6bfa]/5 rounded-full blur-[120px] pointer-events-none" />
       
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         {/* Section Header */}
         <div
           className={`text-center mb-12 transition-all duration-700 ${
@@ -72,7 +72,7 @@ export default function DownloadSection() {
 
         {/* Agreement Card */}
         <div
-          className={`max-w-2xl mx-auto mb-8 transition-all duration-700 delay-100 ${
+          className={`max-w-3xl mx-auto mb-8 transition-all duration-700 delay-100 ${
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}
         >
@@ -104,7 +104,7 @@ export default function DownloadSection() {
         </div>
 
         {/* Dataset Overview */}
-        <div className="max-w-6xl mx-auto mb-8">
+        <div className="max-w-7xl mx-auto mb-8">
           <div
             className={`p-6 rounded-2xl bg-gradient-to-r from-[#4d6bfa]/10 via-[#161b22] to-[#8b5cf6]/10 border border-[#2a2d47]/50 transition-all duration-700 delay-100 ${
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
@@ -117,7 +117,7 @@ export default function DownloadSection() {
         </div>
 
         {/* Stats Grid */}
-        <div className="max-w-6xl mx-auto mb-8">
+        <div className="max-w-7xl mx-auto mb-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {downloadOptions[0].stats.map((stat, index) => (
               <div
@@ -136,7 +136,7 @@ export default function DownloadSection() {
         </div>
 
         {/* Download Cards Grid */}
-        <div className="max-w-6xl mx-auto grid lg:grid-cols-3 gap-6">
+        <div className="max-w-7xl mx-auto grid lg:grid-cols-3 gap-6">
           {/* Main Dataset Card */}
           <div className="lg:col-span-2">
             {downloadOptions.map((option, index) => (
@@ -192,14 +192,13 @@ export default function DownloadSection() {
                       <a
                         key={link.name}
                         href={agreed ? link.url : '#'}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         onClick={(e) => {
                           if (!agreed) {
                             e.preventDefault();
                             alert('Please agree to the terms before downloading.');
-                            return;
                           }
-                          e.preventDefault();
-                          alert('The dataset is coming soon. Please check back later.');
                         }}
                         className={`flex items-center justify-center gap-3 w-full py-4 rounded-2xl font-semibold text-lg transition-all duration-300 ${
                           agreed
@@ -280,7 +279,7 @@ export default function DownloadSection() {
 
         {/* Bottom Features */}
         <div
-          className={`mt-12 max-w-6xl mx-auto grid md:grid-cols-3 gap-6 transition-all duration-700 delay-500 ${
+          className={`mt-12 max-w-7xl mx-auto grid md:grid-cols-3 gap-6 transition-all duration-700 delay-500 ${
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}
         >

@@ -3,73 +3,76 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip,
 import { ArrowRight, TrendingUp, Filter } from 'lucide-react';
 
 // 变化类型统计数据 - 展示从一种地类变化到另一种地类的实例数量
+// Calculate total count for percentage calculation
+const totalCount = 8549;
+
 const changeTypeData = [
 { 
-    from: '水浇地', 
-    to: '人为扰动用地', 
+    from: 'Irrigated Farmland', 
+    to: 'Human Disturbance', 
     count: 2588, 
     color: '#4d6bfa',
     description: 'Irrigated farmland to human disturbance'
   },
   { 
-    from: '人为扰动用地', 
-    to: '其他建设用地', 
+    from: 'Human Disturbance', 
+    to: 'Other Construction', 
     count: 2474, 
     color: '#22c55e',
     description: 'Human disturbance to other construction'
   },
   { 
-    from: '其他草地', 
-    to: '人为扰动用地', 
+    from: 'Grassland', 
+    to: 'Human Disturbance', 
     count: 923, 
     color: '#a855f7',
     description: 'Grassland to human disturbance'
   },
   { 
-    from: '人为扰动用地', 
-    to: '水浇地', 
+    from: 'Human Disturbance', 
+    to: 'Irrigated Farmland', 
     count: 562, 
     color: '#3b82f6',
     description: 'Human disturbance to irrigated farmland'
   },
   { 
-    from: '河湖库塘', 
-    to: '人为扰动用地', 
+    from: 'Water Body', 
+    to: 'Human Disturbance', 
     count: 557, 
     color: '#14b8a6',
     description: 'Water body to human disturbance'
   },
   { 
-    from: '有林地', 
-    to: '人为扰动用地', 
+    from: 'Forest', 
+    to: 'Human Disturbance', 
     count: 491, 
     color: '#f59e0b',
     description: 'Forest to human disturbance'
   },
   { 
-    from: '水浇地', 
-    to: '其他建设用地', 
+    from: 'Irrigated Farmland', 
+    to: 'Other Construction', 
     count: 324, 
     color: '#ef4444',
     description: 'Irrigated farmland to other construction'
   },
   { 
-    from: '人为扰动用地', 
-    to: '城市建设用地', 
+    from: 'Human Disturbance', 
+    to: 'Urban Construction', 
     count: 297, 
     color: '#06b6d4',
     description: 'Human disturbance to urban construction'
   },
   { 
-    from: '其他草地', 
-    to: '河湖库塘', 
+    from: 'Grassland', 
+    to: 'Water Body', 
     count: 193, 
     color: '#8b5cf6',
     description: 'Grassland to water body'
   },
   { 
-    from: '水浇地', 
-    to: '河湖库塘', 
+    from: 'Irrigated Farmland', 
+    to: 'Water Body', 
     count: 140, 
     color: '#ec4899',
     description: 'Irrigated farmland to water body'
@@ -79,39 +82,39 @@ const changeTypeData = [
 // 按变化大类分组统计
 const categorySummary = [
   { 
-    category: '城市化变化', 
+    category: 'Urbanization', 
     total: 5820, 
     percentage: 74.6,
     color: '#4d6bfa',
-    types: ['耕地→建筑', '林地→建筑', '草地→建筑', '水域及水利设施用地→建筑']
+    types: ['Farmland → Construction', 'Forest → Construction', 'Grassland → Construction', 'Water → Construction']
   },
   { 
-    category: '生态退化', 
+    category: 'Ecological Degradation', 
     total: 90, 
     percentage: 1.2,
     color: '#ef4444',
-    types: ['草地→耕地', '林地→耕地', '园地→耕地']
+    types: ['Grassland → Farmland', 'Forest → Farmland', 'Orchard → Farmland']
   },
   { 
-    category: '人为扰动', 
+    category: 'Human Disturbance', 
     total: 743, 
     percentage: 9.5,
     color: '#f59e0b',
-    types: ['建设用地→交通运输用地', '草地→水域及水利设施用地', '水域及水利设施用地→交通运输用地']
+    types: ['Construction → Transportation', 'Grassland → Water', 'Water → Transportation']
   },
   { 
-    category: '生态修复', 
+    category: 'Ecological Restoration', 
     total: 1093, 
     percentage: 14.0,
     color: '#22c55e',
-    types: ['建设用地→水域及水利设施用地', '建设用地→草地', '耕地→水域及水利设施用地', '建设用地→林地']
+    types: ['Construction → Water', 'Construction → Grassland', 'Farmland → Water', 'Construction → Forest']
   },
   { 
-    category: '其他变化', 
+    category: 'Other Changes', 
     total: 59, 
     percentage: 0.8,
     color: '#6b7280',
-    types: ['其他类型']
+    types: ['Other Types']
   },
 ];
 
@@ -188,7 +191,8 @@ export default function LandUse() {
             <span className="text-sm font-medium text-white">{data.to}</span>
           </div>
           <p className="text-xs text-[#b4bcd0] mb-2">{data.description}</p>
-          <p className="text-lg font-bold text-[#4d6bfa]">{data.count.toLocaleString()} instances</p>
+          <p className="text-lg font-bold text-[#4d6bfa]">{((data.count / totalCount) * 100).toFixed(1)}%</p>
+          <p className="text-xs text-[#6e7681]">{data.count.toLocaleString()} instances</p>
         </div>
       );
     }
@@ -267,7 +271,7 @@ export default function LandUse() {
                         type="number" 
                         stroke="#6b7280"
                         fontSize={12}
-                        tickFormatter={(value) => value.toLocaleString()}
+                        tickFormatter={(value) => `${((value / totalCount) * 100).toFixed(1)}%`}
                       />
                       <YAxis 
                         type="category" 
@@ -447,30 +451,6 @@ export default function LandUse() {
             </div>
           </div>
         )}
-
-        {/* Bottom Stats */}
-        <div
-          className={`mt-12 grid grid-cols-2 md:grid-cols-4 gap-6 transition-all duration-700 delay-500 ${
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-          }`}
-        >
-          {[
-            { label: 'Source Land Types', value: '12+' },
-            { label: 'Target Land Types', value: '12+' },
-            { label: 'Change Combinations', value: '60+' },
-            { label: 'Annotated Pixels', value: '2.5M+' },
-          ].map((stat) => (
-            <div
-              key={stat.label}
-              className="text-center p-6 rounded-xl bg-[#161b22]/30 border border-[#2a2d47]/30"
-            >
-              <div className="text-2xl font-bold text-white font-['Poppins'] mb-1">
-                {stat.value}
-              </div>
-              <div className="text-sm text-[#b4bcd0]">{stat.label}</div>
-            </div>
-          ))}
-        </div>
       </div>
     </section>
   );

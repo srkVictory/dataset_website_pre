@@ -61,7 +61,7 @@ const benchmarkResults = {
       { model: 'Qwen2.5-VL-7B', cda: 49.965, ccl1: 0.42, ccl2: 0.25 },
       { model: 'MiMo-V2-Flash', cda: 49.095, ccl1: 5.06, ccl2: 0.96 },
       { model: 'QVQ-Max', cda: 50.425, ccl1: 11.09, ccl2: 0.76 },
-      { model: 'SkySense', cda: 78.735, ccl1: 2.80, ccl2: 0.10, highlight: true },
+      { model: 'SkySense', cda: 78.735, ccl1: 2.80, ccl2: 0.10 },
     ],
   },
   experiment2: {
@@ -143,7 +143,7 @@ export default function ModelEvaluation() {
             5 Models <span className="gradient-text">×</span> 3 Judges
           </h2>
           <p className="section-subtitle max-w-3xl mx-auto">
-            Unique dataset with <strong className="text-white">19,705 multi-model annotations</strong> and 
+            Unique dataset with <strong className="text-white">382284 multi-model annotations</strong> and 
             comprehensive judge evaluations for training robust reward models and detecting hallucinations
           </p>
         </div>
@@ -157,7 +157,7 @@ export default function ModelEvaluation() {
           {[
             { value: '5', label: 'VLM Models', icon: Brain, color: '#4d6bfa' },
             { value: '3', label: 'Judge Systems', icon: Gavel, color: '#22c55e' },
-            { value: '19K+', label: 'Evaluated Samples', icon: BarChart3, color: '#f59e0b' },
+            { value: '382K+', label: 'Evaluated Samples', icon: BarChart3, color: '#f59e0b' },
           ].map((stat, index) => (
             <div
               key={stat.label}
@@ -307,6 +307,11 @@ export default function ModelEvaluation() {
                 })}
               </div>
 
+              {/* Description */}
+              <p className="text-center text-[#b4bcd0] text-sm max-w-3xl mx-auto">
+                We report metrics across Stage I–III for six models. Strong perception and strong structured reasoning are not the same capability—Geo-BC exposes that gap.
+              </p>
+
               {/* Results Table */}
               <div className="rounded-xl bg-[#161b22]/80 border border-[#2a2d47]/50 overflow-hidden">
                 {/* Table Header */}
@@ -442,29 +447,6 @@ export default function ModelEvaluation() {
               </div>
             </div>
           )}
-        </div>
-
-        {/* Bottom Benefits */}
-        <div
-          className={`mt-12 grid md:grid-cols-4 gap-4 transition-all duration-700 delay-400 ${
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-          }`}
-        >
-          {[
-            { icon: Award, title: 'Reward Model Training', desc: 'Use judge scores to train PRM/ORM' },
-            { icon: ShieldCheck, title: 'Hallucination Mitigation', desc: 'Detect and reduce false claims' },
-            { icon: TrendingUp, title: 'Model Comparison', desc: 'Benchmark VLM performance' },
-            { icon: Zap, title: 'Ensemble Methods', desc: 'Aggregate multi-model outputs' },
-          ].map((item, index) => (
-            <div
-              key={item.title}
-              className="p-4 rounded-lg bg-[#161b22]/50 border border-[#2a2d47]/30 text-center"
-            >
-              <item.icon className="w-6 h-6 text-[#4d6bfa] mx-auto mb-2" />
-              <h5 className="text-sm font-medium text-white mb-1">{item.title}</h5>
-              <p className="text-xs text-[#6e7681]">{item.desc}</p>
-            </div>
-          ))}
         </div>
       </div>
     </section>

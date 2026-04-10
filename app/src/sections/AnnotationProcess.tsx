@@ -811,6 +811,10 @@ export default function AnnotationProcess() {
             <span className="text-sm font-medium text-[#4d6bfa]">Annotation Pipeline</span>
           </div>
 
+          <h2 className="section-title mb-3">
+            Decoupled Multi-Agent Criterion System
+          </h2>
+
           <p className="section-subtitle max-w-3xl mx-auto">
             Every annotation undergoes rigorous evaluation by <strong className="text-white">5 models × 3 judges</strong> across 6 thinking steps,
             ensuring high-quality training data with detailed quality metrics

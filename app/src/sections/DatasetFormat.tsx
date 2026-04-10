@@ -141,7 +141,7 @@ export default function DatasetFormat() {
             <span className="text-sm font-medium text-[#4d6bfa]">Structured Thinking Format</span>
           </div>
           <h2 className="section-title">
-            6-Step <span className="gradient-text">Chain-of-Thought</span> Annotation
+            Structured Multimodal Chain of Reasoning
           </h2>
           <p className="section-subtitle max-w-3xl mx-auto">
             Our dataset pioneers a structured reasoning format that enables models to learn 
