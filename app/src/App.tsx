@@ -4,6 +4,7 @@ import Navbar from './components/Navbar';
 import Hero from './sections/Hero';
 import DatasetOverview from './sections/DatasetOverview';
 import DatasetFormat from './sections/DatasetFormat';
+import ReasoningLength from './sections/ReasoningLength';
 import ModelEvaluation from './sections/ModelEvaluation';
 import AnnotationProcess from './sections/AnnotationProcess';
 import LandUse from './sections/LandUse';
@@ -37,6 +38,9 @@ function App() {
 
         {/* 数据格式说明区块 */}
         <DatasetFormat />
+
+        {/* 推理长度分析区块 */}
+        <ReasoningLength />
 
         {/* 模型评估区块 */}
         <ModelEvaluation />
