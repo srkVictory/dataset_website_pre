@@ -12,28 +12,29 @@ import {
   Zap,
   Target,
   Eye,
-  Scale
+  Scale,
+  GitBranch
 } from 'lucide-react';
 
 const models = [
-  { name: 'GPT-4.1', provider: 'OpenAI', color: '#10a37f', desc: 'Advanced multimodal reasoning' },
-  { name: 'Gemini', provider: 'Google', color: '#4285f4', desc: 'Strong visual understanding' },
-  { name: 'Qwen-VL', provider: 'Alibaba', color: '#5a3fc0', desc: 'Bilingual capability' },
-  { name: 'LLaVA', provider: '开源社区', color: '#ff6b6b', desc: 'Open-source specialist' },
-  { name: 'QVQ', provider: 'Qwen系列', color: '#f59e0b', desc: 'Visual reasoning focus' },
+  { name: 'ChatGPT 4.1', provider: 'OpenAI', color: '#10a37f', desc: 'Advanced multimodal reasoning' },
+  { name: 'Gemini 2.5 Pro', provider: 'Google', color: '#4285f4', desc: 'Strong visual understanding' },
+  { name: 'Qwen 2.5 VL 7B', provider: 'Alibaba', color: '#5a3fc0', desc: 'Bilingual capability' },
+  { name: 'LLaVA 7B', provider: 'Open-source', color: '#ff6b6b', desc: 'Open-source specialist' },
+  { name: 'QVQ', provider: 'Alibaba', color: '#f59e0b', desc: 'Visual reasoning focus' },
 ];
 
 const judges = [
   {
     name: 'Judge-1 VLM',
-    type: 'Gemini-based',
+    type: 'Gemini 3.1 Pro',
     icon: Gavel,
     color: '#4285f4',
     features: ['Step-by-step evaluation', 'Hallucination detection', 'Visual-grounded scoring'],
   },
   {
     name: 'Judge-2 LMM',
-    type: 'DeepSeek-based',
+    type: 'DeepSeek-R1',
     icon: ShieldCheck,
     color: '#22c55e',
     features: ['Multi-modal assessment', 'Reasoning quality check', 'Cross-model comparison'],
@@ -140,7 +141,7 @@ export default function ModelEvaluation() {
             <span className="text-sm font-medium text-[#4d6bfa]">Multi-Model Evaluation</span>
           </div>
           <h2 className="section-title">
-            5 Models <span className="gradient-text">×</span> 3 Judges
+            Decoupled Multi-Agent Criterion System
           </h2>
           <p className="section-subtitle max-w-3xl mx-auto">
             Unique dataset with <strong className="text-white">382284 multi-model annotations</strong> and 
@@ -150,14 +151,15 @@ export default function ModelEvaluation() {
 
         {/* Stats Row */}
         <div
-          className={`grid grid-cols-3 gap-6 mb-12 transition-all duration-700 delay-100 ${
+          className={`grid grid-cols-2 md:grid-cols-4 gap-6 mb-12 transition-all duration-700 delay-100 ${
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}
         >
           {[
             { value: '5', label: 'VLM Models', icon: Brain, color: '#4d6bfa' },
             { value: '3', label: 'Judge Systems', icon: Gavel, color: '#22c55e' },
-            { value: '382K+', label: 'Evaluated Samples', icon: BarChart3, color: '#f59e0b' },
+            { value: '327K+', label: 'Reasoning Trajectories', icon: GitBranch, color: '#a855f7' },
+            { value: '382K+', label: 'Judge Annotations', icon: BarChart3, color: '#f59e0b' },
           ].map((stat, index) => (
             <div
               key={stat.label}

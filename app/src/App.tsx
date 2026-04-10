@@ -12,9 +12,9 @@ import LandUse from './sections/LandUse';
 import ChangeDetection from './sections/ChangeDetection';
 import TasksBenchmarks from './sections/TasksBenchmarks';
 // import Leaderboard from './sections/Leaderboard'; // 暂时注释，等待数据集完全公布后恢复
-import CodeModels from './sections/CodeModels';
+
 import DownloadSection from './sections/Download';
-import Citation from './sections/Citation';
+
 import Team from './sections/Team';
 import Footer from './sections/Footer';
 
@@ -62,14 +62,8 @@ function App() {
         {/* 排行榜区块 - 暂时注释，等待数据集完全公布后恢复 */}
         {/* <Leaderboard /> */}
 
-        {/* 代码与模型区块 */}
-        <CodeModels />
-
         {/* 下载区块 */}
         <DownloadSection />
-
-        {/* 引用信息区块 */}
-        <Citation />
 
         {/* 团队介绍区块 */}
         <Team />

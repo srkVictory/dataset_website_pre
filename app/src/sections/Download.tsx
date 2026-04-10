@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Download, ExternalLink, CheckCircle, Database, FileJson, HardDrive, Satellite, MapPin, BarChart3, Layers } from 'lucide-react';
+import { Download, ExternalLink, CheckCircle, Database, FileJson, HardDrive, Satellite } from 'lucide-react';
 
 const downloadOptions = [
   {
@@ -277,34 +277,7 @@ export default function DownloadSection() {
           </div>
         </div>
 
-        {/* Bottom Features */}
-        <div
-          className={`mt-12 max-w-7xl mx-auto grid md:grid-cols-3 gap-6 transition-all duration-700 delay-500 ${
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-          }`}
-        >
-          <div className="p-5 rounded-2xl bg-[#161b22]/60 border border-[#2a2d47]/50">
-            <div className="w-10 h-10 rounded-xl bg-[#4d6bfa]/10 flex items-center justify-center mb-4">
-              <BarChart3 className="w-5 h-5 text-[#4d6bfa]" />
-            </div>
-            <h4 className="text-white font-semibold mb-2">Process Supervision</h4>
-            <p className="text-sm text-[#6e7681]">Six-step reasoning annotation framework with positive-negative dual-track logic and step-level process scoring.</p>
-          </div>
-          <div className="p-5 rounded-2xl bg-[#161b22]/60 border border-[#2a2d47]/50">
-            <div className="w-10 h-10 rounded-xl bg-[#22c55e]/10 flex items-center justify-center mb-4">
-              <Layers className="w-5 h-5 text-[#22c55e]" />
-            </div>
-            <h4 className="text-white font-semibold mb-2">Rich Annotations</h4>
-            <p className="text-sm text-[#6e7681]">Structured reasoning artifacts with aligned scoring signals from decoupled multi-judge framework.</p>
-          </div>
-          <div className="p-5 rounded-2xl bg-[#161b22]/60 border border-[#2a2d47]/50">
-            <div className="w-10 h-10 rounded-xl bg-[#f59e0b]/10 flex items-center justify-center mb-4">
-              <MapPin className="w-5 h-5 text-[#f59e0b]" />
-            </div>
-            <h4 className="text-white font-semibold mb-2">Real-world Focus</h4>
-            <p className="text-sm text-[#6e7681]">Deliberately skewed toward difficult non-target cases with 1:4 positive-to-negative ratio for realistic scenarios.</p>
-          </div>
-        </div>
+
       </div>
     </section>
   );

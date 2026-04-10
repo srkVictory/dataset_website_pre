@@ -4,18 +4,13 @@ import {
   BarChart3, 
   TrendingUp, 
   CheckCircle, 
-  Brain,
-  Sparkles,
   ArrowRight,
   Cpu,
   GitBranch,
-  Zap,
   Award,
   Scale,
   Layers,
-  Database,
-  Split,
-  FileStack
+  Database
 } from 'lucide-react';
 
 // Training Applications Categories
@@ -418,70 +413,7 @@ export default function TasksBenchmarks() {
           </div>
         </div>
 
-        {/* Key Capabilities */}
-        <div
-          className={`transition-all duration-700 delay-600 ${
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-          }`}
-        >
-          <h3 className="text-xl font-semibold text-white text-center mb-8">
-            Enabled Research Directions
-          </h3>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              {
-                icon: Brain,
-                title: 'Process Supervision',
-                desc: 'Step-level evaluation signals for training interpretable reasoning models',
-              },
-              {
-                icon: Split,
-                title: 'Dual-Track Reasoning',
-                desc: 'Positive-negative framework distinguishes valid changes from pseudo-changes',
-              },
-              {
-                icon: Sparkles,
-                title: 'Test-Time Scaling',
-                desc: 'Generate multiple reasoning paths and select best via PRM scoring',
-              },
-              {
-                icon: Zap,
-                title: 'Hallucination Mitigation',
-                desc: 'Decoupled Mixture-of-Judges detects ungrounded claims at each step',
-              },
-            ].map((cap, index) => (
-              <div
-                key={cap.title}
-                className="group p-6 rounded-xl bg-[#161b22]/50 border border-[#2a2d47]/50 hover:border-[#4d6bfa]/50 transition-all duration-300 hover:-translate-y-1"
-                style={{ transitionDelay: `${600 + index * 50}ms` }}
-              >
-                <div className="w-12 h-12 rounded-lg bg-[#4d6bfa]/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                  <cap.icon className="w-6 h-6 text-[#4d6bfa]" />
-                </div>
-                <h4 className="text-base font-semibold text-white mb-2">{cap.title}</h4>
-                <p className="text-sm text-[#8b949e]">{cap.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
 
-        {/* CTA */}
-        <div
-          className={`mt-12 text-center transition-all duration-700 delay-700 ${
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-          }`}
-        >
-          <a
-            href="https://github.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-[#4d6bfa] text-white font-medium hover:bg-[#4353fa] transition-colors shadow-lg shadow-[#4d6bfa]/30"
-          >
-            <FileStack className="w-5 h-5" />
-            Explore Training Scripts
-            <ArrowRight className="w-4 h-4" />
-          </a>
-        </div>
       </div>
     </section>
   );

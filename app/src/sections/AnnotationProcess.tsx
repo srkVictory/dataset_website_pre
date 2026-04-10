@@ -812,7 +812,7 @@ export default function AnnotationProcess() {
           </div>
 
           <h2 className="section-title mb-3">
-            Decoupled Multi-Agent Criterion System
+            Case Study
           </h2>
 
           <p className="section-subtitle max-w-3xl mx-auto">
