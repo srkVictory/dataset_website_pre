@@ -4,23 +4,13 @@ import { Terminal, Github, BookOpen, Cpu, Copy, Check, AlertCircle } from 'lucid
 const setupSteps = [
   {
     title: 'Clone Repository',
-    command: 'git clone https://github.com/levir-mf/dataset.git',
+    command: 'git clone https://github.com/kaynqi/Beyond-Captioning.git',
     note: '# Coming soon - Repository under preparation',
-  },
-  {
-    title: 'Install Dependencies',
-    command: 'pip install -r requirements.txt',
-    note: '# Coming soon - Requirements pending release',
   },
   {
     title: 'Download Dataset',
     command: 'python scripts/download_data.py',
     note: '# Coming soon - Dataset release in progress',
-  },
-  {
-    title: 'Run Evaluation',
-    command: 'python eval.py --config configs/baseline.yaml',
-    note: '# Coming soon - Evaluation scripts pending',
   },
 ];
 
@@ -85,11 +75,11 @@ export default function CodeModels() {
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-12">
+        <div className="max-w-4xl mx-auto space-y-6">
           {/* Environment Setup */}
           <div
-            className={`space-y-6 transition-all duration-700 delay-100 ${
-              isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'
+            className={`transition-all duration-700 delay-100 ${
+              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             }`}
           >
             <div className="flex items-center gap-4 mb-6">
@@ -103,7 +93,7 @@ export default function CodeModels() {
             </div>
 
             {/* Coming Soon Notice */}
-            <div className="p-4 rounded-xl bg-[#f59e0b]/10 border border-[#f59e0b]/30">
+            <div className="p-4 rounded-xl bg-[#f59e0b]/10 border border-[#f59e0b]/30 mb-6">
               <div className="flex items-center gap-2 text-[#f59e0b]">
                 <AlertCircle className="w-4 h-4" />
                 <span className="text-sm font-medium">Coming Soon</span>
@@ -113,7 +103,8 @@ export default function CodeModels() {
               </p>
             </div>
 
-            <div className="space-y-4 opacity-60">
+            {/* Command Cards Grid */}
+            <div className="grid md:grid-cols-2 gap-4 opacity-60 mb-8">
               {setupSteps.map((step, index) => (
                 <div
                   key={step.title}
@@ -146,13 +137,12 @@ export default function CodeModels() {
                 </div>
               ))}
             </div>
-
           </div>
 
-          {/* Right Column: System Requirements + Integration */}
+          {/* Info Cards Grid */}
           <div
-            className={`space-y-6 transition-all duration-700 delay-200 ${
-              isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'
+            className={`grid md:grid-cols-3 gap-6 transition-all duration-700 delay-200 ${
+              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             }`}
           >
             {/* System Requirements */}
