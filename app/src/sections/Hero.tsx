@@ -1,6 +1,6 @@
 // 导入React hooks和图标组件
 import { useState, useRef, useEffect } from 'react';
-import { ArrowRight, FileText, Database, ChevronDown } from 'lucide-react';
+import { ArrowRight, Database, ChevronDown } from 'lucide-react';
 
 // Hero组件 - 页面首屏展示
 export default function Hero() {
@@ -80,82 +80,68 @@ export default function Hero() {
             style={{ transitionTimingFunction: 'var(--ease-out-expo)' }}
           >
             {/* 标题区域 */}
-            <div className="space-y-3">
-              <div className="space-y-1">
-                <h1 className="text-3xl md:text-4xl font-bold text-white font-['Poppins'] leading-tight">
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <h1 className="text-4xl md:text-5xl lg:text-[3.25rem] font-bold text-white font-['Poppins'] leading-[1.1] tracking-tight">
                   Beyond Captioning:
                 </h1>
-                <h1 className="text-3xl md:text-4xl font-bold gradient-text font-['Poppins'] leading-tight">
+                <h1 className="text-4xl md:text-5xl lg:text-[3.25rem] font-bold gradient-text font-['Poppins'] leading-[1.1] tracking-tight">
                   A Preference-Aligned Benchmark
                 </h1>
               </div>
-              <p className="text-lg md:text-xl text-[#b4bcd0] font-light">
+              <p className="text-xl md:text-2xl text-[#b4bcd0] font-light max-w-2xl leading-relaxed">
                 for Fine-Grained Reasoning and Spatiotemporal Geo-World Understanding
               </p>
             </div>
 
             {/* 项目描述 */}
-            <p className="text-lg text-[#b4bcd0] leading-relaxed max-w-xl">
-              A preference-aligned benchmark featuring <span className="text-white font-semibold">50,000+</span> annotated image pairs (100,000+ images) with <span className="text-[#4d6bfa] font-semibold">six-stage chain-of-thought</span> reasoning. Supports diverse training paradigms including SFT, PPO, DPO, GRPO, and fine-grained Process Reward Modeling (PRM).
-            </p>
-
-            {/* 数据统计展示 */}
-            <div className="grid grid-cols-4 gap-2 md:gap-6">
-              {[
-                { value: '50K+', label: 'Image Pairs' },
-                { value: '6-Step', label: 'CoT Reasoning' },
-                { value: '328K', label: 'Reasoning Trajectories' },
-                { value: 'North China', label: 'Region', small: true },
-              ].map((stat, index) => (
-                <div
-                  key={stat.label}
-                  className="text-center"
-                  style={{ animationDelay: `${0.5 + index * 0.1}s` }}
-                >
-                  <div className={`font-bold text-white font-['Poppins'] whitespace-nowrap ${
-                    stat.small ? 'text-sm md:text-lg lg:text-xl' : 'text-lg md:text-2xl lg:text-3xl'
-                  }`}>
-                    {stat.value}
-                  </div>
-                  <div className="text-xs md:text-sm text-[#b4bcd0] mt-1">{stat.label}</div>
-                </div>
-              ))}
+            <div className="space-y-4 max-w-xl">
+              <p className="text-base text-[#b4bcd0] leading-relaxed">
+                Remote sensing change captioning has made strong progress in describing visible differences between bi-temporal images, but most existing benchmarks mainly reward surface-level descriptions such as "new buildings appeared" or "vegetation decreased." They provide limited support for evaluating whether a model can reason over spatial evidence, apply semantic rules, reject pseudo-changes, and align predictions with geographic expert judgment. Geo-BC is designed to fill this gap.
+              </p>
+              <p className="text-base text-[#b4bcd0] leading-relaxed">
+                Geo-BC reframes bi-temporal change analysis from free-form caption generation to structured change interpretation. Instead of only asking what changed, Geo-BC asks whether a model can:
+              </p>
+              <ul className="text-base text-[#b4bcd0] leading-relaxed space-y-1 pl-4">
+                <li className="flex items-start gap-2">
+                  <span className="text-[#4d6bfa] mt-1">•</span>
+                  <span>localize relevant evidence,</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-[#4d6bfa] mt-1">•</span>
+                  <span>reason over spatial and semantic relations,</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-[#4d6bfa] mt-1">•</span>
+                  <span>determine whether the change is valid under a land-use taxonomy,</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-[#4d6bfa] mt-1">•</span>
+                  <span>filter out task-irrelevant variation,</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-[#4d6bfa] mt-1">•</span>
+                  <span>and calibrate confidence under ambiguity.</span>
+                </li>
+              </ul>
             </div>
 
-            {/* 主要操作按钮 */}
-            <div className="flex flex-wrap gap-4">
-              <button
-                onClick={() => scrollToSection('#dataset')}
-                className="btn-primary flex items-center gap-2 group"
-              >
-                Explore Dataset
-                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-              </button>
-              <button
-                onClick={() => alert('Coming soon!')}
-                className="btn-secondary flex items-center gap-2"
-              >
-                <FileText className="w-4 h-4" />
-                View Paper
-              </button>
-            </div>
-
-            {/* 快速链接区域 */}
-            <div className="flex flex-wrap items-center gap-4 pt-4">
+            {/* 操作链接 */}
+            <div className="flex flex-wrap items-center gap-6">
               <a
                 href="https://github.com/kaynqi/Beyond-Captioning"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 text-sm text-[#b4bcd0] hover:text-white transition-colors"
+                className="flex items-center gap-2 text-sm text-[#b4bcd0] hover:text-white transition-colors group"
               >
-                <Database className="w-4 h-4" />
+                <Database className="w-4 h-4 group-hover:text-[#4d6bfa] transition-colors" />
                 GitHub Repository
               </a>
-              <span className="text-[#2a2d47]">|</span>
               <button
                 onClick={() => scrollToSection('#download')}
-                className="flex items-center gap-2 text-sm text-[#b4bcd0] hover:text-white transition-colors"
+                className="flex items-center gap-2 text-sm text-[#b4bcd0] hover:text-white transition-colors group"
               >
+                <ArrowRight className="w-4 h-4 group-hover:text-[#4d6bfa] transition-colors" />
                 Download Dataset
               </button>
             </div>
@@ -228,6 +214,49 @@ export default function Hero() {
             <p className="mt-4 text-center text-sm text-[#b4bcd0]">
               Drag the slider to compare bi-temporal images
             </p>
+
+            {/* 业务需求洞察 */}
+            <div className="mt-5 p-4 rounded-xl bg-gradient-to-r from-[#4d6bfa]/10 via-[#4d6bfa]/5 to-transparent border border-[#4d6bfa]/20">
+              <p className="text-sm text-[#b4bcd0] leading-relaxed">
+                <span className="text-white font-medium">Traditional RSCC</span> approaches that simply describe "what changed" fall short in real-world applications. 
+                <span className="text-[#4d6bfa] font-medium"> Geo-BC</span> enables <span className="text-white">rule-based structured reasoning</span> to filter out irrelevant variations and focus on changes that truly matter under domain-specific constraints.
+              </p>
+            </div>
+
+            {/* 土地利用应用需求 */}
+            <div className="mt-4 grid grid-cols-2 gap-3">
+              {[
+                { 
+                  icon: '🏙️', 
+                  title: 'Urban Planning', 
+                  desc: 'Distinguish legal urban expansion from illegal construction under zoning rules',
+                  color: '#4d6bfa'
+                },
+                { 
+                  icon: '🌾', 
+                  title: 'Agriculture', 
+                  desc: 'Verify crop compliance with land-use planning and subsidy policies',
+                  color: '#22c55e'
+                },
+              ].map((app) => (
+                <div 
+                  key={app.title}
+                  className="p-3 rounded-xl bg-[#161b22]/60 border border-[#2a2d47]/50 hover:border-[#4d6bfa]/30 transition-all group"
+                >
+                  <div className="flex items-start gap-3">
+                    <span className="text-xl">{app.icon}</span>
+                    <div>
+                      <h4 className="text-sm font-semibold text-white group-hover:text-[#4d6bfa] transition-colors">
+                        {app.title}
+                      </h4>
+                      <p className="text-[11px] text-[#6e7681] mt-0.5 leading-tight">
+                        {app.desc}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
 
             {/* 装饰性光晕元素 */}
             <div className="absolute -top-4 -right-4 w-24 h-24 bg-[#4d6bfa]/20 rounded-full blur-2xl" />

@@ -4,7 +4,7 @@ import { Download, ExternalLink, CheckCircle, Database, FileJson, HardDrive, Sat
 const downloadOptions = [
   {
     name: 'Geo-BC Full Dataset',
-    size: '~60 GB',
+    size: '~92.9 GB',
     format: 'PNG + JSON',
     description: 'A preference-aligned benchmark for fine-grained reasoning and spatiotemporal geo-world understanding.',
     stats: [
@@ -103,38 +103,6 @@ export default function DownloadSection() {
           </div>
         </div>
 
-        {/* Dataset Overview */}
-        <div className="max-w-7xl mx-auto mb-8">
-          <div
-            className={`p-6 rounded-2xl bg-gradient-to-r from-[#4d6bfa]/10 via-[#161b22] to-[#8b5cf6]/10 border border-[#2a2d47]/50 transition-all duration-700 delay-100 ${
-              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-            }`}
-          >
-            <p className="text-[#b4bcd0] leading-relaxed">
-              <span className="text-white font-semibold">Geo-BC (Geo-BeyondCaptioning)</span> reformulates bi-temporal remote-sensing change analysis as a <span className="text-[#4d6bfa]">multimodal reasoning task</span> rather than a captioning task. It evaluates whether a model can perform grounded spatial, temporal, and causal reasoning over image pairs and natural-language queries. The dataset goes beyond basic object detection and caption generation, deeply integrating complex visual attributes with real-world land-use semantics.
-            </p>
-          </div>
-        </div>
-
-        {/* Stats Grid */}
-        <div className="max-w-7xl mx-auto mb-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {downloadOptions[0].stats.map((stat, index) => (
-              <div
-                key={stat.label}
-                className={`p-5 rounded-2xl bg-[#161b22]/80 border border-[#2a2d47]/50 text-center transition-all duration-700 hover:border-[#4d6bfa]/30 ${
-                  isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-                }`}
-                style={{ transitionDelay: `${150 + index * 50}ms` }}
-              >
-                <div className="text-2xl md:text-3xl font-bold text-white mb-1">{stat.value}</div>
-                <div className="text-sm text-[#4d6bfa] font-medium">{stat.label}</div>
-                <div className="text-xs text-[#6e7681] mt-1">{stat.desc}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-
         {/* Download Cards Grid */}
         <div className="max-w-7xl mx-auto grid lg:grid-cols-3 gap-6">
           {/* Main Dataset Card */}
@@ -165,7 +133,7 @@ export default function DownloadSection() {
                     </div>
                     <div className="text-right">
                       <div className="text-3xl font-bold text-white">{option.size}</div>
-                      <div className="text-xs text-[#6e7681] mt-0.5">compressed: ~30GB</div>
+                      <div className="text-xs text-[#6e7681] mt-0.5">compressed: ~63.4GB</div>
                     </div>
                   </div>
 

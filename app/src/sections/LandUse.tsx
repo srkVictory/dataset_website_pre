@@ -212,7 +212,7 @@ export default function LandUse() {
             <ArrowRight className="w-4 h-4 text-[#4d6bfa]" />
             <span className="text-sm font-medium text-[#4d6bfa]">Change Type Analysis</span>
           </div>
-          <h2 className="section-title">Land Use Change Distribution</h2>
+          <h2 className="section-title">Analysis on the Characteristics of Land Use Change Data</h2>
           <p className="section-subtitle max-w-3xl mx-auto">
             Following the national land-use classification standard GB/T 21010-2017, our dataset covers 14 primary categories with positive-to-negative ratio of approximately 1:4, reflecting realistic dominance of ambiguous changes in practical monitoring scenarios.
           </p>
@@ -331,7 +331,7 @@ export default function LandUse() {
                       className="text-lg font-bold font-['Poppins']"
                       style={{ color: change.color }}
                     >
-                      {animatedCounts[index]?.toLocaleString() || 0}
+                      {((animatedCounts[index] || 0) / totalCount * 100).toFixed(1)}%
                     </div>
                   </div>
                   <p className="text-xs text-[#6b7280]">{change.description}</p>
@@ -339,7 +339,7 @@ export default function LandUse() {
                     <div
                       className="h-full rounded-full transition-all duration-1000"
                       style={{
-                        width: `${((animatedCounts[index] || 0) / 1000) * 100}%`,
+                        width: `${((animatedCounts[index] || 0) / totalCount) * 100}%`,
                         backgroundColor: change.color,
                         transitionTimingFunction: 'var(--ease-out-expo)',
                       }}

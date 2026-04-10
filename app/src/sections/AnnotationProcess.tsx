@@ -812,7 +812,7 @@ export default function AnnotationProcess() {
           </div>
 
           <h2 className="section-title mb-3">
-            Case Study
+            Decoupled Multi-Agent Criterion System
           </h2>
 
           <p className="section-subtitle max-w-3xl mx-auto">
@@ -1149,39 +1149,6 @@ export default function AnnotationProcess() {
           </div>
         </div>
 
-        {/* Bottom: Pipeline Info */}
-        <div
-          className={`mt-12 grid md:grid-cols-3 gap-6 transition-all duration-700 delay-500 ${
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-          }`}
-        >
-          {[
-            {
-              icon: Brain,
-              title: '5 Models Annotate',
-              desc: 'Each sample receives annotations from GPT-4.1, Gemini, Qwen-VL, LLaVA, and QVQ'
-            },
-            {
-              icon: Scale,
-              title: '3 Judges Evaluate',
-              desc: 'VLM Judge evaluates perception, LMM Judge evaluates reasoning, Rule Judge validates taxonomy'
-            },
-            {
-              icon: Award,
-              title: 'Preference Alignment',
-              desc: 'Best response selected as "chosen", others as "rejected" for RLHF training'
-            }
-          ].map((item) => (
-            <div
-              key={item.title}
-              className="p-6 rounded-xl bg-[#161b22]/50 border border-[#2a2d47]/50"
-            >
-              <item.icon className="w-8 h-8 text-[#4d6bfa] mb-4" />
-              <h4 className="text-base font-semibold text-white mb-2">{item.title}</h4>
-              <p className="text-sm text-[#8b949e]">{item.desc}</p>
-            </div>
-          ))}
-        </div>
       </div>
     </section>
   );

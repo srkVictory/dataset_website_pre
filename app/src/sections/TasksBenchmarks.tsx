@@ -110,7 +110,6 @@ const reasoningSteps = [
 
 export default function TasksBenchmarks() {
   const [isVisible, setIsVisible] = useState(false);
-  const [activeCategory, setActiveCategory] = useState(0);
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -130,15 +129,6 @@ export default function TasksBenchmarks() {
 
     return () => observer.disconnect();
   }, []);
-
-  const currentCategory = trainingCategories[activeCategory];
-  
-  // Ensure activeCategory is valid after removal
-  useEffect(() => {
-    if (activeCategory >= trainingCategories.length) {
-      setActiveCategory(0);
-    }
-  }, [activeCategory]);
 
   return (
     <section id="tasks" ref={sectionRef} className="py-24 relative">
@@ -161,7 +151,7 @@ export default function TasksBenchmarks() {
           </h2>
           <p className="section-subtitle max-w-3xl mx-auto">
             Our preference-aligned dataset enables diverse training objectives from supervised fine-tuning 
-            to advanced <strong className="text-white">RLHF and process supervision</strong>, supporting both benchmark 
+            to advanced <strong className="text-white">RLAIF</strong>, supporting both benchmark 
             evaluation and downstream applications in Earth observation
           </p>
         </div>
@@ -199,125 +189,81 @@ export default function TasksBenchmarks() {
           </div>
         </div>
 
-        {/* Category Tabs */}
-        <div
-          className={`flex flex-wrap justify-center gap-3 mb-10 transition-all duration-700 delay-200 ${
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-          }`}
-        >
-          {trainingCategories.map((cat, index) => (
-            <button
+        {/* All Training Applications */}
+        <div className="space-y-10">
+          {trainingCategories.map((cat, catIndex) => (
+            <div
               key={cat.category}
-              onClick={() => setActiveCategory(index)}
-              className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium transition-all ${
-                activeCategory === index
-                  ? 'bg-[#4d6bfa] text-white shadow-lg shadow-[#4d6bfa]/30'
-                  : 'bg-[#161b22]/80 text-[#b4bcd0] border border-[#2a2d47]/50 hover:border-[#4d6bfa]/50'
+              className={`transition-all duration-700 delay-${200 + catIndex * 100} ${
+                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
               }`}
             >
-              <cat.icon className="w-4 h-4" />
-              {cat.category}
-            </button>
-          ))}
-        </div>
-
-        {/* Category Description */}
-        <div
-          className={`text-center mb-8 transition-all duration-700 delay-300 ${
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-          }`}
-        >
-          <p className="text-[#b4bcd0] max-w-2xl mx-auto">
-            {currentCategory.desc}
-          </p>
-        </div>
-
-        {/* Tasks Display */}
-        <div
-          className={`mb-16 transition-all duration-700 delay-300 ${
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-          }`}
-        >
-          <div className="grid md:grid-cols-2 gap-4">
-            {currentCategory.tasks.map((task, index) => (
-              <div
-                key={task.name}
-                className={`group relative p-6 rounded-2xl border transition-all duration-500 hover:-translate-y-1 ${
-                  task.highlight
-                    ? 'bg-gradient-to-br from-[#f59e0b]/10 to-[#161b22] border-[#f59e0b]/50'
-                    : 'bg-[#161b22]/80 border-[#2a2d47]/50 hover:border-[#4d6bfa]/50'
-                }`}
-                style={{ transitionDelay: `${index * 50}ms` }}
-              >
-                <div className="flex items-start gap-4">
-                  {/* Task Icon */}
-                  <div
-                    className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
-                    style={{ backgroundColor: `${currentCategory.color}20` }}
-                  >
-                    <span
-                      className="text-lg font-bold"
-                      style={{ color: currentCategory.color }}
-                    >
-                      {task.name.substring(0, 3)}
-                    </span>
-                  </div>
-
-                  {/* Task Info */}
-                  <div className="flex-1">
-                    <h4 className="text-lg font-semibold text-white mb-1">{task.fullName}</h4>
-                    <p className="text-sm text-[#8b949e] mb-2">{task.desc}</p>
-                    {task.detail && (
-                      <p className="text-xs text-[#6e7681] border-t border-[#2a2d47]/30 pt-2 mt-2">
-                        {task.detail}
-                      </p>
-                    )}
-                  </div>
-                </div>
-
-                {/* Decorative corner */}
+              {/* Category Header */}
+              <div className="flex items-center gap-3 mb-5">
                 <div
-                  className="absolute bottom-0 right-0 w-24 h-24 rounded-tl-full opacity-10 group-hover:opacity-20 transition-opacity"
-                  style={{ backgroundColor: currentCategory.color }}
-                />
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Six-Step Reasoning Process */}
-        <div
-          className={`mb-16 transition-all duration-700 delay-400 ${
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-          }`}
-        >
-          <div className="p-6 rounded-2xl bg-[#161b22]/50 border border-[#2a2d47]/50">
-            <div className="flex items-center gap-3 mb-6">
-              <Layers className="w-5 h-5 text-[#4d6bfa]" />
-              <h3 className="text-lg font-semibold text-white">Structured Multimodal Chain of Reasoning</h3>
-            </div>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {reasoningSteps.map((step, index) => (
-                <div
-                  key={step.step}
-                  className="flex items-start gap-3 p-4 rounded-xl bg-[#0d1117] border border-[#2a2d47]/30"
+                  className="w-10 h-10 rounded-xl flex items-center justify-center"
+                  style={{ backgroundColor: `${cat.color}20` }}
                 >
-                  <div className="w-8 h-8 rounded-lg bg-[#4d6bfa]/20 flex items-center justify-center flex-shrink-0">
-                    <span className="text-sm font-bold text-[#4d6bfa]">{step.step}</span>
-                  </div>
-                  <div>
-                    <h4 className="text-sm font-medium text-white mb-1">{step.name}</h4>
-                    <p className="text-xs text-[#6e7681]">{step.desc}</p>
-                  </div>
+                  <cat.icon className="w-5 h-5" style={{ color: cat.color }} />
                 </div>
-              ))}
+                <div>
+                  <h3 className="text-xl font-semibold text-white">{cat.category}</h3>
+                  <p className="text-sm text-[#6e7681]">{cat.desc}</p>
+                </div>
+              </div>
+
+              {/* Tasks Grid */}
+              <div className={`grid gap-4 ${
+                cat.tasks.length === 2 ? 'grid-cols-2' : 
+                cat.tasks.length === 4 ? 'grid-cols-2 lg:grid-cols-4' : 
+                'grid-cols-2 lg:grid-cols-3'
+              }`}>
+                {cat.tasks.map((task, taskIndex) => (
+                  <div
+                    key={task.name}
+                    className={`group relative p-5 rounded-xl border transition-all duration-500 hover:-translate-y-1 ${
+                      task.highlight
+                        ? 'bg-gradient-to-br from-[#f59e0b]/10 to-[#161b22] border-[#f59e0b]/50'
+                        : 'bg-[#161b22]/60 border-[#2a2d47]/50 hover:border-[#4d6bfa]/50'
+                    }`}
+                    style={{ transitionDelay: `${taskIndex * 50}ms` }}
+                  >
+                    <div className="flex items-start gap-4">
+                      {/* Task Icon */}
+                      <div
+                        className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0"
+                        style={{ backgroundColor: `${cat.color}20` }}
+                      >
+                        <span
+                          className="text-sm font-bold"
+                          style={{ color: cat.color }}
+                        >
+                          {task.name}
+                        </span>
+                      </div>
+
+                      {/* Task Info */}
+                      <div className="flex-1">
+                        <h4 className="text-base font-medium text-white mb-1">{task.fullName}</h4>
+                        <p className="text-sm text-[#8b949e] leading-relaxed">{task.desc}</p>
+                      </div>
+                    </div>
+
+                    {/* Decorative corner */}
+                    <div
+                      className="absolute bottom-0 right-0 w-16 h-16 rounded-tl-full opacity-10 group-hover:opacity-20 transition-opacity"
+                      style={{ backgroundColor: cat.color }}
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
+          ))}
         </div>
 
         {/* PRM Highlight Section */}
         <div
-          className={`mb-16 transition-all duration-700 delay-500 ${
+          className={`mt-20 mb-16 transition-all duration-700 delay-500 ${
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}
         >

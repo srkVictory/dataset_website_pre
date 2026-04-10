@@ -30,23 +30,19 @@ interface FooterLink {
 const footerLinks: Record<string, FooterLink[]> = {
   dataset: [
     { name: 'Download', href: '#download' },
-    { name: 'Documentation', href: '#code' },
-    { name: 'API Reference', href: '#code' },
   ],
   resources: [
-    { name: 'GitHub', href: 'https://github.com', external: true },
+    { name: 'GitHub', href: 'https://github.com/kaynqi/Beyond-Captioning', external: true },
     { name: 'Paper', href: 'https://arxiv.org', external: true },
-    { name: 'Tutorials', href: '#code' },
   ],
   community: [
-    { name: 'Discussions', href: 'https://github.com', external: true },
-    { name: 'Issues', href: 'https://github.com', external: true },
-    { name: 'Contributing', href: 'https://github.com', external: true },
+    { name: 'Discussions', href: 'https://github.com/kaynqi/Beyond-Captioning/discussions', external: true },
+    { name: 'Issues', href: 'https://github.com/kaynqi/Beyond-Captioning/issues', external: true },
+    { name: 'Contributing', href: 'https://github.com/kaynqi/Beyond-Captioning/blob/main/CONTRIBUTING.md', external: true },
   ],
   support: [
     { name: 'Contact Us', href: 'mailto:contact@levir-mf.org' },
     { name: 'FAQ', href: '#' },
-    { name: 'Feedback', href: 'mailto:contact@levir-mf.org' },
   ],
 };
 

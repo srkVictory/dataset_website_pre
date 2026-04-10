@@ -27,25 +27,16 @@ const navLinks = [
     name: 'Dataset', 
     href: '#dataset',
     dropdown: [
-      { name: 'Introduction', href: '#dataset-intro' },
-      { name: '6-Step Format', href: '#format' },
-      { name: 'Multi-Model Evaluation', href: '#evaluation' },
-      { name: 'Land Use', href: '#land-use' },
+      { name: 'Overview', href: '#dataset' },
+      { name: 'Data Generation Pipeline', href: '#format' },
+      { name: 'Multi-Judge Evaluation', href: '#evaluation' },
+      { name: 'Land Use Analysis', href: '#land-use' },
       { name: 'Download', href: '#download' },
     ]
   },
-  { 
-    name: 'Tasks & Benchmarks', 
-    href: '#tasks',
-    dropdown: [
-      { name: 'Training Methods', href: '#tasks' },
-      { name: 'Model Evaluation', href: '#evaluation' },
-      { name: 'Annotation Process', href: '#annotation-process' },
-      // { name: 'Leaderboard', href: '#leaderboard' }, // 暂时注释，等待数据集完全公布后恢复
-    ]
-  },
+  { name: 'Training', href: '#tasks' },
+  { name: 'Benchmarks', href: '#annotation-process' },
   { name: 'Code & Models', href: '#code' },
-  { name: 'Citation', href: '#citation' },
   { name: 'Team', href: '#team' },
 ];
 
