@@ -1,5 +1,5 @@
 // 导入React hooks和图标组件
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Menu, X, ChevronDown } from 'lucide-react';
 
 // BC Logo Component
@@ -34,9 +34,8 @@ const navLinks = [
       { name: 'Download', href: '#download' },
     ]
   },
-  { name: 'Training', href: '#tasks' },
-  { name: 'Benchmarks', href: '#annotation-process' },
-  { name: 'Code & Models', href: '#code' },
+  { name: 'Training', href: '#annotation-process' },
+  { name: 'Benchmarks', href: '#tasks' },
   { name: 'Team', href: '#team' },
 ];
 
@@ -46,6 +45,7 @@ export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const dropdownTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // 监听滚动事件，超过50px时改变样式
   useEffect(() => {
@@ -56,6 +56,15 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // 清理定时器
+  useEffect(() => {
+    return () => {
+      if (dropdownTimeoutRef.current) {
+        clearTimeout(dropdownTimeoutRef.current);
+      }
+    };
+  }, []);
+
   // 平滑滚动到指定锚点
   const scrollToSection = (href: string) => {
     const element = document.querySelector(href);
@@ -64,6 +73,22 @@ export default function Navbar() {
     }
     setIsMobileMenuOpen(false);
     setActiveDropdown(null);
+  };
+
+  // 处理鼠标进入下拉菜单区域
+  const handleMouseEnter = (name: string) => {
+    if (dropdownTimeoutRef.current) {
+      clearTimeout(dropdownTimeoutRef.current);
+      dropdownTimeoutRef.current = null;
+    }
+    setActiveDropdown(name);
+  };
+
+  // 处理鼠标离开下拉菜单区域（带延迟）
+  const handleMouseLeave = () => {
+    dropdownTimeoutRef.current = setTimeout(() => {
+      setActiveDropdown(null);
+    }, 200);
   };
 
   return (
@@ -99,8 +124,8 @@ export default function Navbar() {
               <div
                 key={link.name}
                 className="relative"
-                onMouseEnter={() => link.dropdown && setActiveDropdown(link.name)}
-                onMouseLeave={() => setActiveDropdown(null)}
+                onMouseEnter={() => link.dropdown && handleMouseEnter(link.name)}
+                onMouseLeave={handleMouseLeave}
               >
                 <button
                   onClick={() => !link.dropdown && scrollToSection(link.href)}
