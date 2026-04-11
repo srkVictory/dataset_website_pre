@@ -10,8 +10,59 @@ import {
   Award,
   Scale,
   Layers,
-  Database
+  Database,
+  Eye,
+  GitCompare
 } from 'lucide-react';
+
+// Benchmark Results Data
+const benchmarkResults = {
+  experiment1: {
+    title: 'Change Detection Accuracy',
+    subtitle: 'CDA, CC-L1, CC-L2 Metrics',
+    icon: Target,
+    color: '#4d6bfa',
+    headers: ['Model', 'CDA', 'CC-L1', 'CC-L2'],
+    data: [
+      { model: 'LLaVA-OneVision', cda: 50.235, ccl1: 0.68, ccl2: 0.23 },
+      { model: 'InternVL3-8B', cda: 51.65, ccl1: 10.03, ccl2: 0.28 },
+      { model: 'Qwen2.5-VL-7B', cda: 49.965, ccl1: 0.42, ccl2: 0.25 },
+      { model: 'MiMo-V2-Flash', cda: 49.095, ccl1: 5.06, ccl2: 0.96 },
+      { model: 'QVQ-Max', cda: 50.425, ccl1: 11.09, ccl2: 0.76 },
+      { model: 'SkySense', cda: 78.735, ccl1: 2.80, ccl2: 0.10 },
+    ],
+  },
+  experiment2: {
+    title: 'Entailment & Hallucination Analysis',
+    subtitle: 'Visual, Logic, Conclusion Entailment & Hallucination Rate',
+    icon: Scale,
+    color: '#22c55e',
+    headers: ['Model', 'Visual', 'Logic', 'Conclusion', 'Hallu. Rate'],
+    data: [
+      { model: 'Qwen', visual: 45.80, logic: 73.05, conclusion: 47.47, hallu: 0.31 },
+      { model: 'LLaVA', visual: 41.56, logic: 67.92, conclusion: 40.02, hallu: 0.74 },
+      { model: 'MiMo', visual: 38.06, logic: 65.22, conclusion: 37.80, hallu: 0.16, highlight: true },
+      { model: 'QVQ', visual: 43.48, logic: 72.27, conclusion: 40.68, hallu: 0.31 },
+      { model: 'SkySense', visual: 29.87, logic: 59.72, conclusion: 29.40, hallu: 1.05 },
+      { model: 'InterVL', visual: 37.51, logic: 61.24, conclusion: 11.05, hallu: 16.98 },
+    ],
+  },
+  experiment3: {
+    title: 'Multi-dimensional Quality Scoring',
+    subtitle: 'Visual Perception, Logic, Application, Depth, Coherence',
+    icon: Eye,
+    color: '#f59e0b',
+    headers: ['Model', 'Perception', 'Logic', 'Rule', 'Depth', 'CoT', 'Overall'],
+    data: [
+      { model: 'LLaVA-OneVision', perception: 2.04, logic: 1.92, rule: 1.49, depth: 1.98, cot: 2.00, overall: 9.42 },
+      { model: 'InternVL3-8B', perception: 1.72, logic: 1.76, rule: 1.56, depth: 1.72, cot: 1.87, overall: 8.64 },
+      { model: 'Qwen2.5-VL', perception: 1.80, logic: 1.70, rule: 1.52, depth: 1.72, cot: 1.60, overall: 8.33 },
+      { model: 'MiMo-V2-Flash', perception: 2.13, logic: 2.00, rule: 1.90, depth: 2.20, cot: 2.25, overall: 10.47 },
+      { model: 'QVQ-Max', perception: 2.35, logic: 2.26, rule: 1.95, depth: 2.38, cot: 2.52, overall: 11.45, highlight: true },
+      { model: 'SkySense', perception: 1.56, logic: 1.50, rule: 1.15, depth: 1.53, cot: 1.52, overall: 7.25 },
+    ],
+  },
+};
 
 // Training Applications Categories
 const trainingCategories = [
@@ -110,6 +161,7 @@ const reasoningSteps = [
 
 export default function TasksBenchmarks() {
   const [isVisible, setIsVisible] = useState(false);
+  const [activeBenchmark, setActiveBenchmark] = useState<1 | 2 | 3>(1);
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -130,21 +182,241 @@ export default function TasksBenchmarks() {
     return () => observer.disconnect();
   }, []);
 
+  const currentBenchmark = benchmarkResults[`experiment${activeBenchmark}` as keyof typeof benchmarkResults];
+
   return (
     <section id="tasks" ref={sectionRef} className="py-24 relative">
       {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-b from-[#4d6bfa]/5 via-[#04070a] to-[#04070a] pointer-events-none" />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
+        {/* Benchmark Results Section - Before Versatile Training Methods */}
         <div
           className={`text-center mb-16 transition-all duration-700 ${
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}
         >
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#4d6bfa]/10 border border-[#4d6bfa]/30 mb-6">
-            <Cpu className="w-4 h-4 text-[#4d6bfa]" />
-            <span className="text-sm font-medium text-[#4d6bfa]">Training Applications</span>
+            <BarChart3 className="w-4 h-4 text-[#4d6bfa]" />
+            <span className="text-sm font-medium text-[#4d6bfa]">Benchmark Results</span>
+          </div>
+          <h2 className="section-title">
+            Benchmark <span className="gradient-text">Experiments</span>
+          </h2>
+          <p className="section-subtitle max-w-3xl mx-auto">
+            We report metrics across Stage I-III for six models. Strong perception and strong structured 
+            reasoning are not the same capability—Geo-BC exposes that gap
+          </p>
+        </div>
+
+        {/* Benchmark Results Tabs */}
+        <div
+          className={`mb-12 transition-all duration-700 delay-100 ${
+            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+          }`}
+        >
+          {/* Tab Selection */}
+          <div className="flex flex-wrap justify-center gap-4 mb-8">
+            {[1, 2, 3].map((exp) => {
+              const expData = benchmarkResults[`experiment${exp}` as keyof typeof benchmarkResults];
+              const Icon = expData.icon;
+              return (
+                <button
+                  key={exp}
+                  onClick={() => setActiveBenchmark(exp as 1 | 2 | 3)}
+                  className={`flex items-center gap-3 px-5 py-4 rounded-xl transition-all min-w-[280px] ${
+                    activeBenchmark === exp
+                      ? 'bg-[#4d6bfa]/20 border-2 border-[#4d6bfa]/60 shadow-lg shadow-[#4d6bfa]/10'
+                      : 'bg-[#161b22]/60 border border-[#2a2d47]/50 hover:border-[#4d6bfa]/30 hover:bg-[#161b22]'
+                  }`}
+                >
+                  <div 
+                    className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0"
+                    style={{ backgroundColor: activeBenchmark === exp ? `${expData.color}30` : '#2a2d47' }}
+                  >
+                    <Icon 
+                      className="w-5 h-5" 
+                      style={{ color: activeBenchmark === exp ? expData.color : '#6e7681' }} 
+                    />
+                  </div>
+                  <div className="text-left">
+                    <p className={`text-sm font-medium ${activeBenchmark === exp ? 'text-white' : 'text-[#b4bcd0]'}`}>
+                      {expData.title}
+                    </p>
+                    <p className="text-xs text-[#6e7681] mt-0.5">{expData.subtitle}</p>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Table Container */}
+          <div className="p-6 rounded-2xl bg-[#161b22]/80 border border-[#2a2d47]/50">
+            {/* Table Header */}
+            <div className="flex items-center gap-4 mb-6 pb-4 border-b border-[#2a2d47]/50">
+              <div 
+                className="w-12 h-12 rounded-xl flex items-center justify-center"
+                style={{ backgroundColor: `${currentBenchmark.color}20` }}
+              >
+                <currentBenchmark.icon className="w-6 h-6" style={{ color: currentBenchmark.color }} />
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-white">{currentBenchmark.title}</h3>
+                <p className="text-xs text-[#6e7681] mt-0.5">{currentBenchmark.subtitle}</p>
+              </div>
+            </div>
+
+            {/* Table */}
+            <div className="overflow-x-auto">
+              <table className="w-full table-fixed">
+                <colgroup>
+                  <col className="w-[180px]" />
+                  {currentBenchmark.headers.slice(1).map(() => (
+                    <col className="w-[120px]" />
+                  ))}
+                </colgroup>
+                <thead>
+                  <tr className="border-b border-[#2a2d47]/50">
+                    {currentBenchmark.headers.map((header, idx) => (
+                      <th 
+                        key={header} 
+                        className={`py-3 text-xs font-medium text-[#6e7681] uppercase tracking-wider ${
+                          idx === 0 ? 'text-left pl-4' : 'text-right pr-4'
+                        }`}
+                      >
+                        {header}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {currentBenchmark.data.map((row: any, idx: number) => (
+                    <tr 
+                      key={idx} 
+                      className={`border-b border-[#2a2d47]/30 transition-colors hover:bg-[#2a2d47]/20 ${
+                        row.highlight ? 'bg-[#4d6bfa]/10 hover:bg-[#4d6bfa]/15' : ''
+                      }`}
+                    >
+                      <td className="py-4 pl-4">
+                        <div className="flex items-center gap-2">
+                          <span className="text-sm font-medium text-white">{row.model}</span>
+                          {row.highlight && (
+                            <span className="px-1.5 py-0.5 rounded bg-[#4d6bfa] text-[10px] text-white font-medium">
+                              Best
+                            </span>
+                          )}
+                        </div>
+                      </td>
+                      {Object.keys(row).filter(k => k !== 'model' && k !== 'highlight').map((key) => (
+                        <td key={key} className="py-4 pr-4 text-right">
+                          <span 
+                            className={`text-sm font-mono ${
+                              key === 'hallu' && row[key] > 1 ? 'text-[#ef4444] font-medium' : 'text-[#b4bcd0]'
+                            }`}
+                          >
+                            {row[key]}
+                          </span>
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Metric Explanations */}
+            <div className="grid grid-cols-3 gap-4 mt-6 pt-6 border-t border-[#2a2d47]/50">
+              {activeBenchmark === 1 && (
+                <>
+                  <div className="p-4 rounded-xl bg-[#0d1117]/50 border border-[#2a2d47]/30">
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="w-1.5 h-1.5 rounded-full bg-[#4d6bfa]" />
+                      <p className="text-sm font-medium text-white">CDA</p>
+                    </div>
+                    <p className="text-xs text-[#6e7681] leading-relaxed">Change Detection Accuracy - Overall accuracy of detecting bi-temporal changes</p>
+                  </div>
+                  <div className="p-4 rounded-xl bg-[#0d1117]/50 border border-[#2a2d47]/30">
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="w-1.5 h-1.5 rounded-full bg-[#22c55e]" />
+                      <p className="text-sm font-medium text-white">CC-L1</p>
+                    </div>
+                    <p className="text-xs text-[#6e7681] leading-relaxed">Change Caption L1 - Pixel-level change localization error</p>
+                  </div>
+                  <div className="p-4 rounded-xl bg-[#0d1117]/50 border border-[#2a2d47]/30">
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="w-1.5 h-1.5 rounded-full bg-[#f59e0b]" />
+                      <p className="text-sm font-medium text-white">CC-L2</p>
+                    </div>
+                    <p className="text-xs text-[#6e7681] leading-relaxed">Change Caption L2 - Higher-order change description accuracy</p>
+                  </div>
+                </>
+              )}
+              {activeBenchmark === 2 && (
+                <>
+                  <div className="p-4 rounded-xl bg-[#0d1117]/50 border border-[#2a2d47]/30">
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="w-1.5 h-1.5 rounded-full bg-[#4d6bfa]" />
+                      <p className="text-sm font-medium text-white">Visual Entailment</p>
+                    </div>
+                    <p className="text-xs text-[#6e7681] leading-relaxed">Measures visual grounding of claims in satellite imagery</p>
+                  </div>
+                  <div className="p-4 rounded-xl bg-[#0d1117]/50 border border-[#2a2d47]/30">
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="w-1.5 h-1.5 rounded-full bg-[#22c55e]" />
+                      <p className="text-sm font-medium text-white">Logic Entailment</p>
+                    </div>
+                    <p className="text-xs text-[#6e7681] leading-relaxed">Evaluates causal reasoning and logical coherence</p>
+                  </div>
+                  <div className="p-4 rounded-xl bg-[#0d1117]/50 border border-[#2a2d47]/30">
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="w-1.5 h-1.5 rounded-full bg-[#ef4444]" />
+                      <p className="text-sm font-medium text-white">Hallucination Rate</p>
+                    </div>
+                    <p className="text-xs text-[#6e7681] leading-relaxed">Percentage of ungrounded claims (lower is better)</p>
+                  </div>
+                </>
+              )}
+              {activeBenchmark === 3 && (
+                <>
+                  <div className="p-4 rounded-xl bg-[#0d1117]/50 border border-[#2a2d47]/30">
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="w-1.5 h-1.5 rounded-full bg-[#4d6bfa]" />
+                      <p className="text-sm font-medium text-white">Visual & Logic</p>
+                    </div>
+                    <p className="text-xs text-[#6e7681] leading-relaxed">Visual Perception and Spatiotemporal Logic reasoning scores</p>
+                  </div>
+                  <div className="p-4 rounded-xl bg-[#0d1117]/50 border border-[#2a2d47]/30">
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="w-1.5 h-1.5 rounded-full bg-[#22c55e]" />
+                      <p className="text-sm font-medium text-white">Rule & Depth</p>
+                    </div>
+                    <p className="text-xs text-[#6e7681] leading-relaxed">Rule Application and Domain Depth expertise metrics</p>
+                  </div>
+                  <div className="p-4 rounded-xl bg-[#0d1117]/50 border border-[#2a2d47]/30">
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="w-1.5 h-1.5 rounded-full bg-[#f59e0b]" />
+                      <p className="text-sm font-medium text-white">CoT & Overall</p>
+                    </div>
+                    <p className="text-xs text-[#6e7681] leading-relaxed">Chain-of-Thought coherence and aggregate quality score</p>
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Divider between Benchmark Results and Training Methods */}
+        <div className="my-16 border-t border-[#2a2d47]/50" />
+
+        {/* Versatile Training Methods Section Header */}
+        <div
+          className={`text-center mb-16 transition-all duration-700 delay-100 ${
+            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+          }`}
+        >
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#22c55e]/10 border border-[#22c55e]/30 mb-6">
+            <Cpu className="w-4 h-4 text-[#22c55e]" />
+            <span className="text-sm font-medium text-[#22c55e]">Training Applications</span>
           </div>
           <h2 className="section-title">
             Versatile <span className="gradient-text">Training Methods</span>
@@ -158,7 +430,7 @@ export default function TasksBenchmarks() {
 
         {/* Dataset Split Stats */}
         <div
-          className={`mb-12 transition-all duration-700 delay-100 ${
+          className={`mb-12 transition-all duration-700 delay-200 ${
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}
         >
@@ -194,7 +466,7 @@ export default function TasksBenchmarks() {
           {trainingCategories.map((cat, catIndex) => (
             <div
               key={cat.category}
-              className={`transition-all duration-700 delay-${200 + catIndex * 100} ${
+              className={`transition-all duration-700 delay-${300 + catIndex * 100} ${
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
               }`}
             >
