@@ -5,16 +5,16 @@ import { Building2, GraduationCap, ExternalLink } from 'lucide-react';
 // 合作机构数据
 const collaborators = [
   {
-    name: 'IRIP Lab, Beihang University',
-    nameZh: '北京航空航天大学 IRIP实验室',
-    location: 'Beijing, China',
-    url: 'https://irip.buaa.edu.cn/',
-  },
-  {
     name: 'Shandong Center for Data and Application of High Resolution Earth Observation System',
     nameZh: '高分辨率对地观测系统山东数据与应用中心',
     location: 'Shandong, China',
     url: '#',
+  },
+  {
+    name: 'IRIP Lab, Beihang University',
+    nameZh: '北京航空航天大学 IRIP实验室',
+    location: 'Beijing, China',
+    url: 'https://irip.buaa.edu.cn/',
   },
 ];
 
@@ -63,7 +63,7 @@ export default function Team() {
           </div>
           <h2 className="section-title">Collaborating Institutions</h2>
           <p className="section-subtitle max-w-2xl mx-auto">
-            This dataset is a collaborative effort across multiple prestigious universities
+            This dataset is a collaborative effort across multiple partner institutions
           </p>
         </div>
 
