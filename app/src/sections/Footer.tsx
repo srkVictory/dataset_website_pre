@@ -190,10 +190,7 @@ export default function Footer() {
             </p>
             <span className="hidden sm:block text-[#2a2d47]">|</span>
             <p className="text-sm text-[#b4bcd0]">
-              Website by{' '}
-              <span className="text-white font-medium">Shang Ruke</span>
-              {' '}·{' '}
-              <span className="text-[#4d6bfa]">srkVictory@163.com</span>
+              If you have any questions or comments: <span className="text-[#4d6bfa]">ise_xut@ujn.edu.cn</span>
             </p>
           </div>
           <div className="flex items-center gap-6">
