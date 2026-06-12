@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { CheckCircle, Satellite, Scan, Eye, Map } from 'lucide-react';
+import { CheckCircle, Satellite, Scan, Eye, Map, Database } from 'lucide-react';
 
 const sensors = [
   {
@@ -208,6 +208,31 @@ export default function DatasetOverview() {
                   <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-[#4d6bfa]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                 </div>
               ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Data Sources & Ground-Truth Construction */}
+        <div className="mt-20">
+          <div
+            className={`transition-all duration-700 delay-300 ${
+              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+            }`}
+          >
+            <div className="p-8 rounded-2xl bg-[#161b22]/80 border border-[#2a2d47]/50">
+              <div className="flex items-start gap-4 mb-6">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#4d6bfa]/20 to-[#4353fa]/10 flex items-center justify-center flex-shrink-0">
+                  <Database className="w-6 h-6 text-[#4d6bfa]" />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold text-white">
+                    About Data Sources and <span className="gradient-text">Ground-Truth Construction</span>
+                  </h3>
+                </div>
+              </div>
+              <p className="text-lg text-[#b4bcd0] leading-relaxed">
+                The bi-temporal remote sensing imagery used in Geo-BC is sourced from China's Gaofen series satellite data, including GF-1, GF-2, GF-6, and GF-7. The original imagery undergoes preprocessing steps such as geometric correction, registration, panchromatic and multispectral fusion, color correction, and color balancing to ensure spatial and visual consistency between the bi-temporal images. Ground-truth construction does not directly reuse existing labels; instead, it is re-verified based on the GB/T 21010-2017 land-use classification standard, combined with semantic maps, changed regions, and professional interpretation workflows. This process ensures the semantic consistency, independence, and reliability of change labels under standard constraints.
+              </p>
             </div>
           </div>
         </div>

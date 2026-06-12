@@ -18,7 +18,8 @@ import {
   Sparkles,
   MessageSquare,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  Users
 } from 'lucide-react';
 
 // Image Comparison Component
@@ -1145,6 +1146,31 @@ export default function AnnotationProcess() {
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Detailed Human Review Process */}
+        <div className="mt-20">
+          <div
+            className={`transition-all duration-700 delay-300 ${
+              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+            }`}
+          >
+            <div className="p-8 rounded-2xl bg-[#161b22]/80 border border-[#2a2d47]/50">
+              <div className="flex items-start gap-4 mb-6">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#4d6bfa]/20 to-[#4353fa]/10 flex items-center justify-center flex-shrink-0">
+                  <Users className="w-6 h-6 text-[#4d6bfa]" />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold text-white">
+                    About the Detailed <span className="gradient-text">Human Review Process</span>
+                  </h3>
+                </div>
+              </div>
+              <p className="text-lg text-[#b4bcd0] leading-relaxed">
+                We invited multiple reviewers with remote sensing research backgrounds to independently conduct blind reviews of candidate responses based on unified evaluation criteria. During the review process, reviewers were unaware of the model sources of the five candidate responses and the optimal result selected by the AI comprehensive review. To ensure sample coverage, we performed stratified random uniform sampling in the Pro dataset according to combinations of training, validation, and test sets, as well as changed and unchanged samples. Before distribution, the five candidate responses in each question were randomly shuffled to avoid position bias. Additionally, we set a minimum review time threshold to reduce insufficient judgment caused by overly quick browsing. For controversial or uncertain samples, reviewers were required to record feedback notes and reasons for rejection to facilitate subsequent re-review, thereby improving the reliability of the secondary human review.
+              </p>
             </div>
           </div>
         </div>
